@@ -10,3 +10,14 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/.idea
+/*.iml
+/common/*.iml
+/user/user.iml
+/user/.mvn
+/user/target
+/user/mvnw
+/user/mvnw.cmd
+/user/mvnw
+/user/*.cmd
+/user/*.iml
