@@ -12,6 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Created by lenovo on 2017/1/22.
+ * http://localhost:8081/user/swagger-ui.html
  */
 @Configuration
 @EnableSwagger2

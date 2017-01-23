@@ -1,8 +1,13 @@
-package com.gplucky.user;
+package com.gplucky.user.controller;
 
+import com.gplucky.common.controller.BaseController;
+import com.gplucky.user.model.User;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,26 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/user")
-public class UserController {
-    private static User user1, user2;
-    static{
-        user1 = new User();
-        user1.setId(1);
-        user1.setName("顾柏进");
-        user2 = new User();
-        user1.setId(2);
-        user1.setName("杨钱");
-    }
+public class UserController extends BaseController{
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     @ApiOperation(value="获取用户信息", notes="根据id获取用户信息")
     @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
     @RequestMapping(value="getInfoById", method= RequestMethod.POST)
-    public User getInfoById(User user) {
-        if(1 == user.getId()){
-            return user1;
-        }else{
-            return user2;
-        }
+    public ResponseEntity<String> getInfoById(User user) {
+        LOG.info("获取用户信息");
+        return this.returnSuccessMsg();
     }
 
     @ApiOperation(value="得到用户信息", notes="根据id和name得到详细信息")
@@ -41,6 +35,7 @@ public class UserController {
     })
     @RequestMapping(value="getInfo", method=RequestMethod.POST)
     public String getInfo(Long id, String name) {
+        LOG.info("得到用户信息");
         return "1111";
     }
 }
