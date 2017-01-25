@@ -1,4 +1,4 @@
-package com.gplucky.user.model;
+package com.gplucky.common.mybatis.model;
 
 public class User {
     /**

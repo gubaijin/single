@@ -1,4 +1,4 @@
-package com.gplucky.user.model;
+package com.gplucky.common.mybatis.model;
 
 import java.util.ArrayList;
 import java.util.List;

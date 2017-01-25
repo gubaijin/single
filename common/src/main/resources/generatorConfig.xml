@@ -29,7 +29,7 @@
     </javaTypeResolver>
 
     <!-- 生成实体类地址 -->
-    <javaModelGenerator targetPackage="com.gplucky.user.model" targetProject="src/main/java" >
+    <javaModelGenerator targetPackage="com.gplucky.common.mybatis.model" targetProject="src/main/java" >
       <!-- 是否在当前路径下新加一层 -->
       <property name="enableSubPackages" value="false"/>
       <!-- 是否针对string类型的字段在set的时候进行trim调用 -->
@@ -42,7 +42,7 @@
     </sqlMapGenerator>
 
     <!-- 生成mapxml对应client，也就是接口dao -->
-    <javaClientGenerator targetPackage="com.gplucky.user.dao" targetProject="src/main/java" type="XMLMAPPER" >
+    <javaClientGenerator targetPackage="com.gplucky.common.mybatis.dao" targetProject="src/main/java" type="XMLMAPPER" >
       <property name="enableSubPackages" value="false" />
     </javaClientGenerator>
 

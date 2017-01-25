@@ -1,8 +1,8 @@
 package com.gplucky.user.controller;
 
 import com.gplucky.common.controller.BaseController;
-import com.gplucky.user.dao.UserMapper;
-import com.gplucky.user.model.User;
+import com.gplucky.common.mybatis.dao.UserMapper;
+import com.gplucky.common.mybatis.model.User;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by lenovo on 2017/1/22.
@@ -38,6 +39,7 @@ public class UserController extends BaseController{
             @ApiImplicitParam(name = "name", value = "用户姓名", required = true, dataType = "String")
     })
     @RequestMapping(value="getInfo", method=RequestMethod.POST)
+    @ResponseBody
     public String getInfo(Long id, String name) {
         LOG.info("得到用户信息");
         return userMapper.selectByPrimaryKey(1).getName();
