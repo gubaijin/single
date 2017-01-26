@@ -11,7 +11,7 @@
 	<name>user</name>
 	<description>gplucky-user</description>
 	<artifactId>user</artifactId>
-	<groupId>com.gplucky.user</groupId>
+	<groupId>com.gplucky</groupId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -19,7 +19,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.gplucky.common</groupId>
+			<groupId>com.gplucky</groupId>
 			<artifactId>common</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
