@@ -1,16 +1,18 @@
 package com.gplucky.task.bean;
 
+import java.util.Optional;
+
 /**
  * Created by ehsy_it on 2017/1/26.
  */
 public class StockResp extends BaseResp{
-    private StockResult result;
+    private Optional<StockResult> result;
 
-    public StockResult getResult() {
+    public Optional<StockResult> getResult() {
         return result;
     }
 
-    public void setResult(StockResult result) {
+    public void setResult(Optional<StockResult> result) {
         this.result = result;
     }
 }

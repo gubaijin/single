@@ -1,54 +1,57 @@
 package com.gplucky.task.bean;
 
+import com.gplucky.common.mybatis.model.Stock;
+
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by ehsy_it on 2017/1/26.
  */
-public class StockResult {
+public class StockResult{
     /**
      * 总条数
      */
-    private String totalCount;
+    private Optional<String> totalCount;
     /**
      * 当前页
      */
-    private String page;
+    private Optional<String> page;
     /**
      * 显示条数
      */
-    private String num;
-    private List<Stock> data;
+    private Optional<String> num;
+    private Optional<List<Stock>> data;
 
-    public String getTotalCount() {
+    public Optional<String> getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(String totalCount) {
+    public void setTotalCount(Optional<String> totalCount) {
         this.totalCount = totalCount;
     }
 
-    public String getPage() {
+    public Optional<String> getPage() {
         return page;
     }
 
-    public void setPage(String page) {
+    public void setPage(Optional<String> page) {
         this.page = page;
     }
 
-    public String getNum() {
+    public Optional<String> getNum() {
         return num;
     }
 
-    public void setNum(String num) {
+    public void setNum(Optional<String> num) {
         this.num = num;
     }
 
-    public List<Stock> getData() {
+    public Optional<List<Stock>> getData() {
         return data;
     }
 
-    public void setData(List<Stock> data) {
+    public void setData(Optional<List<Stock>> data) {
         this.data = data;
     }
 }

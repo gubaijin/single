@@ -1,6 +1,6 @@
 package com.gplucky.common.transport;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSON;
 import com.gplucky.common.transport.data.RespData;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -154,9 +154,9 @@ public class DefaultHttpRequest implements HttpRequest {
             String result = EntityUtils.toString(resEntity, "UTF-8");
             LOG.debug("POST结果: {}", result);
             try {
-                respData.setData((T) JSONObject.parse(result));
+                respData.setData(Optional.ofNullable(JSON.parseObject(result, resClass)));
             } catch (Exception e) {
-                respData.setData((T) result);
+                respData.setData(Optional.ofNullable((T)result));
             }
             return respData;
         } catch (Exception e) {

@@ -1,11 +1,13 @@
 package com.gplucky.common.transport.data;
 
+import java.util.Optional;
+
 /**
  * Created by ehsy_it on 2017/1/26.
  */
 public class RespData <T> {
     private int statusCode;
-    private T data;
+    private Optional<T> data;
 
     public int getStatusCode() {
         return statusCode;
@@ -15,11 +17,11 @@ public class RespData <T> {
         this.statusCode = statusCode;
     }
 
-    public T getData() {
+    public Optional<T> getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(Optional<T> data) {
         this.data = data;
     }
 }

@@ -1,19 +1,10 @@
 package com.gplucky.user.controller;
 
 import com.gplucky.common.controller.BaseController;
-import com.gplucky.common.mybatis.dao.UserMapper;
-import com.gplucky.common.mybatis.model.User;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by lenovo on 2017/1/22.
@@ -22,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/user")
 public class UserController extends BaseController{
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
-    @Autowired
+/*    @Autowired
     private UserMapper userMapper;
 
     @ApiOperation(value="获取用户信息", notes="根据id获取用户信息")
@@ -43,5 +34,5 @@ public class UserController extends BaseController{
     public String getInfo(Long id, String name) {
         LOG.info("得到用户信息");
         return userMapper.selectByPrimaryKey(1).getName();
-    }
+    }*/
 }

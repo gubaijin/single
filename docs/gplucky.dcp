@@ -1,0 +1,11 @@
+[ConnectionProfile]
+ConnectionType=JDBC
+Dbms=MySQL
+Description=gplucky
+DisableBind=0
+Driver=com.mysql.jdbc.Driver
+JarFiles=C:/Users/ehsy_it/.m2/repository/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar
+LogId=gplucky
+LogPassword=gplucky
+TrimSpaces=0
+URL=jdbc:mysql://112.74.60.193:3306/gplucky?characterEncoding=utf8

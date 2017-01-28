@@ -46,7 +46,7 @@
       <property name="enableSubPackages" value="false" />
     </javaClientGenerator>
 
-    <table tableName="user">
+    <table tableName="stock">
       <generatedKey column="id" sqlStatement="MySql" identity="true"/>
     </table>
 
