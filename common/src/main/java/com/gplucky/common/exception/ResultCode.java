@@ -5,7 +5,8 @@ package com.gplucky.common.exception;
  */
 public enum ResultCode {
     CODE_COMMON_500("500", "系统异常"),
-    CODE_ERROR_DB("30000", "数据库操作异常");
+    CODE_ERROR_DB("30000", "数据库操作异常"),
+    CODE_ERROR_UTILS_DATE("40000", "日期工具类操作异常");
 
     private String code;
     private String msg;

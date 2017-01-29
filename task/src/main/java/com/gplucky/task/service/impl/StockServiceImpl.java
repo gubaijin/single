@@ -3,14 +3,19 @@ package com.gplucky.task.service.impl;
 import com.google.common.collect.Maps;
 import com.gplucky.common.exception.CMRuntimeException;
 import com.gplucky.common.exception.ResultCode;
+import com.gplucky.common.mybatis.dao.StockHistoryMapper;
 import com.gplucky.common.mybatis.dao.StockMapper;
+import com.gplucky.common.mybatis.model.StockHistory;
 import com.gplucky.common.transport.RequestUtil;
 import com.gplucky.common.transport.data.RespData;
+import com.gplucky.common.utils.DateUtils;
 import com.gplucky.task.bean.ErrorCode;
 import com.gplucky.task.bean.StockResp;
+import com.gplucky.task.service.StockHistoryService;
 import com.gplucky.task.service.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,6 +44,12 @@ public class StockServiceImpl implements StockService{
 
     @Autowired
     private StockMapper stockMapper;
+
+    @Autowired
+    private StockHistoryMapper stockHistoryMapper;
+
+    @Autowired
+    private StockHistoryService stockHistoryService;
 
     @Override
     public boolean initSHList() {
@@ -81,6 +92,11 @@ public class StockServiceImpl implements StockService{
                         stock.setCreateTime(date);
                         stock.setUpdateTime(date);
                         stockMapper.insertSelective(stock);
+
+                        StockHistory stockHistory = new StockHistory();
+                        BeanUtils.copyProperties(stock, stockHistory);
+                        stockHistory.setCreateTime(DateUtils.getDateByFormat1("2017-01-26 15:00:00"));
+                        stockHistoryService.insert(stockHistory);
                     } catch (Exception e) {
                         LOG.error(e.getMessage());
                         throw new CMRuntimeException(ResultCode.CODE_ERROR_DB.getCode(),

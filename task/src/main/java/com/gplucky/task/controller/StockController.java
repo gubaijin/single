@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by ehsy_it on 2017/1/28.
@@ -22,7 +24,8 @@ public class StockController extends BaseController{
     private StockService stockService;
 
     @ApiOperation(value="初始化沪股列表", notes="初始化所有沪股信息")
-    @RequestMapping(value="initSHList")
+    @RequestMapping(value="initSHList", method = RequestMethod.POST)
+    @ResponseBody
     public String initSHList(){
         LOG.info("初始化沪股列表开始……");
         boolean flg = stockService.initSHList();
@@ -34,7 +37,8 @@ public class StockController extends BaseController{
         }
     }
     @ApiOperation(value="初始化深圳股市列表", notes="初始化所有深圳股市信息")
-    @RequestMapping(value="initSZList")
+    @RequestMapping(value="initSZList", method = RequestMethod.POST)
+    @ResponseBody
     public String initSZList(){
         LOG.info("初始化深圳股市列表开始……");
         boolean flg = stockService.initSZList();
