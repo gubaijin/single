@@ -21,16 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by ehsy_it on 2017/1/26.
  */
 @Service
-public class StockServiceImpl implements StockService{
+public class StockServiceImpl implements StockService {
     private static final Logger LOG = LoggerFactory.getLogger(StockServiceImpl.class);
     AtomicInteger page;
 
@@ -49,15 +47,65 @@ public class StockServiceImpl implements StockService{
     @Autowired
     private StockHistoryService stockHistoryService;
 
+    /**
+     * 先同步上海股市信息
+     * 再同步深圳股市信息
+     */
     @Override
     public boolean fetchStockInfo() {
-        /**
-         * 先同步上海股市信息
-         * 再同步深圳股市信息
-         */
-        page = new AtomicInteger(1);
-        judgeLoopAndUpdateInfo(STOCK_URL_LIST_SH);
+        //判断是否有新数据需要同步
+        boolean flg = isNeedFetch();
+        if (flg) {
+            page = new AtomicInteger(1);
+            judgeLoopAndUpdateInfo(STOCK_URL_LIST_SH);
+        } else {
+            LOG.info("没有最新数据，无需更新！");
+        }
         return true;
+    }
+
+    /**
+     * 请求20条数据进行对比，都相等则表示没有最新数据
+     * 成交量大于0的情况下，昨收、今开、成交量、成交额、涨跌幅、涨跌额都相等则判断为没有最新数据
+     *
+     * @return
+     */
+    private boolean isNeedFetch() {
+        List<Boolean> isNeedFetchFlgs = Arrays.asList();
+        Optional<StockResp> resp = sendStockRequest(STOCK_URL_LIST_SH, 1);
+        resp.ifPresent(stockResp -> {
+            stockResp.getResult().ifPresent(stockResult -> {
+                stockResult.getData().ifPresent(stockList -> {
+                    stockList.stream().forEach(stockNew -> {
+                        Stock stock = getStockByCode(stockNew.getCode());
+                        boolean stockEqualsFlg = checkStockEquals(stockNew, stock);
+                        isNeedFetchFlgs.add(!stockEqualsFlg);
+                    });
+                });
+            });
+        });
+        return isNeedFetchFlgs.contains(true);
+    }
+
+    /**
+     * 成交量大于0的情况下，昨收、今开、成交量、成交额、涨跌幅、涨跌额都相等则判断为没有最新数据
+     *
+     * @param stockNew
+     * @param stock
+     * @return
+     */
+    private boolean checkStockEquals(Stock stockNew, Stock stock) {
+        if (stockNew.getVolume() > 0
+                && stockNew.getSettlement().equals(stock.getSettlement())
+                && stockNew.getOpen().equals(stock.getOpen())
+                && stockNew.getVolume().equals(stock.getVolume())
+                && stockNew.getAmount().equals(stock.getAmount())
+                && stockNew.getChangepercent().equals(stock.getChangepercent())
+                && stockNew.getPricechange().equals(stock.getPricechange())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -79,11 +127,11 @@ public class StockServiceImpl implements StockService{
         resp.ifPresent(stockResp -> {
             //写入股票表
             updateStock(stockResp);
-            if(ErrorCode.EMPTY_DATA.getCode() != stockResp.getError_code()){
+            if (ErrorCode.EMPTY_DATA.getCode() != stockResp.getError_code()) {
                 judgeLoopAndRecord(url);
             }
-            if((ErrorCode.EMPTY_DATA.getCode() == stockResp.getError_code())
-                    && !STOCK_URL_LIST_SZ.equals(url)){
+            if ((ErrorCode.EMPTY_DATA.getCode() == stockResp.getError_code())
+                    && !STOCK_URL_LIST_SZ.equals(url)) {
                 page = new AtomicInteger(1);
                 judgeLoopAndRecord(STOCK_URL_LIST_SZ);
             }
@@ -92,6 +140,7 @@ public class StockServiceImpl implements StockService{
 
     /**
      * 初始化时使用
+     *
      * @param url
      */
     private void judgeLoopAndRecord(String url) {
@@ -99,7 +148,7 @@ public class StockServiceImpl implements StockService{
         resp.ifPresent(stockResp -> {
             //写入股票表
             insertStock(stockResp);
-            if(ErrorCode.EMPTY_DATA.getCode() != stockResp.getError_code()){
+            if (ErrorCode.EMPTY_DATA.getCode() != stockResp.getError_code()) {
                 judgeLoopAndRecord(url);
             }
         });
@@ -110,7 +159,7 @@ public class StockServiceImpl implements StockService{
             LOG.info(stockResult.getTotalCount().get() + "|" +
                     stockResult.getPage().get() + "|" +
                     stockResult.getNum().get());
-            stockResult.getData().ifPresent(stockList->{
+            stockResult.getData().ifPresent(stockList -> {
                 stockList.stream().forEach(stock -> {
                     try {
                         updateStockAndInsertHistory(stock);
@@ -126,6 +175,7 @@ public class StockServiceImpl implements StockService{
 
     /**
      * 初始化时：写入股票表
+     *
      * @param stockResp
      */
     private void insertStock(StockResp stockResp) {
@@ -133,7 +183,7 @@ public class StockServiceImpl implements StockService{
             LOG.info(stockResult.getTotalCount().get() + "|" +
                     stockResult.getPage().get() + "|" +
                     stockResult.getNum().get());
-            stockResult.getData().ifPresent(stockList->{
+            stockResult.getData().ifPresent(stockList -> {
                 stockList.stream().forEach(stock -> {
                     try {
                         insertStockAndInsertHistory(stock);
@@ -161,8 +211,30 @@ public class StockServiceImpl implements StockService{
         stockHistoryService.insert(stockHistory);
     }
 
+    public Stock getStockByCode(String code) {
+        List<Stock> list;
+        try {
+            StockExample example = new StockExample();
+            example.createCriteria().andCodeEqualTo(code);
+            list = stockMapper.selectByExample(example);
+        } catch (Exception e) {
+            throw new CMRuntimeException(ResultCode.CODE_ERROR_DB.getCode(),
+                    ResultCode.CODE_ERROR_DB.getMsg() + "getStockByCode() code=" + code);
+        }
+        if (list.size() > 1) {
+            throw new CMRuntimeException(ResultCode.CODE_ERROR_DB_1.getCode(),
+                    ResultCode.CODE_ERROR_DB_1.getMsg() + "getStockByCode() code=" + code);
+        }
+        if (list.size() == 0) {
+            throw new CMRuntimeException(ResultCode.CODE_ERROR_STOCK.getCode(),
+                    ResultCode.CODE_ERROR_STOCK.getMsg() + "getStockByCode() code=" + code);
+        }
+        return list.get(0);
+    }
+
     /**
      * 仅init初始化时
+     *
      * @param stock
      */
     private void insertStockAndInsertHistory(Stock stock) {

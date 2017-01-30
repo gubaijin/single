@@ -28,7 +28,7 @@ public class StockController extends BaseController{
     @ResponseBody
     public String fetchStockInfo(){
         LOG.info("手动同步股列表开始……");
-        boolean flg = stockService.initSHList();
+        boolean flg = stockService.fetchStockInfo();
         LOG.info("……结束手动同步股列表");
         if(flg){
             return "success";
