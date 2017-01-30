@@ -610,4 +610,29 @@ public class Stock {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", name='" + name + '\'' +
+                ", score=" + score +
+                ", trade='" + trade + '\'' +
+                ", pricechange='" + pricechange + '\'' +
+                ", changepercent='" + changepercent + '\'' +
+                ", buy='" + buy + '\'' +
+                ", sell='" + sell + '\'' +
+                ", settlement='" + settlement + '\'' +
+                ", open='" + open + '\'' +
+                ", high='" + high + '\'' +
+                ", low='" + low + '\'' +
+                ", volume=" + volume +
+                ", amount=" + amount +
+                ", ticktime='" + ticktime + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

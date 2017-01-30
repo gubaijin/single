@@ -1,5 +1,6 @@
 package com.gplucky.task.service.impl;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.gplucky.common.exception.CMRuntimeException;
 import com.gplucky.common.exception.ResultCode;
@@ -21,7 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -71,7 +75,7 @@ public class StockServiceImpl implements StockService {
      * @return
      */
     private boolean isNeedFetch() {
-        List<Boolean> isNeedFetchFlgs = Arrays.asList();
+        List<Boolean> isNeedFetchFlgs = Lists.newArrayList();
         Optional<StockResp> resp = sendStockRequest(STOCK_URL_LIST_SH, 1);
         resp.ifPresent(stockResp -> {
             stockResp.getResult().ifPresent(stockResult -> {
@@ -84,6 +88,7 @@ public class StockServiceImpl implements StockService {
                 });
             });
         });
+        LOG.info("是否需要数据抓取(isNeedFetchFlgs.contains(true))=" + isNeedFetchFlgs.contains(true));
         return isNeedFetchFlgs.contains(true);
     }
 
@@ -95,8 +100,9 @@ public class StockServiceImpl implements StockService {
      * @return
      */
     private boolean checkStockEquals(Stock stockNew, Stock stock) {
-        if (stockNew.getVolume() > 0
-                && stockNew.getSettlement().equals(stock.getSettlement())
+        LOG.info("stockNew------>" + stockNew.toString());
+        LOG.info("stock------>" + stock.toString());
+        if (stockNew.getSettlement().equals(stock.getSettlement())
                 && stockNew.getOpen().equals(stock.getOpen())
                 && stockNew.getVolume().equals(stock.getVolume())
                 && stockNew.getAmount().equals(stock.getAmount())
