@@ -23,6 +23,20 @@ public class StockController extends BaseController{
     @Autowired
     private StockService stockService;
 
+    @ApiOperation(value="手动同步沪深股市信息", notes="先同步沪股再同步深股，并记录到股市列表")
+    @RequestMapping(value="fetchStockInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public String fetchStockInfo(){
+        LOG.info("手动同步股列表开始……");
+        boolean flg = stockService.initSHList();
+        LOG.info("……结束手动同步股列表");
+        if(flg){
+            return "success";
+        }else{
+            return "failed";
+        }
+    }
+
     @ApiOperation(value="初始化沪股列表", notes="初始化所有沪股信息")
     @RequestMapping(value="initSHList", method = RequestMethod.POST)
     @ResponseBody

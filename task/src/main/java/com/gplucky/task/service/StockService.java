@@ -5,7 +5,14 @@ package com.gplucky.task.service;
  */
 public interface StockService {
 
+    /**
+     * 得到最新的股市信息
+     * @return
+     */
+    boolean fetchStockInfo();
+
     boolean initSHList();
 
     boolean initSZList();
+
 }

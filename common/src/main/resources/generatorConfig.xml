@@ -48,11 +48,13 @@
 
     <!--<table tableName="stock">
     <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-  </table>-->
+  </table>
     <table tableName="stock_history">
       <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+    </table>-->
+    <table tableName="task_history">
+      <generatedKey column="id" sqlStatement="MySql" identity="true"/>
     </table>
-
   </context>
 </generatorConfiguration>
 

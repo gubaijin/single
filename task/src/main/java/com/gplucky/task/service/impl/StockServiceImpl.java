@@ -3,8 +3,9 @@ package com.gplucky.task.service.impl;
 import com.google.common.collect.Maps;
 import com.gplucky.common.exception.CMRuntimeException;
 import com.gplucky.common.exception.ResultCode;
-import com.gplucky.common.mybatis.dao.StockHistoryMapper;
 import com.gplucky.common.mybatis.dao.StockMapper;
+import com.gplucky.common.mybatis.model.Stock;
+import com.gplucky.common.mybatis.model.StockExample;
 import com.gplucky.common.mybatis.model.StockHistory;
 import com.gplucky.common.transport.RequestUtil;
 import com.gplucky.common.transport.data.RespData;
@@ -46,10 +47,18 @@ public class StockServiceImpl implements StockService{
     private StockMapper stockMapper;
 
     @Autowired
-    private StockHistoryMapper stockHistoryMapper;
-
-    @Autowired
     private StockHistoryService stockHistoryService;
+
+    @Override
+    public boolean fetchStockInfo() {
+        /**
+         * 先同步上海股市信息
+         * 再同步深圳股市信息
+         */
+        page = new AtomicInteger(1);
+        judgeLoopAndUpdateInfo(STOCK_URL_LIST_SH);
+        return true;
+    }
 
     @Override
     public boolean initSHList() {
@@ -65,6 +74,26 @@ public class StockServiceImpl implements StockService{
         return true;
     }
 
+    private void judgeLoopAndUpdateInfo(String url) {
+        Optional<StockResp> resp = sendStockRequest(url, page.getAndIncrement());
+        resp.ifPresent(stockResp -> {
+            //写入股票表
+            updateStock(stockResp);
+            if(ErrorCode.EMPTY_DATA.getCode() != stockResp.getError_code()){
+                judgeLoopAndRecord(url);
+            }
+            if((ErrorCode.EMPTY_DATA.getCode() == stockResp.getError_code())
+                    && !STOCK_URL_LIST_SZ.equals(url)){
+                page = new AtomicInteger(1);
+                judgeLoopAndRecord(STOCK_URL_LIST_SZ);
+            }
+        });
+    }
+
+    /**
+     * 初始化时使用
+     * @param url
+     */
     private void judgeLoopAndRecord(String url) {
         Optional<StockResp> resp = sendStockRequest(url, page.getAndIncrement());
         resp.ifPresent(stockResp -> {
@@ -76,8 +105,27 @@ public class StockServiceImpl implements StockService{
         });
     }
 
+    private void updateStock(StockResp stockResp) {
+        stockResp.getResult().ifPresent(stockResult -> {
+            LOG.info(stockResult.getTotalCount().get() + "|" +
+                    stockResult.getPage().get() + "|" +
+                    stockResult.getNum().get());
+            stockResult.getData().ifPresent(stockList->{
+                stockList.stream().forEach(stock -> {
+                    try {
+                        updateStockAndInsertHistory(stock);
+                    } catch (Exception e) {
+                        LOG.error(e.getMessage());
+                        throw new CMRuntimeException(ResultCode.CODE_ERROR_DB.getCode(),
+                                ResultCode.CODE_ERROR_DB.getMsg() + "updateStock;");
+                    }
+                });
+            });
+        });
+    }
+
     /**
-     * 写入股票表
+     * 初始化时：写入股票表
      * @param stockResp
      */
     private void insertStock(StockResp stockResp) {
@@ -88,23 +136,45 @@ public class StockServiceImpl implements StockService{
             stockResult.getData().ifPresent(stockList->{
                 stockList.stream().forEach(stock -> {
                     try {
-                        Date date = new Date();
-                        stock.setCreateTime(date);
-                        stock.setUpdateTime(date);
-                        stockMapper.insertSelective(stock);
-
-                        StockHistory stockHistory = new StockHistory();
-                        BeanUtils.copyProperties(stock, stockHistory);
-                        stockHistory.setCreateTime(DateUtils.getDateByFormat1("2017-01-26 15:00:00"));
-                        stockHistoryService.insert(stockHistory);
+                        insertStockAndInsertHistory(stock);
                     } catch (Exception e) {
                         LOG.error(e.getMessage());
                         throw new CMRuntimeException(ResultCode.CODE_ERROR_DB.getCode(),
-                                ResultCode.CODE_ERROR_DB.getMsg() + "stockMapper.insertSelective(stock);");
+                                ResultCode.CODE_ERROR_DB.getMsg() + "insertStock;");
                     }
                 });
             });
         });
+    }
+
+    private void updateStockAndInsertHistory(Stock stock) {
+        Date date = new Date();
+        stock.setUpdateTime(date);
+        StockExample example = new StockExample();
+        example.createCriteria().andCodeEqualTo(stock.getCode());
+        stockMapper.updateByExampleSelective(stock, example);
+
+        StockHistory stockHistory = new StockHistory();
+        BeanUtils.copyProperties(stock, stockHistory);
+        stockHistory.setCreateTime(date);
+        stockHistory.setUpdateTime(date);
+        stockHistoryService.insert(stockHistory);
+    }
+
+    /**
+     * 仅init初始化时
+     * @param stock
+     */
+    private void insertStockAndInsertHistory(Stock stock) {
+        Date date = new Date();
+        stock.setCreateTime(date);
+        stock.setUpdateTime(date);
+        stockMapper.insertSelective(stock);
+
+        StockHistory stockHistory = new StockHistory();
+        BeanUtils.copyProperties(stock, stockHistory);
+        stockHistory.setCreateTime(DateUtils.getDateByFormat1("2017-01-26 15:00:00"));
+        stockHistoryService.insert(stockHistory);
     }
 
     private Optional<StockResp> sendStockRequest(String url, int page) {
