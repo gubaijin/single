@@ -28,9 +28,9 @@ public class Config {
     private final Logger LOG = LoggerFactory.getLogger(Config.class);
 
     /**
-     * 周一至周五的下午15:30触发
+     * 周一至周五的下午19:00触发
      */
-    @Scheduled(cron = "0 30 15 ? * MON-FRI")
+    @Scheduled(cron = "0 0 19 ? * MON-FRI")
     public void fetchStockInfo() {
         int taskId = taskHistoryService.insertStartTask(TaskHistoryExt.TYPE_FETCHSTOCKINFO);
         LOG.info("定时任务(同步股票信息)，开始…………");

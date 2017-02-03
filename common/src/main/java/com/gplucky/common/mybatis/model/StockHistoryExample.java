@@ -1165,52 +1165,52 @@ public class StockHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeEqualTo(Integer value) {
+        public Criteria andVolumeEqualTo(Long value) {
             addCriterion("volume =", value, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeNotEqualTo(Integer value) {
+        public Criteria andVolumeNotEqualTo(Long value) {
             addCriterion("volume <>", value, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeGreaterThan(Integer value) {
+        public Criteria andVolumeGreaterThan(Long value) {
             addCriterion("volume >", value, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeGreaterThanOrEqualTo(Integer value) {
+        public Criteria andVolumeGreaterThanOrEqualTo(Long value) {
             addCriterion("volume >=", value, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeLessThan(Integer value) {
+        public Criteria andVolumeLessThan(Long value) {
             addCriterion("volume <", value, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeLessThanOrEqualTo(Integer value) {
+        public Criteria andVolumeLessThanOrEqualTo(Long value) {
             addCriterion("volume <=", value, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeIn(List<Integer> values) {
+        public Criteria andVolumeIn(List<Long> values) {
             addCriterion("volume in", values, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeNotIn(List<Integer> values) {
+        public Criteria andVolumeNotIn(List<Long> values) {
             addCriterion("volume not in", values, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeBetween(Integer value1, Integer value2) {
+        public Criteria andVolumeBetween(Long value1, Long value2) {
             addCriterion("volume between", value1, value2, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeNotBetween(Integer value1, Integer value2) {
+        public Criteria andVolumeNotBetween(Long value1, Long value2) {
             addCriterion("volume not between", value1, value2, "volume");
             return (Criteria) this;
         }
@@ -1225,52 +1225,52 @@ public class StockHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andAmountEqualTo(Integer value) {
+        public Criteria andAmountEqualTo(Long value) {
             addCriterion("amount =", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountNotEqualTo(Integer value) {
+        public Criteria andAmountNotEqualTo(Long value) {
             addCriterion("amount <>", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountGreaterThan(Integer value) {
+        public Criteria andAmountGreaterThan(Long value) {
             addCriterion("amount >", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountGreaterThanOrEqualTo(Integer value) {
+        public Criteria andAmountGreaterThanOrEqualTo(Long value) {
             addCriterion("amount >=", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountLessThan(Integer value) {
+        public Criteria andAmountLessThan(Long value) {
             addCriterion("amount <", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountLessThanOrEqualTo(Integer value) {
+        public Criteria andAmountLessThanOrEqualTo(Long value) {
             addCriterion("amount <=", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountIn(List<Integer> values) {
+        public Criteria andAmountIn(List<Long> values) {
             addCriterion("amount in", values, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountNotIn(List<Integer> values) {
+        public Criteria andAmountNotIn(List<Long> values) {
             addCriterion("amount not in", values, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountBetween(Integer value1, Integer value2) {
+        public Criteria andAmountBetween(Long value1, Long value2) {
             addCriterion("amount between", value1, value2, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountNotBetween(Integer value1, Integer value2) {
+        public Criteria andAmountNotBetween(Long value1, Long value2) {
             addCriterion("amount not between", value1, value2, "amount");
             return (Criteria) this;
         }
