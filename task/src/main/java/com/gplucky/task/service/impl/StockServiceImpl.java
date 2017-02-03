@@ -251,7 +251,7 @@ public class StockServiceImpl implements StockService {
 
         StockHistory stockHistory = new StockHistory();
         BeanUtils.copyProperties(stock, stockHistory);
-        stockHistory.setCreateTime(DateUtils.getDateByFormat1("2017-01-26 15:00:00"));
+        stockHistory.setCreateTime(DateUtils.getDateByFormat1("2017-02-03 15:00:00"));
         stockHistoryService.insert(stockHistory);
     }
 
