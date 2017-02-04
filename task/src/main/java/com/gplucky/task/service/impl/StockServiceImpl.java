@@ -22,11 +22,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 /**
  * Created by ehsy_it on 2017/1/26.
@@ -128,19 +130,91 @@ public class StockServiceImpl implements StockService {
         return true;
     }
 
+    /**
+     * 失败补偿同步股列表
+     *
+     * @return
+     */
+    @Override
+    public boolean fetchCompensation() {
+        page = new AtomicInteger(1);
+        fetchStockInfoCompensation(STOCK_URL_LIST_SH);
+        return true;
+    }
+
+    private void fetchStockInfoCompensation(String url) {
+        Optional<StockResp> resp = sendStockRequest(url, page.getAndIncrement());
+        resp.ifPresent(stockResp -> {
+            //写入股票表（先判断是否存在）
+            stockOperation(stockResp, (Stock stock) -> updateStockAndHistoryAfterChecked(stock));
+            checkJudgeLoop(url, stockResp);
+        });
+    }
+
+    /**
+     * 写入股票表及历史表（先判断是否存在）
+     * @param stock
+     */
+    private void updateStockAndHistoryAfterChecked(Stock stock) {
+        //检查stock表是否存在当天数据
+        boolean stockIsExist = checkStockIsExistByCodeNowDate(stock);
+        if(!stockIsExist){
+            //不存在，需要更新
+            updateStockIfNeedRedis(stock);
+        }
+        //检查stock_history中是否存在当天数据
+        boolean stockHistoryIsExist = checkStockHistoryIsExistByCodeNowDate(stock);
+        if(!stockHistoryIsExist){
+            //不存在，需要获取
+            insertStockHistory(stock);
+        }
+    }
+
+    /**
+     * 检查stock_history中是否存在当天数据
+     * @param stock
+     * @return
+     */
+    private boolean checkStockHistoryIsExistByCodeNowDate(Stock stock) {
+        StockExample example = new StockExample();
+        LocalDate localDate = LocalDate.now();
+        example.createCriteria().andCodeEqualTo(stock.getCode())
+                .andCreateTimeBetween(DateUtils.getDateStart(localDate), DateUtils.getDateEnd(localDate));
+        int count = stockMapper.countByExample(example);
+        if(count > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * 检查stock表是否存在当天数据
+     * @param stock
+     * @return
+     */
+    private boolean checkStockIsExistByCodeNowDate(Stock stock) {
+        LocalDate localDate = LocalDate.now();
+        return stockHistoryService.isExistByCodeNowDate(stock.getCode(), localDate);
+    }
+
+    private void checkJudgeLoop(String url, StockResp stockResp) {
+        if (ErrorCode.EMPTY_DATA.getCode() != stockResp.getError_code()) {
+            judgeLoopAndRecord(url);
+        }
+        if ((ErrorCode.EMPTY_DATA.getCode() == stockResp.getError_code())
+                && !STOCK_URL_LIST_SZ.equals(url)) {
+            page = new AtomicInteger(1);
+            judgeLoopAndRecord(STOCK_URL_LIST_SZ);
+        }
+    }
+
     private void judgeLoopAndUpdateInfo(String url) {
         Optional<StockResp> resp = sendStockRequest(url, page.getAndIncrement());
         resp.ifPresent(stockResp -> {
             //写入股票表
-            updateStock(stockResp);
-            if (ErrorCode.EMPTY_DATA.getCode() != stockResp.getError_code()) {
-                judgeLoopAndRecord(url);
-            }
-            if ((ErrorCode.EMPTY_DATA.getCode() == stockResp.getError_code())
-                    && !STOCK_URL_LIST_SZ.equals(url)) {
-                page = new AtomicInteger(1);
-                judgeLoopAndRecord(STOCK_URL_LIST_SZ);
-            }
+            stockOperation(stockResp, (Stock stock) -> updateStockAndInsertHistory(stock));
+            checkJudgeLoop(url, stockResp);
         });
     }
 
@@ -153,14 +227,14 @@ public class StockServiceImpl implements StockService {
         Optional<StockResp> resp = sendStockRequest(url, page.getAndIncrement());
         resp.ifPresent(stockResp -> {
             //写入股票表
-            insertStock(stockResp);
+            stockOperation(stockResp, (Stock stock) -> insertStockAndInsertHistory(stock));
             if (ErrorCode.EMPTY_DATA.getCode() != stockResp.getError_code()) {
                 judgeLoopAndRecord(url);
             }
         });
     }
 
-    private void updateStock(StockResp stockResp) {
+    private void stockOperation(StockResp stockResp, Consumer<Stock> c) {
         stockResp.getResult().ifPresent(stockResult -> {
             LOG.info(stockResult.getTotalCount().get() + "|" +
                     stockResult.getPage().get() + "|" +
@@ -168,11 +242,12 @@ public class StockServiceImpl implements StockService {
             stockResult.getData().ifPresent(stockList -> {
                 stockList.stream().forEach(stock -> {
                     try {
-                        updateStockAndInsertHistory(stock);
+                        c.accept(stock);
+//                        updateStockAndInsertHistory(stock);
                     } catch (Exception e) {
                         LOG.error(e.getMessage());
                         throw new CMRuntimeException(ResultCode.CODE_ERROR_DB.getCode(),
-                                ResultCode.CODE_ERROR_DB.getMsg() + "updateStock;");
+                                ResultCode.CODE_ERROR_DB.getMsg() + "stockOperation;");
                     }
                 });
             });
@@ -184,7 +259,7 @@ public class StockServiceImpl implements StockService {
      *
      * @param stockResp
      */
-    private void insertStock(StockResp stockResp) {
+/*    private void insertStock(StockResp stockResp) {
         stockResp.getResult().ifPresent(stockResult -> {
             LOG.info(stockResult.getTotalCount().get() + "|" +
                     stockResult.getPage().get() + "|" +
@@ -201,20 +276,39 @@ public class StockServiceImpl implements StockService {
                 });
             });
         });
+    }*/
+
+    /**
+     * 更新最新数据、记录历史数据、新股创建数据、新股记录进redis
+     *
+     * @param stock
+     */
+    private void updateStockAndInsertHistory(Stock stock) {
+        updateStockIfNeedRedis(stock);
+
+        insertStockHistory(stock);
     }
 
-    private void updateStockAndInsertHistory(Stock stock) {
+    private void insertStockHistory(Stock stock) {
         Date date = new Date();
-        stock.setUpdateTime(date);
-        StockExample example = new StockExample();
-        example.createCriteria().andCodeEqualTo(stock.getCode());
-        stockMapper.updateByExampleSelective(stock, example);
-
         StockHistory stockHistory = new StockHistory();
         BeanUtils.copyProperties(stock, stockHistory);
         stockHistory.setCreateTime(date);
         stockHistory.setUpdateTime(date);
         stockHistoryService.insert(stockHistory);
+    }
+
+    private void updateStockIfNeedRedis(Stock stock) {
+        Date date = new Date();
+        stock.setUpdateTime(date);
+        StockExample example = new StockExample();
+        example.createCriteria().andCodeEqualTo(stock.getCode());
+        int updateFlg = stockMapper.updateByExampleSelective(stock, example);
+        if (!(updateFlg > 0)) {
+            stock.setCreateTime(date);
+            stockMapper.insertSelective(stock);
+            //新股记录进redis
+        }
     }
 
     public Stock getStockByCode(String code) {

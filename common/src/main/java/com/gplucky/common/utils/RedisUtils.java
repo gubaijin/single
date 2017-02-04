@@ -1,26 +1,36 @@
 package com.gplucky.common.utils;
 
-import redis.clients.jedis.JedisCluster;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.stereotype.Component;
+
+import java.net.UnknownHostException;
 
 /**
  * Created by ehsy_it on 2017/1/30.
  */
-//@Component
+@Component
 public class RedisUtils {
 
-//    @Autowired
-    private JedisCluster jedisCluster;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     public void set(String key, String value) {
-        jedisCluster.set(key, value);
+        redisTemplate.opsForValue().set(key, value);
     }
 
-/*    @Bean
-    JedisConnectionFactory connectionFactory() {
-        return new JedisConnectionFactory();
-    }*/
+    public Object get(String key) {
+        return redisTemplate.opsForValue().get(key);
+    }
 
-/*    @Bean
+    @Bean
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory)
             throws UnknownHostException {
         RedisTemplate<Object, Object> template = new RedisTemplate<Object, Object>();
@@ -36,5 +46,5 @@ public class RedisUtils {
 
         template.afterPropertiesSet();
         return template;
-    }*/
+    }
 }

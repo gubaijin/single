@@ -37,6 +37,20 @@ public class StockController extends BaseController{
         }
     }
 
+    @ApiOperation(value="失败补偿手动同步沪深股市信息", notes="由于同步失败，失败补偿每次都会比较记录是否已经存在")
+    @RequestMapping(value="fetchCompensation", method = RequestMethod.POST)
+    @ResponseBody
+    public String fetchCompensation(){
+        LOG.info("失败补偿同步股列表开始……");
+        boolean flg = stockService.fetchCompensation();
+        LOG.info("……结束失败补偿同步股列表");
+        if(flg){
+            return "success";
+        }else{
+            return "failed";
+        }
+    }
+
     @ApiOperation(value="初始化沪股列表", notes="初始化所有沪股信息")
     @RequestMapping(value="initSHList", method = RequestMethod.POST)
     @ResponseBody

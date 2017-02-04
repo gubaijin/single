@@ -15,4 +15,9 @@ public interface StockService {
 
     boolean initSZList();
 
+    /**
+     * 失败补偿同步股列表
+     * @return
+     */
+    boolean fetchCompensation();
 }
