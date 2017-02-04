@@ -30,6 +30,14 @@ public class RedisUtils {
         return redisTemplate.opsForValue().get(key);
     }
 
+    public void sadd(String key, Object ... obj) {
+        redisTemplate.opsForSet().add(key, obj);
+    }
+
+    public Object smembers(String key) {
+        return redisTemplate.opsForSet().members(key);
+    }
+
     @Bean
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory)
             throws UnknownHostException {

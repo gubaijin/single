@@ -8,12 +8,15 @@ import com.gplucky.common.mybatis.dao.StockMapper;
 import com.gplucky.common.mybatis.model.Stock;
 import com.gplucky.common.mybatis.model.StockExample;
 import com.gplucky.common.mybatis.model.StockHistory;
+import com.gplucky.common.mybatis.model.StockNew;
 import com.gplucky.common.transport.RequestUtil;
 import com.gplucky.common.transport.data.RespData;
 import com.gplucky.common.utils.DateUtils;
+import com.gplucky.common.utils.RedisUtils;
 import com.gplucky.task.bean.ErrorCode;
 import com.gplucky.task.bean.StockResp;
 import com.gplucky.task.service.StockHistoryService;
+import com.gplucky.task.service.StockNewService;
 import com.gplucky.task.service.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +55,12 @@ public class StockServiceImpl implements StockService {
 
     @Autowired
     private StockHistoryService stockHistoryService;
+
+    @Autowired
+    private StockNewService stockNewService;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     /**
      * 先同步上海股市信息
@@ -160,7 +169,7 @@ public class StockServiceImpl implements StockService {
         boolean stockIsExist = checkStockIsExistByCodeNowDate(stock);
         if(!stockIsExist){
             //不存在，需要更新
-            updateStockIfNeedRedis(stock);
+            updateStockOrInsert(stock);
         }
         //检查stock_history中是否存在当天数据
         boolean stockHistoryIsExist = checkStockHistoryIsExistByCodeNowDate(stock);
@@ -284,7 +293,7 @@ public class StockServiceImpl implements StockService {
      * @param stock
      */
     private void updateStockAndInsertHistory(Stock stock) {
-        updateStockIfNeedRedis(stock);
+        updateStockOrInsert(stock);
 
         insertStockHistory(stock);
     }
@@ -298,7 +307,7 @@ public class StockServiceImpl implements StockService {
         stockHistoryService.insert(stockHistory);
     }
 
-    private void updateStockIfNeedRedis(Stock stock) {
+    private void updateStockOrInsert(Stock stock) {
         Date date = new Date();
         stock.setUpdateTime(date);
         StockExample example = new StockExample();
@@ -307,8 +316,22 @@ public class StockServiceImpl implements StockService {
         if (!(updateFlg > 0)) {
             stock.setCreateTime(date);
             stockMapper.insertSelective(stock);
-            //新股记录进redis
+            //记录新股
+            insertStockNew(stock);
         }
+    }
+
+    /**
+     * 记录新股
+     * @param stock
+     */
+    private void insertStockNew(Stock stock) {
+        Date date = new Date();
+        StockNew stockNew = new StockNew();
+        BeanUtils.copyProperties(stock, stockNew);
+        stockNew.setCreateTime(date);
+        stockNew.setUpdateTime(date);
+        stockNewService.insert(stockNew);
     }
 
     public Stock getStockByCode(String code) {
