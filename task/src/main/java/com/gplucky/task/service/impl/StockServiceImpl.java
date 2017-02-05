@@ -62,6 +62,11 @@ public class StockServiceImpl implements StockService {
     @Autowired
     private RedisUtils redisUtils;
 
+    @Override
+    public List<Stock> getStockList() {
+        return stockMapper.selectByExample(null);
+    }
+
     /**
      * 先同步上海股市信息
      * 再同步深圳股市信息
@@ -325,7 +330,7 @@ public class StockServiceImpl implements StockService {
      * 记录新股
      * @param stock
      */
-    private void insertStockNew(Stock stock) {
+    public void insertStockNew(Stock stock) {
         Date date = new Date();
         StockNew stockNew = new StockNew();
         BeanUtils.copyProperties(stock, stockNew);

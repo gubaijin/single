@@ -51,30 +51,4 @@ public class StockController extends BaseController{
         }
     }
 
-    @ApiOperation(value="初始化沪股列表", notes="初始化所有沪股信息")
-    @RequestMapping(value="initSHList", method = RequestMethod.POST)
-    @ResponseBody
-    public String initSHList(){
-        LOG.info("初始化沪股列表开始……");
-        boolean flg = stockService.initSHList();
-        LOG.info("……结束初始化沪股列表");
-        if(flg){
-            return "success";
-        }else{
-            return "failed";
-        }
-    }
-    @ApiOperation(value="初始化深圳股市列表", notes="初始化所有深圳股市信息")
-    @RequestMapping(value="initSZList", method = RequestMethod.POST)
-    @ResponseBody
-    public String initSZList(){
-        LOG.info("初始化深圳股市列表开始……");
-        boolean flg = stockService.initSZList();
-        LOG.info("……结束初始化深圳股市列表");
-        if(flg){
-            return "success";
-        }else{
-            return "failed";
-        }
-    }
 }

@@ -25,7 +25,8 @@ public class RedisTest {
     @Test
     public void set() {
 
-        redisUtils.set("gbj", "211");
-        System.out.println(redisUtils.get("gbj"));
+        /*redisUtils.set("gbj", "211");
+        System.out.println(redisUtils.get("gbj"));*/
+
     }
 }

@@ -1,12 +1,22 @@
 package com.gplucky.task.service;
 
+import com.gplucky.common.mybatis.model.Stock;
+
+import java.util.List;
+
 /**
  * Created by ehsy_it on 2017/1/26.
  */
 public interface StockService {
 
     /**
-     * 得到最新的股市信息
+     * 得到股票列表
+     * @return
+     */
+    List<Stock> getStockList();
+
+    /**
+     * 抓取最新的股市信息
      * @return
      */
     boolean fetchStockInfo();
