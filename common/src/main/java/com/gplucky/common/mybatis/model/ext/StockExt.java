@@ -8,6 +8,24 @@ import com.gplucky.common.mybatis.model.Stock;
 public class StockExt extends Stock {
 
     /**
+     * 涨跌前缀
+     */
+    public static final String SEQ_UP_PREFIX = "seq_up_";
+    public static final String SEQ_DOWN_PREFIX = "seq_down_";
+
+    /**
+     * 今日涨跌
+     */
+    public static final String SEQ_UP_0 = "seq_up_0";
+    public static final String SEQ_DOWN_0 = "seq_down_0";
+
+    /**
+     * 涨跌超过20
+     */
+    public static final String SEQ_UP_PLUS = "seq_up_plus";
+    public static final String SEQ_DOWN_PLUS = "seq_down_plus";
+
+    /**
      * 连涨redis key
      */
     public static final String SEQ_UP_1 = "seq_up_1";

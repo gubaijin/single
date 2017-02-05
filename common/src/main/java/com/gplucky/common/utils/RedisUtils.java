@@ -12,6 +12,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import java.net.UnknownHostException;
+import java.util.Set;
 
 /**
  * Created by ehsy_it on 2017/1/30.
@@ -34,8 +35,20 @@ public class RedisUtils {
         redisTemplate.opsForSet().add(key, obj);
     }
 
-    public Object smembers(String key) {
+    public Set<Object> smembers(String key) {
         return redisTemplate.opsForSet().members(key);
+    }
+
+    public Long sIntersectAndStore(String key1, String key2, String destKey) {
+        return redisTemplate.opsForSet().intersectAndStore(key1, key2, destKey);
+    }
+
+    public void delete(String key) {
+        redisTemplate.delete(key);
+    }
+
+    public Set<Object> sdiff(String key1, String key2) {
+        return redisTemplate.opsForSet().difference(key1, key2);
     }
 
     @Bean

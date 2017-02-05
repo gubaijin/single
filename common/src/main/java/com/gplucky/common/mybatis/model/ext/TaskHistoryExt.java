@@ -13,6 +13,11 @@ public class TaskHistoryExt extends TaskHistory {
     public static final String TYPE_FETCHSTOCKINFO = "1";
 
     /**
+     * 初始化任务（计算连涨连跌）
+     */
+    public static final String TYPE_INITTASK = "2";
+
+    /**
      * 任务状态：0：未执行完；1：执行完成
      */
     public static final String STATUS_START = "0";

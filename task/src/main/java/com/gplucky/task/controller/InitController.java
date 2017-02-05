@@ -1,5 +1,6 @@
 package com.gplucky.task.controller;
 
+import com.gplucky.common.mybatis.model.ext.StockExt;
 import com.gplucky.task.service.StockRedisService;
 import com.gplucky.task.service.StockService;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +31,7 @@ public class InitController {
     @ResponseBody
     public String initStockUpAndDown(){
         LOG.info("初始化股票连涨连跌开始……");
-        boolean flg = stockRedisService.initStockSeqUpAndDown();
+        boolean flg = stockRedisService.initStockSeqUpAndDown(StockExt.SEQ_UP_1, StockExt.SEQ_DOWN_1);
         LOG.info("……结束初始化股票连涨连跌");
         if(flg){
             return "success";
