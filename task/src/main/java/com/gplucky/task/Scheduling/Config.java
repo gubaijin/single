@@ -33,7 +33,7 @@ public class Config {
     /**
      * 周一至周五的下午18:00触发
      */
-    @Scheduled(cron = "0 0 18 ? * MON-FRI")
+    @Scheduled(cron = "0 47 0 ? * MON-FRI")
     public void fetchStockInfo() {
         int taskId = taskHistoryService.insertStartTask(TaskHistoryExt.TYPE_FETCHSTOCKINFO);
         LOG.info("定时任务(同步股票信息)，开始…………");

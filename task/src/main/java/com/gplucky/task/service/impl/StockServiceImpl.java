@@ -223,12 +223,19 @@ public class StockServiceImpl implements StockService {
         }
     }
 
+    private void checkJudgeLoopAndUpdateInfo(String url, StockResp stockResp) {
+        //持续请求
+        if (ErrorCode.EMPTY_DATA.getCode() != stockResp.getError_code()) {
+            judgeLoopAndUpdateInfo(url);
+        }
+    }
+
     private void judgeLoopAndUpdateInfo(String url) {
         Optional<StockResp> resp = sendStockRequest(url, page.getAndIncrement());
         resp.ifPresent(stockResp -> {
             //写入股票表
             stockOperation(stockResp, stock -> updateStockAndInsertHistory(stock));
-            checkJudgeLoop(url, stockResp);
+            checkJudgeLoopAndUpdateInfo(url, stockResp);
         });
     }
 
