@@ -164,7 +164,7 @@ public class StockServiceImpl implements StockService {
         Optional<StockResp> resp = sendStockRequest(url, page.getAndIncrement());
         resp.ifPresent(stockResp -> {
             //写入股票表（先判断是否存在）
-            stockOperation(stockResp, (Stock stock) -> updateStockAndHistoryAfterChecked(stock));
+            stockOperation(stockResp, stock -> updateStockAndHistoryAfterChecked(stock));
             checkJudgeLoop(url, stockResp);
         });
     }
@@ -227,7 +227,7 @@ public class StockServiceImpl implements StockService {
         Optional<StockResp> resp = sendStockRequest(url, page.getAndIncrement());
         resp.ifPresent(stockResp -> {
             //写入股票表
-            stockOperation(stockResp, (Stock stock) -> updateStockAndInsertHistory(stock));
+            stockOperation(stockResp, stock -> updateStockAndInsertHistory(stock));
             checkJudgeLoop(url, stockResp);
         });
     }
@@ -246,7 +246,7 @@ public class StockServiceImpl implements StockService {
         Optional<StockResp> resp = sendStockRequest(url, page.getAndIncrement());
         resp.ifPresent(stockResp -> {
             //写入股票表
-            stockOperation(stockResp, (Stock stock) -> insertStockAndInsertHistory(stock));
+            stockOperation(stockResp, stock -> insertStockAndInsertHistory(stock));
             if (ErrorCode.EMPTY_DATA.getCode() != stockResp.getError_code()) {
                 judgeLoopAndRecord(url);
             }
