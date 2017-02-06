@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by ehsy_it on 2017/1/29.
@@ -18,6 +19,14 @@ public class StockHistoryServiceImpl implements StockHistoryService {
 
     @Autowired
     private StockHistoryMapper stockHistoryMapper;
+
+    @Override
+    public List<StockHistory> selectStockHistoryByDate(LocalDate localDate) {
+        StockHistoryExample example = new StockHistoryExample();
+        example.createCriteria().andCreateTimeBetween(DateUtils.getDateStart(localDate),
+                DateUtils.getDateEnd(localDate));
+        return stockHistoryMapper.selectByExample(example);
+    }
 
     @Override
     public boolean insert(StockHistory record) {

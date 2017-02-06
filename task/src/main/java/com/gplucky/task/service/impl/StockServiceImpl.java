@@ -78,6 +78,8 @@ public class StockServiceImpl implements StockService {
         if (flg) {
             page = new AtomicInteger(1);
             judgeLoopAndUpdateInfo(STOCK_URL_LIST_SH);
+            page = new AtomicInteger(1);
+            judgeLoopAndUpdateInfo(STOCK_URL_LIST_SZ);
         } else {
             LOG.info("没有最新数据，无需更新！");
         }
@@ -153,6 +155,8 @@ public class StockServiceImpl implements StockService {
     public boolean fetchCompensation() {
         page = new AtomicInteger(1);
         fetchStockInfoCompensation(STOCK_URL_LIST_SH);
+        page = new AtomicInteger(1);
+        fetchStockInfoCompensation(STOCK_URL_LIST_SZ);
         return true;
     }
 
@@ -213,13 +217,9 @@ public class StockServiceImpl implements StockService {
     }
 
     private void checkJudgeLoop(String url, StockResp stockResp) {
+        //持续请求
         if (ErrorCode.EMPTY_DATA.getCode() != stockResp.getError_code()) {
             judgeLoopAndRecord(url);
-        }
-        if ((ErrorCode.EMPTY_DATA.getCode() == stockResp.getError_code())
-                && !STOCK_URL_LIST_SZ.equals(url)) {
-            page = new AtomicInteger(1);
-            judgeLoopAndRecord(STOCK_URL_LIST_SZ);
         }
     }
 
@@ -232,9 +232,14 @@ public class StockServiceImpl implements StockService {
         });
     }
 
+    public static void main(String[] args) {
+        Optional<String> resp = Optional.of("");
+        System.out.println(resp.isPresent());
+    }
+
     /**
      * 初始化时使用
-     *
+     * r
      * @param url
      */
     private void judgeLoopAndRecord(String url) {

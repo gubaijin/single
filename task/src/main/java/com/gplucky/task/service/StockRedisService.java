@@ -13,6 +13,11 @@ public interface StockRedisService {
 
     /**
      * 初始化股票连涨及连跌
+     */
+    boolean initStockSeqUpAndDown();
+
+    /**
+     * 每日初始化股票连涨及连跌
      * @param seqUpKey
      * @param seqDownKey
      */

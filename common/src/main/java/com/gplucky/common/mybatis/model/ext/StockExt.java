@@ -14,6 +14,12 @@ public class StockExt extends Stock {
     public static final String SEQ_DOWN_PREFIX = "seq_down_";
 
     /**
+     * 初始化涨跌前缀
+     */
+    public static final String SEQ_INIT_UP_PREFIX = "seq_init_up_";
+    public static final String SEQ_INIT_DOWN_PREFIX = "seq_init_down_";
+
+    /**
      * 今日涨跌
      */
     public static final String SEQ_UP_0 = "seq_up_0";

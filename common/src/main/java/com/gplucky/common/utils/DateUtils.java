@@ -7,10 +7,9 @@ import org.springframework.util.StringUtils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.*;
 import java.util.Date;
 
 /**
@@ -54,7 +53,7 @@ public class DateUtils {
      * @return
      */
     public static String getDateStartFormat(LocalDate localDate){
-        return new SimpleDateFormat(FORMAT_STR_1).format(getDateStart(localDate));
+        return localDate.atTime(0,0,0).format(DateTimeFormatter.ofPattern(FORMAT_STR_1));
     }
 
     /**
@@ -74,6 +73,85 @@ public class DateUtils {
      * @return
      */
     public static String getDateEndFormat(LocalDate localDate){
-        return new SimpleDateFormat(FORMAT_STR_1).format(getDateEnd(localDate));
+        return localDate.atTime(23,59,59).format(DateTimeFormatter.ofPattern(FORMAT_STR_1));
+    }
+
+    /**
+     * 下一个工作日
+     * @param localDate
+     * @return
+     */
+    public static LocalDate nextWorkingDay(LocalDate localDate){
+        return localDate.with(new NextWorkingDay());
+    }
+
+    /**
+     * 下N个工作日:0默认当前
+     * @param n
+     * @return
+     */
+    public static LocalDate nextWorkingDay(int n){
+        LocalDate localDate = LocalDate.now();
+        if(n > 0){
+            for(int i=0; i < n; i++){
+                localDate = localDate.with(new NextWorkingDay());
+            }
+        }
+        return localDate;
+    }
+
+    /**
+     * 上一个工作日
+     * @param localDate
+     * @return
+     */
+    public static LocalDate lastWorkingDay(LocalDate localDate){
+        return localDate.with(new LastWorkingDay());
+    }
+
+    /**
+     * 上N个工作日:0默认当前
+     * @param n
+     * @return
+     */
+    public static LocalDate lastWorkingDay(int n){
+        LocalDate localDate = LocalDate.now();
+        if(n > 0){
+            for(int i=0; i < n; i++){
+                localDate = localDate.with(new LastWorkingDay());
+            }
+        }
+        return localDate;
+    }
+
+    static class NextWorkingDay implements TemporalAdjuster{
+
+
+        @Override
+        public Temporal adjustInto(Temporal temporal) {
+            DayOfWeek dow = DayOfWeek.of(temporal.get(ChronoField.DAY_OF_WEEK));
+            int dayToAdd = 1;
+            if(dow == DayOfWeek.FRIDAY){
+                dayToAdd = 3;
+            }else if( dow == DayOfWeek.SATURDAY){
+                dayToAdd = 2;
+            }
+            return temporal.plus(dayToAdd, ChronoUnit.DAYS);
+        }
+    }
+
+    static class LastWorkingDay implements TemporalAdjuster{
+
+        @Override
+        public Temporal adjustInto(Temporal temporal) {
+            DayOfWeek dow = DayOfWeek.of(temporal.get(ChronoField.DAY_OF_WEEK));
+            int dayToAdd = -1;
+            if(dow == DayOfWeek.MONDAY){
+                dayToAdd = -3;
+            }else if( dow == DayOfWeek.SUNDAY){
+                dayToAdd = -2;
+            }
+            return temporal.plus(dayToAdd, ChronoUnit.DAYS);
+        }
     }
 }
