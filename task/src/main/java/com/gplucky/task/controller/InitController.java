@@ -2,7 +2,6 @@ package com.gplucky.task.controller;
 
 import com.gplucky.task.service.StockRedisService;
 import com.gplucky.task.service.StockService;
-import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class InitController {
     @Autowired
     private StockRedisService stockRedisService;
 
-    @ApiOperation(value="初始化股票连涨连跌", notes="初始化连涨连跌到redis中,切记！！先将股市最新数据及历史数据同步后执行！！")
+//    @ApiOperation(value="初始化股票连涨连跌", notes="初始化连涨连跌到redis中,切记！！先将股市最新数据及历史数据同步后执行！！")
     @RequestMapping(value="initStockUpAndDown", method = RequestMethod.POST)
     @ResponseBody
     public String initStockUpAndDown(){
@@ -39,7 +38,7 @@ public class InitController {
         }
     }
 
-    @ApiOperation(value="初始化沪股列表", notes="初始化所有沪股信息")
+//    @ApiOperation(value="初始化沪股列表", notes="初始化所有沪股信息")
     @RequestMapping(value="initSHList", method = RequestMethod.POST)
     @ResponseBody
     public String initSHList(){
@@ -53,7 +52,7 @@ public class InitController {
         }
     }
 
-    @ApiOperation(value="初始化深圳股市列表", notes="初始化所有深圳股市信息")
+//    @ApiOperation(value="初始化深圳股市列表", notes="初始化所有深圳股市信息")
     @RequestMapping(value="initSZList", method = RequestMethod.POST)
     @ResponseBody
     public String initSZList(){

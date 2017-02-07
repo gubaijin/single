@@ -124,8 +124,10 @@ public class StockRedisServiceImpl implements StockRedisService {
      * 总共往前redis_key_seq_max+1天（+1是为了获得plus）
      */
     private void loopStockHistoryGetSeqInitUpAndDown() {
-        for (int i = 0; i < (redis_key_seq_max+1); i++) {
-            final int num = i;
+        LOG.info("初始化历史涨跌数据中…………");
+        final int startNum = 0;
+        for (int i = startNum; i < (redis_key_seq_max+1); i++) {
+            int num = i;
             List<StockHistory> list = stockHistoryService.selectStockHistoryByDate(DateUtils.lastWorkingDay(i));
             list.stream().forEach(stockHistory -> {
                 double changepercent = Double.valueOf(stockHistory.getChangepercent());
@@ -134,39 +136,64 @@ public class StockRedisServiceImpl implements StockRedisService {
                 if (changepercent > 0) {
                     //涨
                     LOG.debug("涨，code={}", code);
-                    if (num == 0) {
+                    LOG.debug("num={}", num);
+                    if (num == startNum) {
                         //初始化0和1
                         redisUtils.sadd(StockExt.SEQ_UP_0, code);
                         redisUtils.sadd(StockExt.SEQ_UP_1, code);
+                        LOG.debug(StockExt.SEQ_UP_0);
+                        LOG.debug(StockExt.SEQ_UP_1);
                     }else{
-                        redisUtils.sadd(StockExt.SEQ_INIT_UP_PREFIX + num + 1, code);
+                        redisUtils.sadd(StockExt.SEQ_INIT_UP_PREFIX + (num + 1), code);
+                        LOG.debug(StockExt.SEQ_INIT_UP_PREFIX + (num + 1));
                     }
                 } else if (changepercent < 0) {
                     //跌
                     LOG.debug("跌，code={}", code);
-                    if (num == 1) {
+                    if (num == startNum) {
                         //初始化0和1
                         redisUtils.sadd(StockExt.SEQ_DOWN_0, code);
                         redisUtils.sadd(StockExt.SEQ_DOWN_1, code);
+                        LOG.debug(StockExt.SEQ_DOWN_0);
+                        LOG.debug(StockExt.SEQ_DOWN_1);
                     }else{
-                        redisUtils.sadd(StockExt.SEQ_INIT_DOWN_PREFIX + num + 1, code);
+                        redisUtils.sadd(StockExt.SEQ_INIT_DOWN_PREFIX + (num + 1), code);
+                        LOG.debug(StockExt.SEQ_INIT_DOWN_PREFIX + (num + 1));
                     }
                 }
             });
         }
+        LOG.info("…………初始化历史涨跌数据完成");
     }
 
-    private void cleanSeqUpAndDown() {
+    public void cleanSeqUpAndDown() {
+        LOG.info("清空连涨连跌数据中…………");
         for (int i = 0; i <= redis_key_seq_max; i++) {
             if (i == 0) {
+                redisUtils.delete(StockExt.SEQ_UP_0);
+                redisUtils.delete(StockExt.SEQ_DOWN_0);
                 redisUtils.delete(StockExt.SEQ_UP_PLUS);
                 redisUtils.delete(StockExt.SEQ_DOWN_PLUS);
+                redisUtils.delete(StockExt.SEQ_INIT_UP_PREFIX + (redis_key_seq_max+1));
+                redisUtils.delete(StockExt.SEQ_INIT_DOWN_PREFIX + (redis_key_seq_max+1));
+                LOG.debug(StockExt.SEQ_UP_0);
+                LOG.debug(StockExt.SEQ_DOWN_0);
+                LOG.debug(StockExt.SEQ_UP_PLUS);
+                LOG.debug(StockExt.SEQ_DOWN_PLUS);
+                LOG.debug(StockExt.SEQ_INIT_UP_PREFIX + (redis_key_seq_max+1));
+                LOG.debug(StockExt.SEQ_INIT_DOWN_PREFIX + (redis_key_seq_max+1));
+            }else{
+                redisUtils.delete(StockExt.SEQ_UP_PREFIX + i);
+                redisUtils.delete(StockExt.SEQ_DOWN_PREFIX + i);
+                redisUtils.delete(StockExt.SEQ_INIT_UP_PREFIX + i);
+                redisUtils.delete(StockExt.SEQ_INIT_DOWN_PREFIX + i);
+                LOG.debug(StockExt.SEQ_UP_PREFIX + i);
+                LOG.debug(StockExt.SEQ_DOWN_PREFIX + i);
+                LOG.debug(StockExt.SEQ_INIT_UP_PREFIX + i);
+                LOG.debug(StockExt.SEQ_INIT_DOWN_PREFIX + i);
             }
-            redisUtils.delete(StockExt.SEQ_UP_PREFIX + i);
-            redisUtils.delete(StockExt.SEQ_DOWN_PREFIX + i);
-            LOG.info("清空连涨连跌数据中，key{}={}", i, StockExt.SEQ_UP_PREFIX + i);
-            LOG.info("清空连涨连跌数据中，key{}={}", i, StockExt.SEQ_UP_PREFIX + i);
         }
+        LOG.info("…………清空连涨连跌数据完成");
     }
 
     @Override

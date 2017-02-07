@@ -1,6 +1,7 @@
 package com.gplucky.task;
 
 import com.gplucky.common.utils.RedisUtils;
+import com.gplucky.task.service.impl.StockRedisServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,20 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ImportResource({"classpath:/common.xml"})
 @SpringBootTest
 @Configuration
-@ComponentScan("com.gplucky.common")
+@ComponentScan("com.gplucky")
 public class RedisTest {
 
     @Autowired
     private RedisUtils redisUtils;
+    @Autowired
+    private StockRedisServiceImpl stockRedisService;
     @Test
     public void set() {
 
         /*redisUtils.set("gbj", "211");
         System.out.println(redisUtils.get("gbj"));*/
+
+        stockRedisService.cleanSeqUpAndDown();
 
     }
 }
