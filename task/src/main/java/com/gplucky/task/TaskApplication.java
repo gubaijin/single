@@ -3,6 +3,7 @@ package com.gplucky.task;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ImportResource;
 
 /**
@@ -11,9 +12,11 @@ import org.springframework.context.annotation.ImportResource;
 @SpringBootApplication
 @MapperScan("com.gplucky.common.mybatis.dao")
 @ImportResource({"classpath:/common.xml"})
+@EnableDiscoveryClient
 public class TaskApplication {
     public static void main(String[] args) {
         SpringApplication.run(TaskApplication.class, args);
     }
+
 
 }

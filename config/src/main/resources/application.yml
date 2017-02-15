@@ -1,0 +1,9 @@
+server:
+  port: 9181
+spring:
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+      uri: http://${config.host:localhost}:${config.port:9181}
