@@ -239,11 +239,6 @@ public class StockServiceImpl implements StockService {
         });
     }
 
-    public static void main(String[] args) {
-        Optional<String> resp = Optional.of("");
-        System.out.println(resp.isPresent());
-    }
-
     /**
      * 初始化时使用
      * r

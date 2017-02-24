@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gplucky</groupId>
     <artifactId>config</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>config</name>
     <url>http://maven.apache.org</url>
     <dependencies>
@@ -32,6 +32,21 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>config</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>springloaded</artifactId>
+                        <version>1.2.6.RELEASE</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
     </build>
 </project>

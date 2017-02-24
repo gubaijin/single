@@ -1,0 +1,7 @@
+input.error{border: 1px solid  red;}
+select.error{border: 1px solid  red;}
+textarea.error{border: 1px solid  red;}
+span.error{
+    padding-left:18px;
+    color: red;
+}

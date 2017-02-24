@@ -1,5 +1,7 @@
 package com.gplucky.task.service;
 
+import java.util.Set;
+
 /**
  * Created by ehsy_it on 2017/2/5.
  */
@@ -23,4 +25,10 @@ public interface StockRedisService {
      */
     boolean initStockSeqUpAndDown(String seqUpKey, String seqDownKey);
 
+    /**
+     * 得到连涨股票代码
+     * @param num
+     * @return
+     */
+    Set<Object> getSeqUpByDays(int num);
 }

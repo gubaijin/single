@@ -1,0 +1,115 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;charset=UTF-8" />
+    <link th:href="@{../bootstrap/css/bootstrap.css}" rel="stylesheet"/>
+    <link th:href="@{../sweetalert/sweet-alert.css}" rel="stylesheet"/>
+</head>
+
+<body onload="loadpage()">
+<div class="text-center"><h1>股票连续上涨天数查询</h1></div>
+<div class="form-horizontal" style="margin-top: 40px;">
+    <div class="content-section-a">
+        <form id="seqUpForm" th:action="@{/up/list.html}" th:method="POST">
+        <!-- line 1 -->
+        <div class="form-group">
+            <!--<label for="component" class="col-sm-offset-1 col-sm-1 control-label">服务组件</label>
+            <div class="col-sm-2">
+                <select class="form-control" id="component" name="component">
+                    <option value="">全部</option>
+                </select>
+            </div>-->
+
+            <label for="num" class="col-sm-1 control-label" >连续天数</label>
+            <div class="col-sm-2">
+                <select class="form-control" id="num" name="num" >
+                    <option th:value="${no}" th:text="${no}" th:selected="${no} == ${num} ? 'true':'false'" th:each="no,iterStat : ${nums}" >
+                    </option>
+                </select>
+            </div>
+            <input type="hidden" id="pageNum" name="pageNo" th:value="${pageNo}"/>
+            <div class="col-sm-offset-1 col-sm-1">
+                <button type="button" class="btn btn-large btn-primary btn-block" id="select">查询</button>
+            </div>
+
+            <!--<div class="col-sm-1">
+                <button type="button" class="btn btn-large btn-success btn-block" id="create">新增</button>
+            </div>-->
+
+        </div>
+        </form>
+        <!-- line 2 -->
+        <!--<div class="form-group">
+            <label for="code" class="col-sm-offset-1 col-sm-1 control-label">服务码</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="code" name="code"
+                       placeholder="GW0000001" />
+            </div>
+            <label for="svcname" class="col-sm-1 control-label">服务名称</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="svcname" name="svcname"
+                       placeholder="产品查询服务" />
+            </div>
+            <label for="alias" class="col-sm-1 control-label">别名</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="alias" name="alias"
+                       placeholder="聚合中的namespace建议使用英文:uesrInfo" />
+            </div>
+        </div>-->
+        <!-- line 3 -->
+       <!-- <div class="form-group">
+            <label for="protocol" class="col-sm-offset-1 col-sm-1 control-label">所用协议</label>
+            <div class="col-sm-2">
+                <select class="form-control" id="protocol" name="protocol">
+                    <option value="http" selected="true">http</option>
+                    <option value="https">https</option>
+                </select>
+            </div>
+            <label for="path" class="col-sm-1 control-label">路径</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="path" name="path"
+                       placeholder="/gateway/api" />
+            </div>
+            <label for="version" class="col-sm-1 control-label">版本号</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="version" name="version"
+                       placeholder="1.0" />
+            </div>
+        </div>-->
+    </div>
+</div>
+
+<table id="list" class="table" style="margin-top: 60px;" >
+    <tr class="info th-text-center" >
+        <th>序号</th><th th:text="股票代码 + ${PageCount}"></th>
+    </tr>
+    <tr th:each="seqUpString,seqUpStringStat:${seqUpSetString}">
+        <td th:text="${seqUpStringStat.index} + 1"></td>
+        <td><a th:href="'http://quote.eastmoney.com/' + ${seqUpString} +'.html?from=BaiduAladdin'"
+               th:text="${seqUpString}" th:target="_blank"></a></td>
+    </tr>
+</table>
+<div style="text-align: center;">
+    <ul class="pagination" id="pagination">
+    </ul>
+    <!-- 页码 默认1-->
+    <input type="hidden" id="pageNo" th:value="${pageNo}"/>
+    <!-- 总页数 默认1-->
+    <input type="hidden" id="totalPage" th:value="${totalPage}" />
+    <!-- 总记录数 -->
+    <input type="hidden" id="PageCount" runat="server" th:value="${PageCount}" />
+    <!-- 每页记录数 -->
+    <input type="hidden" id="PageSize" runat="server" th:value="${PageSize}"/>
+    <input type="hidden" id="countindex" runat="server" th:value="${countindex}"/>
+    <!--设置最多显示的页码数 可以手动设置 默认为5-->
+    <input type="hidden" id="visiblePages" runat="server" value="5" />
+</div>
+</body>
+
+<script type="text/javascript" th:src="@{../jquery/jquery-3.0.0.js}"></script>
+<script type="text/javascript" th:src="@{../jquery/jquery.validate1.12.0.js}"></script>
+<script type="text/javascript" th:src="@{../bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{../page/jqPaginator.min.js}"></script>
+<script type="text/javascript" th:src="@{../page/myPage.js}"></script>
+<script type="text/javascript" th:src="@{../sweetalert/sweet-alert.min.js}"></script>
+<script type="text/javascript" th:src="@{../js/up.js}"></script>
+</html>

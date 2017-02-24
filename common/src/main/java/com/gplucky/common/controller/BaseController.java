@@ -2,6 +2,7 @@ package com.gplucky.common.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.gplucky.common.bean.HttpResult;
+import com.gplucky.common.bean.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,11 @@ public class BaseController {
     }
 
     protected <T> ResponseEntity<String> returnSuccessMsg(T t){
-        return returnMsg(SUCCESS_MARK, SUCCESS_MSG, t);
+        return returnMsg(SUCCESS_MARK, SUCCESS_MSG, null, t);
+    }
+
+    protected <T> ResponseEntity<String> returnSuccessMsg(Page page, T t){
+        return returnMsg(SUCCESS_MARK, SUCCESS_MSG, page, t);
     }
 
     protected <T> ResponseEntity<String> returnFailMsg(String msg){
@@ -37,13 +42,14 @@ public class BaseController {
     }
 
     protected <T> ResponseEntity<String> returnFailMsg(String msg, T t){
-        return returnMsg(FAILED_MARK, msg, t);
+        return returnMsg(FAILED_MARK, msg, null, t);
     }
 
-    private <T> ResponseEntity<String> returnMsg(String mark, String msg, T t) {
+    private <T> ResponseEntity<String> returnMsg(String mark, String msg, Page page, T t) {
         HttpResult<T> result = new HttpResult<T>();
         result.setMark(mark);
         result.setMessage(msg);
+        result.setPage(page);
         result.setData(t);
         return new ResponseEntity<String>(JSON.toJSONString(result), headers, HttpStatus.OK);
     }

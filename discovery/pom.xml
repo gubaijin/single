@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gplucky</groupId>
     <artifactId>discovery</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>discovery</name>
     <url>http://maven.apache.org</url>
     <dependencies>
@@ -27,7 +27,4 @@
             <artifactId>spring-cloud-starter-eureka-server</artifactId>
         </dependency>
     </dependencies>
-    <build>
-        <finalName>discovery</finalName>
-    </build>
 </project>
