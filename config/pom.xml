@@ -59,7 +59,7 @@
                     <resources>
                         <resource>
                             <directory>${project.build.directory}</directory>
-                            <inclue>${project.build.finalName}.jar</inclue>
+                            <include>${project.build.finalName}.jar</include>
                         </resource>
                     </resources>
                 </configuration>
