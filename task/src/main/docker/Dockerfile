@@ -1,6 +1,7 @@
 FROM java:8
 VOLUME /home/volume/gplucky
-RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo 'Asia/Shanghai' >/etc/timezone
 RUN mkdir /app
 ADD task-1.0-SNAPSHOT.jar /app/app.jar
 ADD runboot.sh /app/
