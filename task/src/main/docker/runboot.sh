@@ -1,1 +1,1 @@
-java -Djava.security.egd=file:/dev/./urandom -Xmx2512m -jar /app/app.jar
+java -Djava.security.egd=file:/dev/./urandom -Xmx512m -jar /app/app.jar
