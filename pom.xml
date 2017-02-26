@@ -73,6 +73,7 @@
                 <filtering>true</filtering>
                 <excludes>
                     <exclude>application-*.properties</exclude>
+                    <exclude>bootstrap-*.properties</exclude>
                     <exclude>generatorConfig.xml</exclude>
                     <exclude>generatorConfig.properties</exclude>
                 </excludes>
