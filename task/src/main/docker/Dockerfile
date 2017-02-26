@@ -1,5 +1,6 @@
 FROM java:8
 VOLUME /home/volume/gplucky
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN mkdir /app
 ADD task-1.0-SNAPSHOT.jar /app/app.jar
 ADD runboot.sh /app/
