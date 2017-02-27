@@ -27,6 +27,10 @@
                 </select>
             </div>
             <input type="hidden" id="pageNum" name="pageNo" th:value="${pageNo}"/>
+            <div class="col-sm-4">
+                <label><input name="growth" type="checkbox" />创业板</label>
+                <label><input name="subNew" type="checkbox" />次新股</label>
+            </div>
             <div class="col-sm-offset-1 col-sm-1">
                 <button type="button" class="btn btn-large btn-primary btn-block" id="select">查询</button>
             </div>

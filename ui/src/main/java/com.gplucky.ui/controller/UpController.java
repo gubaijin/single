@@ -2,6 +2,7 @@ package com.gplucky.ui.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.gplucky.common.bean.HttpResult;
+import com.gplucky.common.bean.Parameters;
 import com.gplucky.common.constants.Constants;
 import com.gplucky.ui.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,10 @@ public class UpController {
     private TaskService taskHystrixService;
 
     @RequestMapping("list")
-    public String list(Model model,
+    public String list(Model model, Parameters parameters,
                        @RequestParam(value = "num", required = false, defaultValue="1") int num,
                        @RequestParam(value = "pageNo", required = false, defaultValue="1") int pageNo){
-        String seqUpResultStr = taskHystrixService.getSeqUpByDays(num, pageNo);
+        String seqUpResultStr = taskHystrixService.getSeqUpByDays(num, pageNo, parameters);
         HttpResult result = JSON.parseObject(seqUpResultStr, HttpResult.class);
         List<String> seqUpSet = (List<String>) result.getData();
         int total = null == result.getPage()?0:result.getPage().getTotal();

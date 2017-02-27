@@ -1,5 +1,6 @@
 package com.gplucky.ui.service;
 
+import com.gplucky.common.bean.Parameters;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +14,7 @@ public interface TaskService {
 
     @RequestMapping(method = RequestMethod.GET, value = "/redis/getSeqUpByDays")
     String getSeqUpByDays(@RequestParam(value = "num") Integer num,
-                          @RequestParam(value = "pageNo") Integer pageNo);
+                          @RequestParam(value = "pageNo") Integer pageNo,
+                          @RequestParam(value = "parameters") Parameters parameters);
 
 }

@@ -1,6 +1,7 @@
 package com.gplucky.task.controller;
 
 import com.gplucky.common.bean.Page;
+import com.gplucky.common.bean.Parameters;
 import com.gplucky.common.constants.Constants;
 import com.gplucky.common.controller.BaseController;
 import com.gplucky.task.service.StockRedisService;
@@ -19,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by ehsy_it on 2017/2/6.
@@ -43,14 +44,17 @@ public class RedisController extends BaseController {
     @RequestMapping(value="getSeqUpByDays", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> getSeqUpByDays(Integer num,
-                                                 @RequestParam(value="pageNo", defaultValue = "1") Integer pageNo){
-        Set<Object> set = stockRedisService.getSeqUpByDays(num);
-        List<Object> list = set.stream().collect(Collectors.toList());
+                                                 @RequestParam(value="pageNo", defaultValue = "1") Integer pageNo,
+                                                 Parameters parameters){
+        Stream<Object> stream = stockRedisService.getSeqUpByDays(num, parameters);
+        List<Object> list = stream.collect(Collectors.toList());
         Page page = new Page();
         page.setPageSize(Constants.PAGE_SIZE_10);
         page.setTotal(list.size());
         page.setPageNo(pageNo);
-        return this.returnSuccessMsg(page, list.size() > 0 ?list.subList((pageNo-1) * Constants.PAGE_SIZE_10,
-                pageNo * Constants.PAGE_SIZE_10 > list.size()? list.size():pageNo * Constants.PAGE_SIZE_10):null);
+        /*return this.returnSuccessMsg(page, list.size() > 0 ?list.subList((pageNo-1) * Constants.PAGE_SIZE_10,
+                pageNo * Constants.PAGE_SIZE_10 > list.size()? list.size():pageNo * Constants.PAGE_SIZE_10):null);*/
+        return this.returnSuccessMsg(page, stream.limit(Constants.PAGE_SIZE_10)
+                .skip(pageNo * Constants.PAGE_SIZE_10).collect(Collectors.toList()));
     }
 }

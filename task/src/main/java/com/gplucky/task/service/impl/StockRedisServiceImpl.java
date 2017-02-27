@@ -1,5 +1,6 @@
 package com.gplucky.task.service.impl;
 
+import com.gplucky.common.bean.Parameters;
 import com.gplucky.common.mybatis.model.Stock;
 import com.gplucky.common.mybatis.model.StockHistory;
 import com.gplucky.common.mybatis.model.ext.StockExt;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Created by ehsy_it on 2017/2/5.
@@ -234,14 +236,40 @@ public class StockRedisServiceImpl implements StockRedisService {
     /**
      * 得到连涨股票代码
      * @param num
+     * @param parameters
      * @return
      */
     @Override
-    public Set<Object> getSeqUpByDays(int num) {
+    public Stream<Object> getSeqUpByDays(int num, Parameters parameters) {
         String key = getSeqUpByDaysKey(num);
         LOG.info("getSeqUpByDays, key={}", key);
         Set<Object> set = redisUtils.smembers(key);
-        return set;
+        return filterSeqUp(set, parameters);
+    }
+
+    /**
+     * 对股票连涨信息进行过滤
+     * @param set
+     * @param parameters
+     * @return
+     */
+    private Stream<Object> filterSeqUp(Set<Object> set, Parameters parameters) {
+        Stream<Object> stream = Stream.empty();
+        //是否显示创业板
+        if(parameters.isGrowth()){
+            stream = filterGrowth(set);
+        }
+        return stream;
+    }
+
+    /**
+     * 过滤创业板
+     * @param set
+     * @return
+     */
+    private Stream<Object> filterGrowth(Set<Object> set) {
+        return set.stream()
+                .filter(d -> !((String)d).startsWith("sh300")&&!((String)d).startsWith("sz300"));
     }
 
     /**

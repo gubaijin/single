@@ -1,6 +1,8 @@
 package com.gplucky.task.service;
 
-import java.util.Set;
+import com.gplucky.common.bean.Parameters;
+
+import java.util.stream.Stream;
 
 /**
  * Created by ehsy_it on 2017/2/5.
@@ -28,7 +30,8 @@ public interface StockRedisService {
     /**
      * 得到连涨股票代码
      * @param num
+     * @param parameters
      * @return
      */
-    Set<Object> getSeqUpByDays(int num);
+    Stream<Object> getSeqUpByDays(int num, Parameters parameters);
 }
