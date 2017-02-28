@@ -218,7 +218,7 @@ public class StockRedisServiceImpl implements StockRedisService {
         List<Stock> list = stockService.getStockList();
         list.stream().forEach(stock -> {
             double changepercent = Double.valueOf(stock.getChangepercent());
-            String code = stock.getCode();
+            String code = stock.getSymbol();
             LOG.debug("code={}，涨跌幅={}", code, changepercent);
             if (changepercent > 0) {
                 //涨
