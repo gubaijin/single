@@ -13,7 +13,7 @@ function loadpage() {
     $("#countindex").val(countindex);
 
     $.jqPaginator('#pagination', {
-        totalPages: parseInt($("#countindex").val()),
+        totalPages: parseInt($("#totalPage").val()),
         visiblePages: parseInt($("#visiblePages").val()),
         currentPage: parseInt(pageNo),
         first: firstBtn(pageNo),

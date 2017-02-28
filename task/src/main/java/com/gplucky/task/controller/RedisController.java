@@ -1,7 +1,8 @@
 package com.gplucky.task.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.gplucky.common.bean.FilterParameters;
 import com.gplucky.common.bean.Page;
-import com.gplucky.common.bean.Parameters;
 import com.gplucky.common.constants.Constants;
 import com.gplucky.common.controller.BaseController;
 import com.gplucky.task.service.StockRedisService;
@@ -45,8 +46,8 @@ public class RedisController extends BaseController {
     @ResponseBody
     public ResponseEntity<String> getSeqUpByDays(Integer num,
                                                  @RequestParam(value="pageNo", defaultValue = "1") Integer pageNo,
-                                                 Parameters parameters){
-        Stream<Object> stream = stockRedisService.getSeqUpByDays(num, parameters);
+                                                 @RequestParam(value = "filterParameters") String filterParameters){
+        Stream<Object> stream = stockRedisService.getSeqUpByDays(num, JSONObject.parseObject(filterParameters, FilterParameters.class));
         List<Object> list = stream.collect(Collectors.toList());
         Page page = new Page();
         page.setPageSize(Constants.PAGE_SIZE_10);
@@ -54,7 +55,7 @@ public class RedisController extends BaseController {
         page.setPageNo(pageNo);
         /*return this.returnSuccessMsg(page, list.size() > 0 ?list.subList((pageNo-1) * Constants.PAGE_SIZE_10,
                 pageNo * Constants.PAGE_SIZE_10 > list.size()? list.size():pageNo * Constants.PAGE_SIZE_10):null);*/
-        return this.returnSuccessMsg(page, stream.limit(Constants.PAGE_SIZE_10)
-                .skip(pageNo * Constants.PAGE_SIZE_10).collect(Collectors.toList()));
+        return this.returnSuccessMsg(page, list.stream()
+                .skip(pageNo * Constants.PAGE_SIZE_10).limit(Constants.PAGE_SIZE_10).collect(Collectors.toList()));
     }
 }

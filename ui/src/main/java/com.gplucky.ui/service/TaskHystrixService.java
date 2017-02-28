@@ -3,7 +3,6 @@ package com.gplucky.ui.service;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Sets;
 import com.gplucky.common.bean.HttpResult;
-import com.gplucky.common.bean.Parameters;
 import com.gplucky.common.controller.BaseController;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,7 @@ import java.util.Set;
 public class TaskHystrixService implements TaskService{
 
     @Override
-    public String getSeqUpByDays(Integer num, Integer pageNo, Parameters parameters){
+    public String getSeqUpByDays(Integer num, Integer pageNo, String filterParameters){
         HttpResult httpResult = new HttpResult();
         httpResult.setMark(BaseController.FAILED_MARK);
         Set<String> set = Sets.newHashSet();

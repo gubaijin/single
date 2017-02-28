@@ -28,8 +28,8 @@
             </div>
             <input type="hidden" id="pageNum" name="pageNo" th:value="${pageNo}"/>
             <div class="col-sm-4">
-                <label><input name="growth" type="checkbox" />创业板</label>
-                <label><input name="subNew" type="checkbox" />次新股</label>
+                <label><input name="growth" type="checkbox" th:checked="${filterParameters.growth == true ? true : false}" />创业板</label>
+                <label><input name="subNew" type="checkbox" th:checked="${filterParameters.subNew == true ? true : false}" />次新股</label>
             </div>
             <div class="col-sm-offset-1 col-sm-1">
                 <button type="button" class="btn btn-large btn-primary btn-block" id="select">查询</button>
@@ -103,7 +103,7 @@
     <input type="hidden" id="PageCount" runat="server" th:value="${PageCount}" />
     <!-- 每页记录数 -->
     <input type="hidden" id="PageSize" runat="server" th:value="${PageSize}"/>
-    <input type="hidden" id="countindex" runat="server" th:value="${countindex}"/>
+    <!--input type="hidden" id="countindex" runat="server" th:value="${countindex}"/>-->
     <!--设置最多显示的页码数 可以手动设置 默认为5-->
     <input type="hidden" id="visiblePages" runat="server" value="5" />
 </div>

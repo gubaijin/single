@@ -7,7 +7,7 @@ package com.gplucky.common.bean;
 /**
  * 股票参数类
  */
-public class Parameters {
+public class FilterParameters {
     /**
      * 创业板
      */
