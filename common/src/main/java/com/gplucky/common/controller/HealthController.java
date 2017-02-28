@@ -21,9 +21,12 @@ public class HealthController {
     @Value("${juhe.url.stock.list.sz}")
     private String STOCK_URL_LIST_SZ;
 
+    @Value("${spring.redis.cluster.nodes}")
+    private String redisNodes;
+
     @RequestMapping("/health")
     public String health(){
-        return env + APP_KEY + STOCK_URL_LIST_SH + STOCK_URL_LIST_SZ;
+        return env + APP_KEY + STOCK_URL_LIST_SH + STOCK_URL_LIST_SZ + redisNodes;
     }
 
 }

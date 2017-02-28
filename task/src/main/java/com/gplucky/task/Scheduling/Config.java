@@ -31,9 +31,9 @@ public class Config {
     private StockRedisService stockRedisService;
 
     /**
-     * 周一至周五的下午18:00触发
+     * 周一至周五的下午16:00触发
      */
-    @Scheduled(cron = "0 0 19 ? * MON-FRI")
+    @Scheduled(cron = "0 0 16 ? * MON-FRI")
     public void fetchStockInfo() {
         int taskId = taskHistoryService.insertStartTask(TaskHistoryExt.TYPE_FETCHSTOCKINFO);
         LOG.info("定时任务(同步股票信息)，开始…………");
@@ -43,9 +43,9 @@ public class Config {
     }
 
     /**
-     * 周一至周五的下午19:00触发
+     * 周一至周五的下午17:00触发
      */
-    @Scheduled(cron = "0 0 19 ? * MON-FRI")
+    @Scheduled(cron = "0 0 17 ? * MON-FRI")
     public void initTask() {
         int taskId = taskHistoryService.insertStartTask(TaskHistoryExt.TYPE_INITTASK);
         LOG.info("定时任务(初始化任务)，开始…………");
