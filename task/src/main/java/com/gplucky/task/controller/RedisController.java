@@ -56,6 +56,6 @@ public class RedisController extends BaseController {
         /*return this.returnSuccessMsg(page, list.size() > 0 ?list.subList((pageNo-1) * Constants.PAGE_SIZE_10,
                 pageNo * Constants.PAGE_SIZE_10 > list.size()? list.size():pageNo * Constants.PAGE_SIZE_10):null);*/
         return this.returnSuccessMsg(page, list.stream()
-                .skip(pageNo * Constants.PAGE_SIZE_10).limit(Constants.PAGE_SIZE_10).collect(Collectors.toList()));
+                .skip((pageNo-1) * Constants.PAGE_SIZE_10).limit(Constants.PAGE_SIZE_10).collect(Collectors.toList()));
     }
 }
