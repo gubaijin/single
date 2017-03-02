@@ -18,4 +18,19 @@ public class IndexController {
     public String index() {
         return "index";
     }
+
+    @RequestMapping("/home")
+    public String home() {
+        return "home";
+    }
+
+    @RequestMapping("/404")
+    public String error404() {
+        return "error/404";
+    }
+
+    @RequestMapping("/500")
+    public String error500() {
+        return "error/500";
+    }
 }
