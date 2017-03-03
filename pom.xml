@@ -76,6 +76,8 @@
                     <exclude>bootstrap-*.properties</exclude>
                     <exclude>generatorConfig.xml</exclude>
                     <exclude>generatorConfig.properties</exclude>
+                    <exclude>static/inspinia/fonts/**</exclude>
+                    <exclude>static/inspinia/font-awesome/**</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -85,13 +87,26 @@
                     <include>bootstrap-${profileActive}.properties</include>
                     <include>application-${profileActive}.properties</include>
                 </includes>
+                <excludes>
+                    <exclude>static/inspinia/fonts/**</exclude>
+                    <exclude>static/inspinia/font-awesome/**</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>static/inspinia/fonts/**</include>
+                    <include>static/inspinia/font-awesome/**</include>
+                </includes>
             </resource>
         </resources>
     </build>
 
     <profiles>
-        <!--<profile>
-            <id>test</id>
+        <!--<prof
+
+    <          <id>test</id>
             <properties>
                 <profileActive>test</profileActive>
             </properties>

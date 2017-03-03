@@ -24,6 +24,11 @@ public class IndexController {
         return "home";
     }
 
+    @RequestMapping("/page1")
+    public String page1() {
+        return "page1";
+    }
+
     @RequestMapping("/404")
     public String error404() {
         return "error/404";
