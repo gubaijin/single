@@ -29,6 +29,11 @@ public class IndexController {
         return "page1";
     }
 
+    @RequestMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @RequestMapping("/404")
     public String error404() {
         return "error/404";

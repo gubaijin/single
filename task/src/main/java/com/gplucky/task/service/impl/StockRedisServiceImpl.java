@@ -215,6 +215,8 @@ public class StockRedisServiceImpl implements StockRedisService {
 
     @Override
     public boolean initStockSeqUpAndDown(String seqUpKey, String seqDownKey) {
+        redisUtils.delete(seqUpKey);
+        redisUtils.delete(seqDownKey);
         List<Stock> list = stockService.getStockList();
         list.stream().forEach(stock -> {
             double changepercent = Double.valueOf(stock.getChangepercent());
