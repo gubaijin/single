@@ -1,5 +1,9 @@
 package com.gplucky.ui.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.gplucky.common.mybatis.model.User;
+import com.gplucky.ui.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -8,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class IndexController {
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/")
     public String toIndex() {
@@ -32,6 +38,16 @@ public class IndexController {
     @RequestMapping("/login")
     public String login() {
         return "login";
+    }
+
+    @RequestMapping("/register")
+    public String register( User user ) {
+        return "register";
+    }
+
+    @RequestMapping("/postRegister")
+    public String postRegister( User user ) {
+        return userService.register(JSON.toJSONString(user));
     }
 
     @RequestMapping("/404")

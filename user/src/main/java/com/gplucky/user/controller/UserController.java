@@ -1,50 +1,38 @@
 package com.gplucky.user.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.gplucky.common.controller.BaseController;
+import com.gplucky.common.mybatis.model.User;
+import com.gplucky.user.service.UserService;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by lenovo on 2017/1/22.
  */
-@Controller
-@RequestMapping("/user")
-public class UserController extends BaseController{
+@RestController
+public class UserController extends BaseController {
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-    @ApiOperation(value="获取用户信息列表", notes="获取用户信息列表")
-    @RequestMapping(value="getUserInfoList", method= RequestMethod.GET)
-    public ResponseEntity<String> getUserInfoList() {
-        LOG.info("获取用户信息");
-        List<User> list = new ArrayList<>();
-        User user1 = new User();
-        user1.setName("用户1");
-        user1.setAge("11");
-        list.add(user1);
-        User user2 = new User();
-        user2.setName("用户2");
-        user2.setAge("22");
-        list.add(user2);
-        return this.returnSuccessMsg(list);
-    }
+    @Autowired
+    private UserService userService;
 
-/*    @ApiOperation(value="得到用户信息", notes="根据id和name得到详细信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Long"),
-            @ApiImplicitParam(name = "name", value = "用户姓名", required = true, dataType = "String")
-    })
-    @RequestMapping(value="getInfo", method=RequestMethod.POST)
-    @ResponseBody
-    public String getInfo(Long id, String name) {
-        LOG.info("得到用户信息");
-        return userMapper.selectByPrimaryKey(1).getName();
-    }*/
+    @ApiOperation(value = "用户注册", notes = "注册新用户")
+    @ApiImplicitParam(paramType = "body",name = "user", value = "用户信息JSON", required = true, dataType = "String")
+    @RequestMapping(value = "register", method = RequestMethod.POST)
+    public String register(String user) {
+        User userObj = JSON.parseObject(user, User.class);
+        if (userService.isExist(userObj.getUsername())) {
+            return "redirect:/register";
+        } else {
+            userService.register(userObj);
+            return "redirect:/login";
+        }
+    }
 }

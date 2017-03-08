@@ -41,7 +41,7 @@ public class RedisController extends BaseController {
     private String redis_key_seq_max;
 
     @ApiOperation(value="得到连涨股票代码", notes="根据传入的数量来获得指定连涨天数的股票代码")
-    @ApiImplicitParam(name = "num", value = "连涨天数", required = false, dataType = "Integer")
+    @ApiImplicitParam(paramType = "query",name = "num", value = "连涨天数", required = false, dataType = "Integer")
     @RequestMapping(value="getSeqUpByDays", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> getSeqUpByDays(Integer num,

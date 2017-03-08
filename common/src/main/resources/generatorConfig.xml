@@ -55,7 +55,10 @@
 <!--    <table tableName="task_history">
       <generatedKey column="id" sqlStatement="MySql" identity="true"/>
     </table>-->
-    <table tableName="stock_new">
+    <!--<table tableName="stock_new">
+      <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+    </table>-->
+    <table tableName="user">
       <generatedKey column="id" sqlStatement="MySql" identity="true"/>
     </table>
   </context>
