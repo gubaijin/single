@@ -16,6 +16,7 @@
         <module>discovery</module>
         <module>ui</module>
         <module>monitor</module>
+        <module>gateway</module>
     </modules>
 
     <properties>

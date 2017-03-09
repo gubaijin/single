@@ -41,4 +41,27 @@ public class UserServiceImpl implements UserService {
             return true;
         }
     }
+
+    @Override
+    public boolean login(User userObj) {
+        String username = userObj.getUsername();
+        String pwd = userObj.getPassword();
+        String password = getPwdByUsername(username);
+        if(password.equals(DigestUtils.md5Hex(pwd.getBytes()))){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private String getPwdByUsername(String username) {
+        UserExample example = new UserExample();
+        example.createCriteria().andUsernameEqualTo(username);
+        List<User> list = userMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(list)){
+            return "";
+        }else{
+            return list.get(0).getPassword();
+        }
+    }
 }

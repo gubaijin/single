@@ -12,7 +12,25 @@
         <div th:include="layout :: footer"></div>
     </div>
 </div>
+<input th:type="hidden" th:id="loginFlg" th:value="${loginFlg}" />
 <div th:include="layout :: includeJs"></div>
 
+<script>
+    $(document).ready(function () {
+        var loginFlg = $('#loginFlg').val();
+        if('first' == loginFlg){
+            setTimeout(function () {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'slideDown',
+                    timeOut: 1000
+                };
+                toastr.success('登录成功', '欢迎使用GPLucky');
+                $('#loginFlg').val('');
+            }, 500);
+        }
+    })
+</script>
 </body>
 </html>

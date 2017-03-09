@@ -26,16 +26,19 @@
             </div>
             <h3>欢迎来到幸运股</h3>
             <p>注册账号即可体验幸运股的VIP功能</p>
-            <form class="m-t" role="form" th:action="@{/postRegister.html}" th:method="post">
+            <form th:id="form" class="m-t" role="form" th:action="@{/postRegister.html}" th:method="post">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="用户名" name="username" required="true">
+                    <input type="text" class="form-control" placeholder="用户名(2-12位)" name="username" required="true">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" placeholder="密码" name="password" required="true">
+                    <input type="password" class="form-control" placeholder="密码(6-20位)" id="password" name="password" required="true">
                 </div>
                 <div class="form-group">
-                    <input type="email" class="form-control" placeholder="邮箱(选填)" name="email" required="">
+                    <input type="password" class="form-control" placeholder="确认密码(6-20位)" name="confirm_password" required="true">
                 </div>
+                <!--<div class="form-group">
+                    <input type="email" class="form-control" placeholder="邮箱(选填)" name="email">
+                </div>-->
                 <div class="form-group">
                         <div class="checkbox i-checks"><label> <input type="checkbox"><i></i> 同意幸运股协议说明 </label></div>
                 </div>
@@ -53,11 +56,53 @@
     <script th:src="@{/inspinia/js/bootstrap.min.js}"></script>
     <!-- iCheck -->
     <script th:src="@{/inspinia/js/plugins/iCheck/icheck.min.js}"></script>
+    <!-- Jquery Validate -->
+    <script th:src="@{/inspinia/js/plugins/validate/jquery.validate.min.js}"></script>
     <script>
         $(document).ready(function(){
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green',
+            });
+            $("#form").validate({
+                rules: {
+                    username: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 12,
+                        remote: "isExistUsername"
+                    },
+                    password: {
+                        required: true,
+                        minlength: 6,
+                        maxlength: 20
+                    },
+                    confirm_password :{
+                        equalTo: "#password",
+                        required: true,
+                        minlength: 6,
+                        maxlength: 20
+                    }
+                },
+                messages: {
+                    username: {
+                        required: "请输入用户名",
+                        minlength: "用户名长度必须在2-12个字符之间",
+                        maxlength:"用户名长度必须在2-12个字符之间",
+                        remote:"用户名已存在"
+                    },
+                    password: {
+                        required: "请输入密码",
+                        minlength: "密码长度必须在6-12位之间",
+                        maxlength:"密码长度必须在6-12位之间",
+                    },
+                    confirm_password: {
+                        required: "请确认密码",
+                        minlength: "密码长度必须在6-12位之间",
+                        maxlength:"密码长度必须在6-12位之间",
+                        equalTo: "两次密码输入不一致"
+                    }
+                }
             });
         });
     </script>

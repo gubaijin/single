@@ -10,4 +10,6 @@ public interface UserService {
     boolean register(User user);
 
     boolean isExist(String username);
+
+    boolean login(User userObj);
 }
