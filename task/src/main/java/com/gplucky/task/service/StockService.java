@@ -30,4 +30,11 @@ public interface StockService {
      * @return
      */
     boolean fetchCompensation();
+
+    /**
+     * 查询股票信息
+     * @param stock
+     * @return
+     */
+    List<Stock> select(Stock stock);
 }

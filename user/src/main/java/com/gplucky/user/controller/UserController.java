@@ -40,7 +40,7 @@ public class UserController extends BaseController {
 
     @ApiOperation(value = "检查用户名是否存在", notes = "检查用户名是否存在")
     @ApiImplicitParam(paramType = "query",name = "username", value = "用户名", required = true, dataType = "String")
-    @RequestMapping(value = "isExistUsername", method = RequestMethod.POST)
+    @RequestMapping(value = "isExistUsername", method = RequestMethod.GET)
     public ResponseEntity<String> isExistUsername(String username) {
         if (userService.isExist(username)) {
             return this.returnSuccessMsg(true);

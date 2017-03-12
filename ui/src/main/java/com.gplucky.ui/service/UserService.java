@@ -15,7 +15,7 @@ public interface UserService {
     @RequestMapping(method = RequestMethod.POST, value = "/register")
     ResponseEntity<String> register(@RequestParam(value = "user") String user);
 
-    @RequestMapping(method = RequestMethod.POST, value = "/isExistUsername")
+    @RequestMapping(method = RequestMethod.GET, value = "/isExistUsername")
     ResponseEntity<String> isExistUsername(@RequestParam(value = "username") String username);
 
     @RequestMapping(method = RequestMethod.POST, value = "/login")

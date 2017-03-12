@@ -2,7 +2,7 @@ package com.gplucky.task.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gplucky.common.bean.FilterParameters;
-import com.gplucky.common.bean.Page;
+import com.gplucky.common.bean.PageG;
 import com.gplucky.common.constants.Constants;
 import com.gplucky.common.controller.BaseController;
 import com.gplucky.task.service.StockRedisService;
@@ -49,7 +49,7 @@ public class RedisController extends BaseController {
                                                  @RequestParam(value = "filterParameters") String filterParameters){
         Stream<Object> stream = stockRedisService.getSeqUpByDays(num, JSONObject.parseObject(filterParameters, FilterParameters.class));
         List<Object> list = stream.collect(Collectors.toList());
-        Page page = new Page();
+        PageG page = new PageG();
         page.setPageSize(Constants.PAGE_SIZE_10);
         page.setTotal(list.size());
         page.setPageNo(pageNo);

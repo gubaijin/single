@@ -33,13 +33,6 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping("/home")
-    public String home(@ModelAttribute("loginFlg") String loginFlg,
-                       Model model) {
-        model.addAttribute("loginFlg", loginFlg);
-        return "home";
-    }
-
     @RequestMapping("/page1")
     public String page1() {
         return "page1";

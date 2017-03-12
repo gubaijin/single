@@ -1,8 +1,9 @@
 package com.gplucky.task;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.gplucky.common.mybatis.dao.StockMapper;
 import com.gplucky.common.mybatis.model.Stock;
-import com.gplucky.common.mybatis.model.StockExample;
 import com.gplucky.task.service.impl.StockHistoryServiceImpl;
 import com.gplucky.task.service.impl.StockServiceImpl;
 import org.junit.Test;
@@ -12,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
-import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,13 +37,16 @@ public class TaskApplicationTests {
 		/*System.out.println(DateUtils.getDateStartFormat(LocalDate.now()));
 		System.out.println(DateUtils.getDateEndFormat(LocalDate.now()));*/
 
-		Stock stock = new Stock();
+		/*Stock stock = new Stock();
 		stock.setUpdateTime(new Date());
 		stock.setCode("900946");
 		StockExample example = new StockExample();
 		example.createCriteria().andCodeEqualTo(stock.getCode());
 		int updateFlg = stockMapper.updateByExampleSelective(stock, example);
-		System.out.println(updateFlg);
+		System.out.println(updateFlg);*/
+		Page pg = PageHelper.startPage(2, 15);
+		List<Stock> list = stockMapper.selectByExample(null);
+		System.out.println(list);
 	}
 
 	@Test

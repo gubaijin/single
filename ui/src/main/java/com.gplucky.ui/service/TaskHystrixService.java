@@ -11,10 +11,12 @@ import java.util.Set;
 /**
  * Created by ehsy_it on 2017/2/14.
  */
+/*@Component
+public class TaskHystrixService implements TaskService{*/
 @Component
-public class TaskHystrixService implements TaskService{
+public class TaskHystrixService{
 
-    @Override
+//    @Override
     public String getSeqUpByDays(Integer num, Integer pageNo, String filterParameters){
         HttpResult httpResult = new HttpResult();
         httpResult.setMark(BaseController.FAILED_MARK);

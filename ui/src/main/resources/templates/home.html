@@ -8,17 +8,140 @@
     <div th:include="layout :: menu"></div>
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div th:include="layout :: top"></div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>GPLucky 主页</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a th:href="@{/home.html}">主页</a>
+                    </li>
+                    <li>
+                        <a>基本信息</a>
+                    </li>
+                    <li class="active">
+                        <strong>概述</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
+        <div class="wrapper wrapper-content animated fadeInRight ecommerce">
+            <div class="ibox-content m-b-sm border-bottom">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="order_id">Order ID</label>
+                            <input type="text" id="order_id" name="order_id" value="" placeholder="Order ID"
+                                   class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="status">Order status</label>
+                            <input type="text" id="status" name="status" value="" placeholder="Status"
+                                   class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="customer">Customer</label>
+                            <input type="text" id="customer" name="customer" value="" placeholder="Customer"
+                                   class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="amount">Amount</label>
+                            <input type="text" id="amount" name="amount" value="" placeholder="Amount"
+                                   class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-content">
+
+                            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                                <thead>
+                                <tr>
+
+                                    <th>股票代码</th>
+                                    <th data-hide="phone">名称</th>
+                                    <th data-hide="phone">得分</th>
+                                    <th data-hide="phone">现价</th>
+                                    <th data-hide="phone">涨跌幅</th>
+                                    <th data-hide="phone,tablet" >开盘价</th>
+                                    <th data-hide="phone">收盘价</th>
+                                    <th data-hide="phone">成交量</th>
+                                    <th data-hide="phone">成交额</th>
+                                    <th data-hide="phone">日期</th>
+                                    <th class="text-right">Action</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        3214
+                                    </td>
+                                    <td>
+                                        Customer example
+                                    </td>
+                                    <td>
+                                        $500.00
+                                    </td>
+                                    <td>
+                                        03/04/2015
+                                    </td>
+                                    <td>
+                                        03/05/2015
+                                    </td>
+                                    <td>
+                                        <span class="label label-primary">Pending</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="btn-group">
+                                            <button class="btn-white btn btn-xs">View</button>
+                                            <button class="btn-white btn btn-xs">Edit</button>
+                                            <button class="btn-white btn btn-xs">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="7">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div th:include="layout :: footer"></div>
     </div>
 </div>
-<input th:type="hidden" th:id="loginFlg" th:value="${loginFlg}" />
+<input th:type="hidden" th:id="loginFlg" th:value="${loginFlg}"/>
 <div th:include="layout :: includeJs"></div>
 
 <script>
     $(document).ready(function () {
         var loginFlg = $('#loginFlg').val();
-        if('first' == loginFlg){
+        if ('first' == loginFlg) {
             setTimeout(function () {
                 toastr.options = {
                     closeButton: true,

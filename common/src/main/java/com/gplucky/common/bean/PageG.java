@@ -3,12 +3,12 @@ package com.gplucky.common.bean;
 /**
  * Created by ehsy_it on 2017/2/23.
  */
-public class Page {
-    private int pageSize;
+public class PageG {
+    private int pageSize = 15;
 
     private int total;
 
-    private int pageNo;
+    private int pageNo = 1;
 
     public int getPageSize() {
         return pageSize;

@@ -24,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -158,6 +159,38 @@ public class StockServiceImpl implements StockService {
         page = new AtomicInteger(1);
         fetchStockInfoCompensation(STOCK_URL_LIST_SZ);
         return true;
+    }
+
+    /**
+     * 查询股票信息
+     * @param stock
+     * @return
+     */
+    @Override
+    public List<Stock> select(Stock stock) {
+        return stockMapper.selectByExample(null);
+//        return stockMapper.selectByExample(convertExample(stock));
+    }
+
+    private StockExample convertExample(Stock stock) {
+        StockExample example = new StockExample();
+        if(null != stock){
+            String code = stock.getCode();
+            String symbol = stock.getSymbol();
+            String name = stock.getName();
+            StockExample.Criteria criteria = example.createCriteria();
+            if(!StringUtils.isEmpty(code)){
+                criteria.andCodeEqualTo(code);
+            }
+            if(!StringUtils.isEmpty(symbol)){
+                criteria.andSymbolEqualTo(symbol);
+            }
+            if(!StringUtils.isEmpty(name)){
+                criteria.andNameEqualTo(name);
+            }
+        }
+        example.setOrderByClause("changepercent desc, volume desc, amount desc");
+        return example;
     }
 
     private void fetchStockInfoCompensation(String url) {

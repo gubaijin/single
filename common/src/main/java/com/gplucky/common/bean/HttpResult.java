@@ -1,19 +1,20 @@
 package com.gplucky.common.bean;
 
+
 /**
  * Created by ehsy_it on 2017/1/23.
  */
 public class HttpResult<T> {
     private String mark;
     private String message;
-    private Page page;
+    private PageG page;
     private T data;
 
-    public Page getPage() {
+    public PageG getPageG() {
         return page;
     }
 
-    public void setPage(Page page) {
+    public void setPageG(PageG page) {
         this.page = page;
     }
 
