@@ -3,7 +3,7 @@
 <head th:include="layout :: head">
     <title>Home</title>
 </head>
-<body>
+<body onload="loadpage()">
 <div id="wrapper">
     <div th:include="layout :: menu"></div>
     <div id="page-wrapper" class="gray-bg dashbard-1">
@@ -29,117 +29,117 @@
         </div>
 
         <div class="wrapper wrapper-content animated fadeInRight ecommerce">
-            <div class="ibox-content m-b-sm border-bottom">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label" for="order_id">Order ID</label>
-                            <input type="text" id="order_id" name="order_id" value="" placeholder="Order ID"
-                                   class="form-control">
+            <form id="homeForm" th:action="@{/home.html}" th:method="POST">
+                <input type="hidden" id="pageNum" name="pageNo" th:value="${pageNo}"/>
+                <div class="ibox-content m-b-sm border-bottom">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div>
+                                <input type="text" id="code" name="code" placeholder="股票代码" th:value="${stock.code}"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="text" id="name" name="name" placeholder="股票名称" th:value="${stock.name}"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="text" id="score" name="score" placeholder="得分" th:value="${stock.score}"
+                                       class="form-control"/>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label" for="status">Order status</label>
-                            <input type="text" id="status" name="status" value="" placeholder="Status"
-                                   class="form-control">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="text" id="amount" name="amount" value="" placeholder="Amount"
+                                       class="form-control"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label" for="customer">Customer</label>
-                            <input type="text" id="customer" name="customer" value="" placeholder="Customer"
-                                   class="form-control">
+                        <div class="col-sm-4">
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label" for="amount">Amount</label>
-                            <input type="text" id="amount" name="amount" value="" placeholder="Amount"
-                                   class="form-control">
+                        <div class="col-sm-4">
+                            <button id="homeSelectBtn" type="submit" class="btn btn-w-m btn-primary">查询</button>
                         </div>
-                    </div>
-                </div>
-            </div>
 
+                    </div>
+                </div>
+            </form>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ibox">
                         <div class="ibox-content">
-
-                            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
-                                <thead>
+                            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="16">
                                 <tr>
-
+                                    <th>序号</th>
                                     <th>股票代码</th>
                                     <th data-hide="phone">名称</th>
                                     <th data-hide="phone">得分</th>
                                     <th data-hide="phone">现价</th>
                                     <th data-hide="phone">涨跌幅</th>
-                                    <th data-hide="phone,tablet" >开盘价</th>
+                                    <th data-hide="phone,tablet">开盘价</th>
                                     <th data-hide="phone">收盘价</th>
                                     <th data-hide="phone">成交量</th>
                                     <th data-hide="phone">成交额</th>
                                     <th data-hide="phone">日期</th>
                                     <th class="text-right">Action</th>
-
                                 </tr>
-                                </thead>
                                 <tbody>
-                                <tr>
-                                    <td>
-                                        3214
+                                <tr th:each="stock,stockStat:${stocks}">
+                                    <td th:text="${stockStat.index} + 1"></td>
+                                    <td th:text="${stock.symbol}"></td>
+                                    <td th:text="${stock.name}"></td>
+                                    <td th:text="${stock.score == null ? '0':stock.score}"></td>
+                                    <td th:text="${stock.trade}"></td>
+                                    <td class="text-danger" th:unless="${#strings.startsWith(stock.changepercent,'-')}">
+                                        <i class="fa fa-level-up"></i>
+                                        <span th:text="${#numbers.formatDecimal(stock.changepercent,1,2) + '%'}"></span>
                                     </td>
-                                    <td>
-                                        Customer example
+                                    <td class="text-navy" th:if="${#strings.startsWith(stock.changepercent,'-')}">
+                                        <i class="fa fa-level-down"></i>
+                                        <span th:text="${#numbers.formatDecimal(stock.changepercent,1,2) + '%'}"></span>
                                     </td>
-                                    <td>
-                                        $500.00
-                                    </td>
-                                    <td>
-                                        03/04/2015
-                                    </td>
-                                    <td>
-                                        03/05/2015
-                                    </td>
-                                    <td>
-                                        <span class="label label-primary">Pending</span>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <button class="btn-white btn btn-xs">View</button>
-                                            <button class="btn-white btn btn-xs">Edit</button>
-                                            <button class="btn-white btn btn-xs">Delete</button>
-                                        </div>
-                                    </td>
+                                    <td th:text="${stock.open}"></td>
+                                    <td th:text="${stock.settlement}"></td>
+                                    <td th:text="${stock.volume}"></td>
+                                    <td th:text="${stock.amount}"></td>
+                                    <td th:text="${#dates.format(stock.updateTime, 'yyyy-MM-dd')}"></td>
                                 </tr>
-
                                 </tbody>
-                                <tfoot>
-                                <tr>
-                                    <td colspan="7">
-                                        <ul class="pagination pull-right"></ul>
-                                    </td>
-                                </tr>
-                                </tfoot>
                             </table>
-
+                            <div style="text-align: center;">
+                                <ul class="pagination" id="pagination">
+                                </ul>
+                                <!-- 页码 默认1-->
+                                <input type="hidden" id="pageNo" th:value="${page.pageNo}"/>
+                                <!-- 总页数 默认1-->
+                                <input type="hidden" id="totalPage" th:value="${page.totalPage}"/>
+                                <!-- 总记录数 -->
+                                <input type="hidden" id="PageCount" runat="server" th:value="${page.count}"/>
+                                <!-- 每页记录数 -->
+                                <input type="hidden" id="PageSize" runat="server" th:value="${page.pageSize}"/>
+                                <!--input type="hidden" id="countindex" runat="server" th:value="${countindex}"/>-->
+                                <!--设置最多显示的页码数 可以手动设置 默认为5-->
+                                <input type="hidden" id="visiblePages" runat="server" value="5"/>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div th:include="layout :: footer"></div>
     </div>
 </div>
 <input th:type="hidden" th:id="loginFlg" th:value="${loginFlg}"/>
 <div th:include="layout :: includeJs"></div>
-
+<script type="text/javascript" th:src="@{/js/home.js}"></script>
+<script type="text/javascript" th:src="@{/page/homePage.js}"></script>
 <script>
     $(document).ready(function () {
+        $('.footable').footable();
         var loginFlg = $('#loginFlg').val();
         if ('first' == loginFlg) {
             setTimeout(function () {

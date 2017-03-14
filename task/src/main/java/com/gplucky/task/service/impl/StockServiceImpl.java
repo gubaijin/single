@@ -168,8 +168,8 @@ public class StockServiceImpl implements StockService {
      */
     @Override
     public List<Stock> select(Stock stock) {
-        return stockMapper.selectByExample(null);
-//        return stockMapper.selectByExample(convertExample(stock));
+//        return stockMapper.selectByExample(null);
+        return stockMapper.selectByExample(convertExample(stock));
     }
 
     private StockExample convertExample(Stock stock) {
@@ -178,15 +178,19 @@ public class StockServiceImpl implements StockService {
             String code = stock.getCode();
             String symbol = stock.getSymbol();
             String name = stock.getName();
+            Integer score = stock.getScore();
             StockExample.Criteria criteria = example.createCriteria();
             if(!StringUtils.isEmpty(code)){
-                criteria.andCodeEqualTo(code);
+                criteria.andCodeLike("%" + code + "%");
             }
             if(!StringUtils.isEmpty(symbol)){
-                criteria.andSymbolEqualTo(symbol);
+                criteria.andSymbolLike("%" + symbol + "%");
             }
             if(!StringUtils.isEmpty(name)){
-                criteria.andNameEqualTo(name);
+                criteria.andNameLike("%" + name + "%");
+            }
+            if(null != score && score > 0){
+                criteria.andScoreGreaterThanOrEqualTo(score);
             }
         }
         example.setOrderByClause("changepercent desc, volume desc, amount desc");

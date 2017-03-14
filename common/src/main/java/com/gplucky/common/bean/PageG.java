@@ -1,14 +1,29 @@
 package com.gplucky.common.bean;
 
+import com.github.pagehelper.Page;
+
 /**
  * Created by ehsy_it on 2017/2/23.
  */
 public class PageG {
     private int pageSize = 15;
 
-    private int total;
+    private int totalPage;
+
+    private int count;
 
     private int pageNo = 1;
+
+    public PageG setCountAndTotalPage(PageG pageG, Page pageHelper){
+        if(null == pageG){
+            pageG = new PageG();
+        }
+        int count = (int) pageHelper.getTotal();
+        int pageSize = pageG.getPageSize();
+        pageG.setCount(count);
+        pageG.setTotalPage(count % pageSize == 0 ? count / pageSize : (count / pageSize) + 1);
+        return pageG;
+    }
 
     public int getPageSize() {
         return pageSize;
@@ -18,12 +33,20 @@ public class PageG {
         this.pageSize = pageSize;
     }
 
-    public int getTotal() {
-        return total;
+    public int getTotalPage() {
+        return totalPage;
     }
 
-    public void setTotal(int total) {
-        this.total = total;
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public int getPageNo() {

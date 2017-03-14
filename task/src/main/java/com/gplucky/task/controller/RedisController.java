@@ -40,22 +40,22 @@ public class RedisController extends BaseController {
     @Value("${redis_key_seq_max}")
     private String redis_key_seq_max;
 
-    @ApiOperation(value="得到连涨股票代码", notes="根据传入的数量来获得指定连涨天数的股票代码")
-    @ApiImplicitParam(paramType = "query",name = "num", value = "连涨天数", required = false, dataType = "Integer")
-    @RequestMapping(value="getSeqUpByDays", method = RequestMethod.GET)
+    @ApiOperation(value = "得到连涨股票代码", notes = "根据传入的数量来获得指定连涨天数的股票代码")
+    @ApiImplicitParam(paramType = "query", name = "num", value = "连涨天数", required = false, dataType = "Integer")
+    @RequestMapping(value = "getSeqUpByDays", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> getSeqUpByDays(Integer num,
-                                                 @RequestParam(value="pageNo", defaultValue = "1") Integer pageNo,
-                                                 @RequestParam(value = "filterParameters") String filterParameters){
+                                                 @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                                 @RequestParam(value = "filterParameters") String filterParameters) {
         Stream<Object> stream = stockRedisService.getSeqUpByDays(num, JSONObject.parseObject(filterParameters, FilterParameters.class));
         List<Object> list = stream.collect(Collectors.toList());
         PageG page = new PageG();
         page.setPageSize(Constants.PAGE_SIZE_10);
-        page.setTotal(list.size());
+        page.setCount(list.size());
         page.setPageNo(pageNo);
         /*return this.returnSuccessMsg(page, list.size() > 0 ?list.subList((pageNo-1) * Constants.PAGE_SIZE_10,
                 pageNo * Constants.PAGE_SIZE_10 > list.size()? list.size():pageNo * Constants.PAGE_SIZE_10):null);*/
         return this.returnSuccessMsg(page, list.stream()
-                .skip((pageNo-1) * Constants.PAGE_SIZE_10).limit(Constants.PAGE_SIZE_10).collect(Collectors.toList()));
+                .skip((pageNo - 1) * Constants.PAGE_SIZE_10).limit(Constants.PAGE_SIZE_10).collect(Collectors.toList()));
     }
 }
