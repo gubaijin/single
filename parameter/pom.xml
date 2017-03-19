@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.gplucky.mongo</groupId>
-	<artifactId>mongo</artifactId>
+	<groupId>com.gplucky.parameter</groupId>
+	<artifactId>parameter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>mongo</name>
+	<name>parameter</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>

@@ -1,4 +1,4 @@
-package com.gplucky.mongo;
+package com.gplucky.parameter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,9 +10,9 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableDiscoveryClient
 @EnableEurekaClient
 @EnableMongoRepositories
-public class MongoApplication {
+public class ParameterApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MongoApplication.class, args);
+		SpringApplication.run(ParameterApplication.class, args);
 	}
 }

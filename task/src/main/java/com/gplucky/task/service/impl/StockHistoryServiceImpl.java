@@ -7,11 +7,9 @@ import com.gplucky.common.utils.DateUtils;
 import com.gplucky.task.service.StockHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by ehsy_it on 2017/1/29.
@@ -62,5 +60,18 @@ public class StockHistoryServiceImpl implements StockHistoryService {
         }else{
             return null;
         }*/
+    }
+
+    /**
+     * 根据股票代码查询股票历史信息
+     * @param code
+     * @return
+     */
+    @Override
+    public List<StockHistory> selectByCode(String code) {
+        StockHistoryExample example = new StockHistoryExample();
+        example.createCriteria().andCodeEqualTo(code);
+        example.setOrderByClause("create_time");
+        return stockHistoryMapper.selectByExample(example);
     }
 }

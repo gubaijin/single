@@ -172,8 +172,9 @@ public class StockServiceImpl implements StockService {
     }
 
     private StockExample convertExample(Stock stock) {
-        StockExample example = new StockExample();
+        StockExample example = null;
         if(null != stock){
+            example = new StockExample();
             String code = stock.getCode();
             String symbol = stock.getSymbol();
             String name = stock.getName();
@@ -191,8 +192,8 @@ public class StockServiceImpl implements StockService {
             if(null != score && score > 0){
                 criteria.andScoreGreaterThanOrEqualTo(score);
             }
+            example.setOrderByClause("changepercent desc, volume desc, amount desc");
         }
-        example.setOrderByClause("changepercent desc, volume desc, amount desc");
         return example;
     }
 

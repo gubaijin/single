@@ -28,4 +28,11 @@ public interface StockHistoryService {
      * @return
      */
     List<StockHistory> getTradeList(String code, int num);
+
+    /**
+     * 根据股票代码查询股票历史信息
+     * @param code
+     * @return
+     */
+    List<StockHistory> selectByCode(String code);
 }

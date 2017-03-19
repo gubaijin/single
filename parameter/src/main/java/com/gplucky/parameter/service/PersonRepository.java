@@ -1,6 +1,6 @@
-package com.gplucky.mongo.service;
+package com.gplucky.parameter.service;
 
-import com.gplucky.mongo.model.Person;
+import com.gplucky.parameter.model.Person;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
