@@ -15,7 +15,6 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@EnableMongoRepositories
 public class TaskApplicationTests {
 
 	@Autowired
@@ -24,8 +23,6 @@ public class TaskApplicationTests {
 	private StockHistoryServiceImpl stockHistoryServiceImpl;
 	@Autowired
 	private StockMapper stockMapper;
-	/*@Autowired
-	private PersonRepository personRepository;*/
 
 	@Test
 	public void test() throws ParseException {
