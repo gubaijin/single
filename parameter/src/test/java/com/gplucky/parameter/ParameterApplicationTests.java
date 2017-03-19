@@ -1,8 +1,8 @@
-package com.gplucky.mongo;
+package com.gplucky.parameter;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.gplucky.parameter.model.RSI;
+import com.alibaba.fastjson.JSON;
+import com.gplucky.common.bean.HttpResult;
+import com.gplucky.parameter.feign.TaskFegin;
 import com.gplucky.parameter.service.PersonRepository;
 import com.gplucky.parameter.service.RSIRepository;
 import org.junit.Test;
@@ -10,21 +10,22 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.LinkedList;
-import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @EnableMongoRepositories
-public class MongoApplicationTests {
+public class ParameterApplicationTests {
 
 	@Autowired
 	private PersonRepository personRepository;
 
 	@Autowired
 	private RSIRepository rsiRepository;
+
+	@Autowired
+	private TaskFegin taskFegin;
 
 	@Test
 	public void contextLoads() {
@@ -38,7 +39,7 @@ public class MongoApplicationTests {
 
 		Person ss = (Person) personRepository.insert(person1);
 		Person dd = (Person) personRepository.insert(person2);*/
-		RSI rsi = new RSI();
+		/*RSI rsi = new RSI();
 		rsi.setCode("888888");
 
 		LinkedList<Map<String,Double>> RSIList = Lists.newLinkedList();
@@ -63,7 +64,10 @@ public class MongoApplicationTests {
 		RSIList.add(0, map5);
 
 		rsi.setRSIList(RSIList);
-		rsiRepository.insert(rsi);
+		rsiRepository.insert(rsi);*/
+
+		ResponseEntity<String> ss = taskFegin.selectAll(null);
+		HttpResult result = JSON.parseObject(ss.getBody(), HttpResult.class);
 		System.out.println(1);
 	}
 
