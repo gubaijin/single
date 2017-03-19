@@ -17,6 +17,7 @@
         <module>ui</module>
         <module>monitor</module>
         <module>gateway</module>
+        <module>mongo</module>
     </modules>
 
     <properties>
