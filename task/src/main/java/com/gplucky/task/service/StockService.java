@@ -37,4 +37,5 @@ public interface StockService {
      * @return
      */
     List<Stock> select(Stock stock);
+
 }

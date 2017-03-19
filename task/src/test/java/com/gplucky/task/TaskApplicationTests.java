@@ -1,24 +1,21 @@
 package com.gplucky.task;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.gplucky.common.mybatis.dao.StockMapper;
 import com.gplucky.common.mybatis.model.Stock;
+import com.gplucky.task.mongo.model.Person;
+import com.gplucky.task.mongo.service.PersonRepository;
 import com.gplucky.task.service.impl.StockHistoryServiceImpl;
 import com.gplucky.task.service.impl.StockServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@EnableAutoConfiguration
 public class TaskApplicationTests {
 
 	@Autowired
@@ -27,6 +24,8 @@ public class TaskApplicationTests {
 	private StockHistoryServiceImpl stockHistoryServiceImpl;
 	@Autowired
 	private StockMapper stockMapper;
+	@Autowired
+	private PersonRepository personRepository;
 
 	@Test
 	public void test() throws ParseException {
@@ -46,9 +45,22 @@ public class TaskApplicationTests {
 		example.createCriteria().andCodeEqualTo(stock.getCode());
 		int updateFlg = stockMapper.updateByExampleSelective(stock, example);
 		System.out.println(updateFlg);*/
-		Page pg = PageHelper.startPage(2, 15);
+		/*Page pg = PageHelper.startPage(2, 15);
 		List<Stock> list = stockMapper.selectByExample(null);
-		System.out.println(list);
+		System.out.println(list);*/
+//		List<Double> list = stockHistoryServiceImpl.getTradeList("000002", 30);
+//		HashMap<String, Double> macdMap = MACD.getMACD(list, 12, 26, 9);
+		Person person1 = new Person();
+		person1.setAge(29);
+		person1.setName("gbj");
+
+		Person person2 = new Person();
+		person2.setAge(28);
+		person2.setName("ivy");
+
+		Person ss = (Person) personRepository.insert(person1);
+		Person dd = (Person) personRepository.insert(person2);
+		System.out.println(1);
 	}
 
 	@Test

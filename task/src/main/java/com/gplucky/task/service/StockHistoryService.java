@@ -20,4 +20,12 @@ public interface StockHistoryService {
     boolean insert(StockHistory record);
 
     boolean isExistByCodeNowDate(String code, LocalDate localDate);
+
+    /**
+     * 得到某个股票多少天内的股价(今天是0，倒序)
+     * @param code
+     * @param num
+     * @return
+     */
+    List<StockHistory> getTradeList(String code, int num);
 }

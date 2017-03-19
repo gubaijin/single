@@ -168,7 +168,6 @@ public class StockServiceImpl implements StockService {
      */
     @Override
     public List<Stock> select(Stock stock) {
-//        return stockMapper.selectByExample(null);
         return stockMapper.selectByExample(convertExample(stock));
     }
 
