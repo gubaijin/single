@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Created by ehsy_it on 2017/1/26.
@@ -169,6 +170,17 @@ public class StockServiceImpl implements StockService {
     @Override
     public List<Stock> select(Stock stock) {
         return stockMapper.selectByExample(convertExample(stock));
+    }
+
+    /**
+     * 查询所有股票code
+     * @param stock
+     * @return
+     */
+    @Override
+    public List<String> selectAllCode(Stock stock) {
+        List<Stock> list = select(stock);
+        return list.stream().map(Stock::getCode).collect(Collectors.toList());
     }
 
     private StockExample convertExample(Stock stock) {

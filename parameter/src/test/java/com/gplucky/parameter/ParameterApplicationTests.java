@@ -66,7 +66,7 @@ public class ParameterApplicationTests {
 		rsi.setRSIList(RSIList);
 		rsiRepository.insert(rsi);*/
 
-		ResponseEntity<String> ss = taskFegin.selectAll(null);
+		ResponseEntity<String> ss = taskFegin.selectAllCode(null);
 		HttpResult result = JSON.parseObject(ss.getBody(), HttpResult.class);
 		System.out.println(1);
 	}

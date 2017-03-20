@@ -38,4 +38,10 @@ public interface StockService {
      */
     List<Stock> select(Stock stock);
 
+    /**
+     * 查询所有股票code
+     * @param stock
+     * @return
+     */
+    List<String> selectAllCode(Stock stock);
 }

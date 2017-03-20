@@ -57,15 +57,15 @@ public class StockController extends BaseController {
                 SerializerFeature.WriteNullListAsEmpty, SerializerFeature.WriteNullStringAsEmpty));
     }
 
-    @ApiOperation(value = "查询所有股票信息", notes = "筛选查询对应股票信息(不带分页)")
+    @ApiOperation(value = "查询所有股票code", notes = "筛选查询所有股票code(不带分页)")
     @ApiImplicitParam(paramType = "body", name = "stock", value = "股票信息JSON", required = false, dataType = "String")
-    @RequestMapping(value = "selectAll", method = RequestMethod.POST)
-    public ResponseEntity<String> selectAll(@RequestParam(value = "stock", required = false) String stock) {
+    @RequestMapping(value = "selectAllCode", method = RequestMethod.POST)
+    public ResponseEntity<String> selectAllCode(@RequestParam(value = "stock", required = false) String stock) {
         Stock stockObj = null;
         if(!StringUtils.isEmpty(stock)){
             stockObj = JSONObject.parseObject(stock, Stock.class);
         }
-        List<Stock> list = stockService.select(stockObj);
+        List<String> list = stockService.selectAllCode(stockObj);
         return this.returnSuccessMsg(JSON.toJSONString(list,
                 SerializerFeature.WriteNullListAsEmpty, SerializerFeature.WriteNullStringAsEmpty));
     }

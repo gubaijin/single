@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "task")
 public interface TaskFegin {
 
-    @RequestMapping(method = RequestMethod.POST, value = "/stock/selectAll")
-    ResponseEntity<String> selectAll(@RequestParam(value = "stock") String stock);
+    @RequestMapping(method = RequestMethod.POST, value = "/stock/selectAllCode")
+    ResponseEntity<String> selectAllCode(@RequestParam(value = "stock") String stock);
 }
