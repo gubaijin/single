@@ -27,11 +27,11 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendSimpleMail(String sendTo, String titel, String content) {
+    public void sendSimpleMail(String sendTo, String title, String content) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(emailFrom);
         message.setTo(sendTo);
-        message.setSubject(titel);
+        message.setSubject(title);
         message.setText(content);
         try {
             mailSender.send(message);
@@ -40,7 +40,7 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    public void sendAttachmentsMail(String sendTo, String titel, String content, Map<String, File> attachments) {
+    public void sendAttachmentsMail(String sendTo, String title, String content, Map<String, File> attachments) {
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
 
@@ -48,7 +48,7 @@ public class EmailServiceImpl implements EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
             helper.setFrom(emailFrom);
             helper.setTo(sendTo);
-            helper.setSubject(titel);
+            helper.setSubject(title);
             helper.setText(content);
             for (Map.Entry<String, File> attachment : attachments.entrySet()) {
                 helper.addAttachment(attachment.getKey(), new FileSystemResource(attachment.getValue()));

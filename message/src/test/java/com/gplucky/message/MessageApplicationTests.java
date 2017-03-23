@@ -16,7 +16,7 @@ public class MessageApplicationTests {
 
     @Test
     public void test() {
-        String sendTo = "gplucky@126.com";
+        String sendTo = "gplucky_task@126.com";
         String titel = "gplucky测试邮件标题";
         String content = "golucky测试邮件内容";
         emailService.sendSimpleMail(sendTo, titel, content);
