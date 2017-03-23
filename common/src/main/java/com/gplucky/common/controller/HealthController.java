@@ -12,7 +12,7 @@ public class HealthController {
     @Value("${env}")
     private String env;
 
-    @Value("${juhe.stock.appkey}")
+/*    @Value("${juhe.stock.appkey}")
     private String APP_KEY;
 
     @Value("${juhe.url.stock.list.sh}")
@@ -22,11 +22,16 @@ public class HealthController {
     private String STOCK_URL_LIST_SZ;
 
     @Value("${spring.redis.cluster.nodes}")
-    private String redisNodes;
+    private String redisNodes;*/
+
+    @Value("${spring.mail.username}")
+    private String mailFrom;
 
     @RequestMapping("/health")
     public String health(){
-        return env + APP_KEY + STOCK_URL_LIST_SH + STOCK_URL_LIST_SZ + redisNodes;
+        return env +
+//                APP_KEY + STOCK_URL_LIST_SH + STOCK_URL_LIST_SZ + redisNodes +
+                ",[mailFrom="+ mailFrom +"]";
     }
 
 }

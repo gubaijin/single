@@ -4,11 +4,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.ImportResource;
 
 /**
  * Created by ehsy_it on 2017/1/25.
  */
 @SpringBootApplication
+@ImportResource({"classpath:/common.xml"})
 @EnableDiscoveryClient
 @EnableEurekaClient
 public class MessageApplication {

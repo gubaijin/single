@@ -5,6 +5,7 @@ import com.gplucky.message.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -32,7 +33,11 @@ public class EmailServiceImpl implements EmailService {
         message.setTo(sendTo);
         message.setSubject(titel);
         message.setText(content);
-        mailSender.send(message);
+        try {
+            mailSender.send(message);
+        } catch (MailException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendAttachmentsMail(String sendTo, String titel, String content, Map<String, File> attachments) {
