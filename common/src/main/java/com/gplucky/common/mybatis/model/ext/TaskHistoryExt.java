@@ -18,6 +18,11 @@ public class TaskHistoryExt extends TaskHistory {
     public static final String TYPE_INITTASK = "2";
 
     /**
+     * 同步股票信息到mongo
+     */
+    public static final String SYNCH_TO_MONGO = "3";
+
+    /**
      * 任务状态：0：未执行完；1：执行完成
      */
     public static final String STATUS_START = "0";

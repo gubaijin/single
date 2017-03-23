@@ -44,4 +44,11 @@ public interface StockService {
      * @return
      */
     List<String> selectAllCode(Stock stock);
+
+    /**
+     * 手工将股票信息同步到mongo
+     * @return
+     */
+    boolean initStockToMongo();
+
 }

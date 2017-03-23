@@ -1,6 +1,6 @@
-package com.gplucky.parameter.service;
+package com.gplucky.parameter.service.mongo;
 
-import com.gplucky.parameter.model.RSI;
+import com.gplucky.common.bean.mongo.RSI;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

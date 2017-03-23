@@ -1,16 +1,15 @@
 package com.gplucky.parameter;
 
-import com.alibaba.fastjson.JSON;
-import com.gplucky.common.bean.HttpResult;
+import com.gplucky.common.bean.mongo.StockM;
 import com.gplucky.parameter.feign.TaskFegin;
-import com.gplucky.parameter.service.PersonRepository;
-import com.gplucky.parameter.service.RSIRepository;
+import com.gplucky.parameter.service.mongo.RSIRepository;
+import com.gplucky.parameter.service.mongo.StockMRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -19,13 +18,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ParameterApplicationTests {
 
 	@Autowired
-	private PersonRepository personRepository;
-
-	@Autowired
 	private RSIRepository rsiRepository;
 
 	@Autowired
 	private TaskFegin taskFegin;
+
+	@Autowired
+	private StockMRepository stockMRepository;
 
 	@Test
 	public void contextLoads() {
@@ -66,8 +65,12 @@ public class ParameterApplicationTests {
 		rsi.setRSIList(RSIList);
 		rsiRepository.insert(rsi);*/
 
-		ResponseEntity<String> ss = taskFegin.selectAllCode(null);
-		HttpResult result = JSON.parseObject(ss.getBody(), HttpResult.class);
+		/*ResponseEntity<String> ss = taskFegin.selectAllCode(null);
+		HttpResult result = JSON.parseObject(ss.getBody(), HttpResult.class);*/
+		StockM stockM = new StockM();
+		stockM.setCode("000001");
+		Example<StockM> var1 = Example.of(stockM);
+		StockM stock = stockMRepository.findOne(var1);
 		System.out.println(1);
 	}
 

@@ -15,4 +15,7 @@ public interface TaskFegin {
 
     @RequestMapping(method = RequestMethod.POST, value = "/stock/selectAllCode")
     ResponseEntity<String> selectAllCode(@RequestParam(value = "stock") String stock);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/history/selectByCode")
+    ResponseEntity<String> selectByCode(@RequestParam(value = "code") String code);
 }

@@ -42,6 +42,19 @@ public class Config {
     }
 
     /**
+     * 同步股票信息到mongo
+     * 周一至周五的下午17:05触发
+     */
+//    @Scheduled(cron = "0 5 17 ? * MON-FRI")
+    public void stockSynchToMongo() {
+        int taskId = taskHistoryService.insertStartTask(TaskHistoryExt.SYNCH_TO_MONGO);
+        LOG.info("将股票信息同步到mongo，开始…………");
+        stockService.initStockToMongo();
+        LOG.info("…………结束，将股票信息同步到mongo");
+        taskHistoryService.updateFinishedTask((long) taskId);
+    }
+
+    /**
      * 周一至周五的下午17:00触发
      */
 //    @Scheduled(cron = "0 0 17 ? * MON-FRI")

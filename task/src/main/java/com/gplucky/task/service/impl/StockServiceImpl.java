@@ -2,6 +2,7 @@ package com.gplucky.task.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.gplucky.common.bean.mongo.StockM;
 import com.gplucky.common.exception.CMRuntimeException;
 import com.gplucky.common.exception.ResultCode;
 import com.gplucky.common.mybatis.dao.StockMapper;
@@ -18,6 +19,7 @@ import com.gplucky.task.bean.StockResp;
 import com.gplucky.task.service.StockHistoryService;
 import com.gplucky.task.service.StockNewService;
 import com.gplucky.task.service.StockService;
+import com.gplucky.task.service.mongo.StockMRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -63,6 +65,9 @@ public class StockServiceImpl implements StockService {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private StockMRepository stockMRepository;
 
     @Override
     public List<Stock> getStockList() {
@@ -181,6 +186,20 @@ public class StockServiceImpl implements StockService {
     public List<String> selectAllCode(Stock stock) {
         List<Stock> list = select(stock);
         return list.stream().map(Stock::getCode).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean initStockToMongo() {
+        List<Stock> list = select(null);
+        stockMRepository.deleteAll();
+
+        List<StockM> listM = list.stream().map(stock -> {
+            StockM stockM = new StockM();
+            BeanUtils.copyProperties(stock, stockM);
+            return stockM;
+        }).collect(Collectors.toList());
+        stockMRepository.insert(listM);
+        return true;
     }
 
     private StockExample convertExample(Stock stock) {

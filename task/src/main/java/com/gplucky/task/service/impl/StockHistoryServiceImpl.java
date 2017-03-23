@@ -63,7 +63,7 @@ public class StockHistoryServiceImpl implements StockHistoryService {
     }
 
     /**
-     * 根据股票代码查询股票历史信息
+     * 根据股票代码查询股票历史信息（升序）
      * @param code
      * @return
      */

@@ -11,7 +11,7 @@ import java.util.List;
 public interface StockHistoryService {
 
     /**
-     * 查询某一天的故事信息
+     * 查询某一天的股票信息
      * @param localDate
      * @return
      */
@@ -22,7 +22,7 @@ public interface StockHistoryService {
     boolean isExistByCodeNowDate(String code, LocalDate localDate);
 
     /**
-     * 得到某个股票多少天内的股价(今天是0，倒序)
+     * 得到某个股票多少天内的股价(倒序)
      * @param code
      * @param num
      * @return
@@ -30,7 +30,7 @@ public interface StockHistoryService {
     List<StockHistory> getTradeList(String code, int num);
 
     /**
-     * 根据股票代码查询股票历史信息
+     * 根据股票代码查询股票历史信息(升序)
      * @param code
      * @return
      */

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static com.gplucky.common.bean.Password.PWD;
+
 /**
  * Created by ehsy_it on 2017/2/5.
  */
@@ -22,8 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class InitController {
 
     private static final Logger LOG = LoggerFactory.getLogger(InitController.class);
-
-    private static final String PWD = "gbj";
 
     @Autowired
     private StockService stockService;
@@ -47,7 +47,7 @@ public class InitController {
     @ResponseBody
     public String initStockUpAndDown(String pwd){
         LOG.info("初始化股票连涨连跌开始……");
-        if(PWD.equals(pwd)){
+        if(PWD.getValue().equals(pwd)){
             boolean flg = stockRedisService.initStockSeqUpAndDown();
             LOG.info("……结束初始化股票连涨连跌");
             if(flg){
@@ -66,7 +66,7 @@ public class InitController {
     @ResponseBody
     public String initSHList(String pwd){
         LOG.info("初始化沪股列表开始……");
-        if(PWD.equals(pwd)){
+        if(PWD.getValue().equals(pwd)){
             boolean flg = stockService.initSHList();
             LOG.info("……结束初始化沪股列表");
             if(flg){
@@ -85,9 +85,28 @@ public class InitController {
     @ResponseBody
     public String initSZList(String pwd){
         LOG.info("初始化深圳股市列表开始……");
-        if(PWD.equals(pwd)){
+        if(PWD.getValue().equals(pwd)){
             boolean flg = stockService.initSZList();
             LOG.info("……结束初始化深圳股市列表");
+            if(flg){
+                return "success";
+            }else{
+                return "failed";
+            }
+        }else{
+            return "failed";
+        }
+    }
+
+    @ApiOperation(value="手工将股票信息同步到mongo", notes="将沪深股市所有股票信息同步一份到mongo中")
+    @ApiImplicitParam(paramType = "query",name = "pwd", value = "敏感接口密码", required = true, dataType = "String")
+    @RequestMapping(value="initStockToMongo", method = RequestMethod.POST)
+    @ResponseBody
+    public String initStockToMongo(String pwd){
+        LOG.info("手工将股票信息同步到mongo开始……");
+        if(PWD.getValue().equals(pwd)){
+            boolean flg = stockService.initStockToMongo();
+            LOG.info("……结束手工将股票信息同步到mongo");
             if(flg){
                 return "success";
             }else{
