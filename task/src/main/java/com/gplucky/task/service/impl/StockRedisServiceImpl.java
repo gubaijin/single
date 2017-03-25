@@ -6,6 +6,7 @@ import com.gplucky.common.mybatis.model.StockHistory;
 import com.gplucky.common.mybatis.model.ext.StockExt;
 import com.gplucky.common.utils.DateUtils;
 import com.gplucky.common.utils.RedisUtils;
+import com.gplucky.task.feign.MessageFeign;
 import com.gplucky.task.service.StockHistoryService;
 import com.gplucky.task.service.StockRedisService;
 import com.gplucky.task.service.StockService;
@@ -34,8 +35,16 @@ public class StockRedisServiceImpl implements StockRedisService {
     private String redis_key_seq_max;
     @Value("${seq_start_num}")
     private String seq_start_num;
+    @Value("${message.mail.task.to}")
+    private String MESSAGE_MAIL_TASK_TO;
+    @Value("${message.mail.title3}")
+    private String MESSAGE_MAIL_TITLE3;
+    @Value("${message.mail.content3}")
+    private String MESSAGE_MAIL_CONTENT3;
     @Autowired
     private StockHistoryService stockHistoryService;
+    @Autowired
+    private MessageFeign messageFeign;
 
     /**
      * 根据当日最新涨跌 计算出最新的连涨和连跌
@@ -44,8 +53,13 @@ public class StockRedisServiceImpl implements StockRedisService {
      */
     @Override
     public boolean autoStockSeqUpAndDown() {
-        for (int i = Integer.valueOf(redis_key_seq_max); i >= 0; i--) {
-            loopStockSeqUpOrDown(i);
+        try {
+            for (int i = Integer.valueOf(redis_key_seq_max); i >= 0; i--) {
+                loopStockSeqUpOrDown(i);
+            }
+            messageFeign.sendSimpleMail(MESSAGE_MAIL_TASK_TO, MESSAGE_MAIL_TITLE3, MESSAGE_MAIL_CONTENT3);
+        } catch (Exception e) {
+            messageFeign.sendSimpleMail(MESSAGE_MAIL_TASK_TO, MESSAGE_MAIL_TITLE3, e.getMessage());
         }
         return true;
     }

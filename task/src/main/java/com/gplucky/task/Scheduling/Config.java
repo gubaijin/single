@@ -34,11 +34,12 @@ public class Config {
      */
 //    @Scheduled(cron = "0 0 16 ? * MON-FRI")
     public void fetchStockInfo() {
-        int taskId = taskHistoryService.insertStartTask(TaskHistoryExt.TYPE_FETCHSTOCKINFO);
+        Long taskId = taskHistoryService.insertStartTask(TaskHistoryExt.TYPE_FETCHSTOCKINFO);
         LOG.info("定时任务(同步股票信息)，开始…………");
         stockService.fetchStockInfo();
         LOG.info("…………结束，定时任务结束(同步股票信息)");
-        taskHistoryService.updateFinishedTask((long) taskId);
+        taskHistoryService.updateFinishedTask(taskId);
+
     }
 
     /**
@@ -47,11 +48,11 @@ public class Config {
      */
 //    @Scheduled(cron = "0 5 17 ? * MON-FRI")
     public void stockSynchToMongo() {
-        int taskId = taskHistoryService.insertStartTask(TaskHistoryExt.SYNCH_TO_MONGO);
+        Long taskId = taskHistoryService.insertStartTask(TaskHistoryExt.SYNCH_TO_MONGO);
         LOG.info("将股票信息同步到mongo，开始…………");
         stockService.initStockToMongo();
         LOG.info("…………结束，将股票信息同步到mongo");
-        taskHistoryService.updateFinishedTask((long) taskId);
+        taskHistoryService.updateFinishedTask(taskId);
     }
 
     /**
@@ -59,7 +60,7 @@ public class Config {
      */
 //    @Scheduled(cron = "0 0 17 ? * MON-FRI")
     public void initTask() {
-        int taskId = taskHistoryService.insertStartTask(TaskHistoryExt.TYPE_INITTASK);
+        Long taskId = taskHistoryService.insertStartTask(TaskHistoryExt.TYPE_INITTASK);
         LOG.info("定时任务(初始化任务)，开始…………");
         LOG.info("筛选初始化当天涨跌redis数据中…………");
         stockRedisService.initStockSeqUpAndDown(StockExt.SEQ_UP_0, StockExt.SEQ_DOWN_0);
@@ -68,6 +69,6 @@ public class Config {
         stockRedisService.autoStockSeqUpAndDown();
         LOG.info("…………更新连涨连跌数据完成。");
         LOG.info("…………结束，定时任务结束(初始化任务)");
-        taskHistoryService.updateFinishedTask((long) taskId);
+        taskHistoryService.updateFinishedTask(taskId);
     }
 }

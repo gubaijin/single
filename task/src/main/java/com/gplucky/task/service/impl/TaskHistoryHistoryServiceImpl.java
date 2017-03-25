@@ -19,14 +19,15 @@ public class TaskHistoryHistoryServiceImpl implements TaskHistoryService {
     private TaskHistoryMapper taskHistoryMapper;
 
     @Override
-    public int insertStartTask(String type) {
+    public Long insertStartTask(String type) {
         TaskHistory taskHistory = new TaskHistory();
         Date date = new Date();
         taskHistory.setType(type);
         taskHistory.setStatus(TaskHistoryExt.STATUS_START);
         taskHistory.setCreateTime(date);
         taskHistory.setUpdateTime(date);
-        return taskHistoryMapper.insertSelective(taskHistory);
+        taskHistoryMapper.insertSelective(taskHistory);
+        return taskHistory.getId();
     }
 
     @Override

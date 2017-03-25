@@ -1,6 +1,6 @@
 $(function () {
     $('#homeSelectBtn').on('click', function () {
-        $("#pageNum").val("");
+        $("#pageNum").val(1);
         $("#homeForm").submit();
     });
 });

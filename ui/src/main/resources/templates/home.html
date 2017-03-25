@@ -30,7 +30,7 @@
 
         <div class="wrapper wrapper-content animated fadeInRight ecommerce">
             <form id="homeForm" th:action="@{/home.html}" th:method="POST">
-                <input type="hidden" id="pageNum" name="pageNo" th:value="${pageNo}"/>
+                <input type="hidden" id="pageNum" name="pageNo" th:value="${pageNo?:1}"/>
                 <div class="ibox-content m-b-sm border-bottom">
                     <div class="row">
                         <div class="col-sm-4">

@@ -16,6 +16,7 @@ import com.gplucky.common.utils.DateUtils;
 import com.gplucky.common.utils.RedisUtils;
 import com.gplucky.task.bean.ErrorCode;
 import com.gplucky.task.bean.StockResp;
+import com.gplucky.task.feign.MessageFeign;
 import com.gplucky.task.service.StockHistoryService;
 import com.gplucky.task.service.StockNewService;
 import com.gplucky.task.service.StockService;
@@ -54,6 +55,21 @@ public class StockServiceImpl implements StockService {
     @Value("${juhe.url.stock.list.sz}")
     private String STOCK_URL_LIST_SZ;
 
+    @Value("${message.mail.task.to}")
+    private String MESSAGE_MAIL_TASK_TO;
+
+    @Value("${message.mail.title1}")
+    private String MESSAGE_MAIL_TITLE1;
+
+    @Value("${message.mail.content1}")
+    private String MESSAGE_MAIL_CONTENT1;
+
+    @Value("${message.mail.title2}")
+    private String MESSAGE_MAIL_TITLE2;
+
+    @Value("${message.mail.content2}")
+    private String MESSAGE_MAIL_CONTENT2;
+
     @Autowired
     private StockMapper stockMapper;
 
@@ -69,6 +85,9 @@ public class StockServiceImpl implements StockService {
     @Autowired
     private StockMRepository stockMRepository;
 
+    @Autowired
+    private MessageFeign messageFeign;
+
     @Override
     public List<Stock> getStockList() {
         return stockMapper.selectByExample(null);
@@ -81,14 +100,20 @@ public class StockServiceImpl implements StockService {
     @Override
     public boolean fetchStockInfo() {
         //判断是否有新数据需要同步
-        boolean flg = isNeedFetch();
-        if (flg) {
-            page = new AtomicInteger(1);
-            judgeLoopAndUpdateInfo(STOCK_URL_LIST_SH);
-            page = new AtomicInteger(1);
-            judgeLoopAndUpdateInfo(STOCK_URL_LIST_SZ);
-        } else {
-            LOG.info("没有最新数据，无需更新！");
+        try {
+            boolean flg = isNeedFetch();
+            if (flg) {
+                page = new AtomicInteger(1);
+                judgeLoopAndUpdateInfo(STOCK_URL_LIST_SH);
+                page = new AtomicInteger(1);
+                judgeLoopAndUpdateInfo(STOCK_URL_LIST_SZ);
+            } else {
+                LOG.info("没有最新数据，无需更新！");
+                MESSAGE_MAIL_CONTENT1 += "   没有最新数据，无需更新！";
+            }
+            messageFeign.sendSimpleMail(MESSAGE_MAIL_TASK_TO, MESSAGE_MAIL_TITLE1, MESSAGE_MAIL_CONTENT1);
+        } catch (Exception e) {
+            messageFeign.sendSimpleMail(MESSAGE_MAIL_TASK_TO, MESSAGE_MAIL_TITLE1, e.getMessage());
         }
         return true;
     }
@@ -190,15 +215,21 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public boolean initStockToMongo() {
-        List<Stock> list = select(null);
-        stockMRepository.deleteAll();
+        try {
+            List<Stock> list = select(null);
+            stockMRepository.deleteAll();
 
-        List<StockM> listM = list.stream().map(stock -> {
-            StockM stockM = new StockM();
-            BeanUtils.copyProperties(stock, stockM);
-            return stockM;
-        }).collect(Collectors.toList());
-        stockMRepository.insert(listM);
+            List<StockM> listM = list.stream().map(stock -> {
+                StockM stockM = new StockM();
+                BeanUtils.copyProperties(stock, stockM);
+                return stockM;
+            }).collect(Collectors.toList());
+            stockMRepository.insert(listM);
+            messageFeign.sendSimpleMail(MESSAGE_MAIL_TASK_TO, MESSAGE_MAIL_TITLE2, MESSAGE_MAIL_CONTENT2);
+        } catch (Exception e) {
+            messageFeign.sendSimpleMail(MESSAGE_MAIL_TASK_TO, MESSAGE_MAIL_TITLE2, e.getMessage());
+        }
+
         return true;
     }
 
