@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "message")
 public interface MessageFeign {
 
-    @RequestMapping(method = RequestMethod.GET, value = "/mail/sendSimpleMail")
+    @RequestMapping(method = RequestMethod.POST, value = "/mail/sendSimpleMail")
     ResponseEntity<String> sendSimpleMail(@RequestParam(value = "sendTo") String sendTo,
                                           @RequestParam(value = "title") String title,
                                           @RequestParam(value = "content") String content);
