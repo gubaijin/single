@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: head">
+    <title>Task</title>
+</head>
+<body>
+<div id="wrapper">
+    <div th:include="layout :: menu"></div>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div th:include="layout :: top"></div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>GPLucky 任务</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a th:href="@{/home.html}">主页</a>
+                    </li>
+                    <li>
+                        <a>任务</a>
+                    </li>
+                    <li class="active">
+                        <strong>手动触发</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>初始化</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <!--<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-wrench"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                    <li><a href="#">Config option 1</a>
+                                    </li>
+                                    <li><a href="#">Config option 2</a>
+                                    </li>
+                                </ul>-->
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>任务名称</th>
+                                    <th>说明</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>初始化沪股列表</td>
+                                    <td>初始化所有上海股市信息</td>
+                                    <td><button class="btn btn-block btn-outline btn-primary" type="button" data-toggle="modal" data-target="#init1"><i class="fa fa-check"></i>&nbsp;执行</button></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>初始化深圳股市列表</td>
+                                    <td>初始化所有深圳股市信息</td>
+                                    <td><button class="btn btn-block btn-outline btn-primary" type="button" data-toggle="modal" data-target="#init2"><i class="fa fa-check"></i>&nbsp;执行</button></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>初始化股票连涨连跌</td>
+                                    <td>初始化连涨连跌到redis中,切记！！先将股市最新数据及历史数据同步后执行！！</td>
+                                    <td><button class="btn btn-block btn-outline btn-primary" type="button" data-toggle="modal" data-target="#init3"><i class="fa fa-check"></i>&nbsp;执行</button></td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>手工将股票信息同步到mongo</td>
+                                    <td>将沪深股市所有股票信息同步一份到mongo中</td>
+                                    <td><button class="btn btn-block btn-outline btn-primary" type="button" data-toggle="modal" data-target="#init4"><i class="fa fa-check"></i>&nbsp;执行</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="modal inmodal" id="init1" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content animated bounceInRight">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <i class="fa fa-laptop modal-icon"></i>
+                                            <h4 class="modal-title">初始化沪股列表</h4>
+                                            <small class="font-bold"></small>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>请确认：</strong> 初始化所有上海股市信息，此操作为初始化操作，输入密码，确认后将执行！</p>
+                                            <div><label>请在下方输入密码:</label> <input type="password" name="password1" placeholder="请输入确认密码" class="form-control"></div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-white" data-dismiss="modal" id="init1BtnCancel">取消</button>
+                                            <button type="button" class="btn btn-primary" id="init1BtnConfirm">确认</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal inmodal" id="init2" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content animated bounceInRight">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <i class="fa fa-laptop modal-icon"></i>
+                                            <h4 class="modal-title">初始化深圳股市列表</h4>
+                                            <small class="font-bold"></small>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>请确认：</strong> 初始化所有深圳股市列表，此操作为初始化操作，输入密码，确认后将执行！</p>
+                                            <div><label>请在下方输入密码:</label> <input type="password" id="password2" placeholder="请输入确认密码" class="form-control"></div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-white" data-dismiss="modal" id="init2BtnCancel">取消</button>
+                                            <button type="button" class="btn btn-primary" id="init2BtnConfirm">确认</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal inmodal" id="init3" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content animated bounceInRight">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <i class="fa fa-laptop modal-icon"></i>
+                                            <h4 class="modal-title">初始化股票连涨连跌</h4>
+                                            <small class="font-bold"></small>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>请确认：</strong> 初始化股票连涨连跌，此操作为初始化操作，输入密码，确认后将执行！</p>
+                                            <div><label>请在下方输入密码:</label> <input type="password" id="password3" placeholder="请输入确认密码" class="form-control"></div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-white" data-dismiss="modal" id="init3BtnCancel">取消</button>
+                                            <button type="button" class="btn btn-primary" id="init3BtnConfirm">确认</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal inmodal" id="init4" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content animated bounceInRight">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <i class="fa fa-laptop modal-icon"></i>
+                                            <h4 class="modal-title">手工将股票信息同步到mongo</h4>
+                                            <small class="font-bold"></small>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>请确认：</strong> 手工将股票信息同步到mongo，此操作为初始化操作，输入密码，确认后将执行！</p>
+                                            <div><label>请在下方输入密码:</label> <input type="password" id="password4" placeholder="请输入确认密码" class="form-control"></div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-white" data-dismiss="modal" id="init4BtnCancel">取消</button>
+                                            <button type="button" class="btn btn-primary" id="init4BtnConfirm">确认</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Striped Table </h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-wrench"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                    <li><a href="#">Config option 1</a>
+                                    </li>
+                                    <li><a href="#">Config option 2</a>
+                                    </li>
+                                </ul>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Data</th>
+                                    <th>User</th>
+                                    <th>Value</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td><span class="line">5,3,2,-1,-3,-2,2,3,5,2</span></td>
+                                    <td>Samantha</td>
+                                    <td class="text-navy"> <i class="fa fa-level-up"></i> 40% </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td><span class="line">5,3,9,6,5,9,7,3,5,2</span></td>
+                                    <td>Jacob</td>
+                                    <td class="text-warning"> <i class="fa fa-level-down"></i> -20% </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td><span class="line">1,6,3,9,5,9,5,3,9,6,4</span></td>
+                                    <td>Damien</td>
+                                    <td class="text-navy"> <i class="fa fa-level-up"></i> 26% </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+        </div>
+        <div th:include="layout :: footer"></div>
+    </div>
+</div>
+<div th:include="layout :: includeJs"></div>
+<script type="text/javascript" th:src="@{/js/task.js}"></script>
+</body>
+</html>

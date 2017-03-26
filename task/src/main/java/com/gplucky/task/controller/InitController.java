@@ -32,8 +32,8 @@ public class InitController {
 
     @ApiOperation(value = "测试hello", notes = "测试hello的接口")
     @ApiImplicitParams(
-            {@ApiImplicitParam(paramType = "query",name = "userId", value = "用户id", required = true, dataType = "String"),
-                    @ApiImplicitParam(paramType = "query",name = "name", value = "用户名", required = true, dataType = "String")}
+            {@ApiImplicitParam(paramType = "query", name = "userId", value = "用户id", required = true, dataType = "String"),
+                    @ApiImplicitParam(paramType = "query", name = "name", value = "用户名", required = true, dataType = "String")}
     )
     @RequestMapping(value = "hello", method = RequestMethod.POST)
     @ResponseBody
@@ -41,78 +41,78 @@ public class InitController {
         return "hello" + userId + name;
     }
 
-    @ApiOperation(value="初始化股票连涨连跌", notes="初始化连涨连跌到redis中,切记！！先将股市最新数据及历史数据同步后执行！！")
-    @ApiImplicitParam(paramType = "query",name = "pwd", value = "敏感接口密码", required = true, dataType = "String")
-    @RequestMapping(value="initStockUpAndDown", method = RequestMethod.POST)
+    @ApiOperation(value = "初始化股票连涨连跌", notes = "初始化连涨连跌到redis中,切记！！先将股市最新数据及历史数据同步后执行！！")
+    @ApiImplicitParam(paramType = "query", name = "pwd", value = "敏感接口密码", required = true, dataType = "String")
+    @RequestMapping(value = "initStockUpAndDown", method = RequestMethod.POST)
     @ResponseBody
-    public String initStockUpAndDown(String pwd){
+    public String initStockUpAndDown(@RequestParam(value = "pwd", required = true) String pwd) {
         LOG.info("初始化股票连涨连跌开始……");
-        if(PWD.getValue().equals(pwd)){
+        if (PWD.getValue().equals(pwd)) {
             boolean flg = stockRedisService.initStockSeqUpAndDown();
             LOG.info("……结束初始化股票连涨连跌");
-            if(flg){
+            if (flg) {
                 return "success";
-            }else{
+            } else {
                 return "failed";
             }
-        }else{
+        } else {
             return "failed";
         }
     }
 
-    @ApiOperation(value="初始化沪股列表", notes="初始化所有沪股信息")
-    @ApiImplicitParam(paramType = "query",name = "pwd", value = "敏感接口密码", required = true, dataType = "String")
-    @RequestMapping(value="initSHList", method = RequestMethod.POST)
+    @ApiOperation(value = "初始化沪股列表", notes = "初始化所有沪股信息")
+    @ApiImplicitParam(paramType = "query", name = "pwd", value = "敏感接口密码", required = true, dataType = "String")
+    @RequestMapping(value = "initSHList", method = RequestMethod.POST)
     @ResponseBody
-    public String initSHList(String pwd){
+    public String initSHList(@RequestParam(value = "pwd", required = true) String pwd) {
         LOG.info("初始化沪股列表开始……");
-        if(PWD.getValue().equals(pwd)){
+        if (PWD.getValue().equals(pwd)) {
             boolean flg = stockService.initSHList();
             LOG.info("……结束初始化沪股列表");
-            if(flg){
+            if (flg) {
                 return "success";
-            }else{
+            } else {
                 return "failed";
             }
-        }else{
+        } else {
             return "failed";
         }
     }
 
-    @ApiOperation(value="初始化深圳股市列表", notes="初始化所有深圳股市信息")
-    @ApiImplicitParam(paramType = "query",name = "pwd", value = "敏感接口密码", required = true, dataType = "String")
-    @RequestMapping(value="initSZList", method = RequestMethod.POST)
+    @ApiOperation(value = "初始化深圳股市列表", notes = "初始化所有深圳股市信息")
+    @ApiImplicitParam(paramType = "query", name = "pwd", value = "敏感接口密码", required = true, dataType = "String")
+    @RequestMapping(value = "initSZList", method = RequestMethod.POST)
     @ResponseBody
-    public String initSZList(String pwd){
+    public String initSZList(@RequestParam(value = "pwd", required = true) String pwd) {
         LOG.info("初始化深圳股市列表开始……");
-        if(PWD.getValue().equals(pwd)){
+        if (PWD.getValue().equals(pwd)) {
             boolean flg = stockService.initSZList();
             LOG.info("……结束初始化深圳股市列表");
-            if(flg){
+            if (flg) {
                 return "success";
-            }else{
+            } else {
                 return "failed";
             }
-        }else{
+        } else {
             return "failed";
         }
     }
 
-    @ApiOperation(value="手工将股票信息同步到mongo", notes="将沪深股市所有股票信息同步一份到mongo中")
-    @ApiImplicitParam(paramType = "query",name = "pwd", value = "敏感接口密码", required = true, dataType = "String")
-    @RequestMapping(value="initStockToMongo", method = RequestMethod.POST)
+    @ApiOperation(value = "手工将股票信息同步到mongo", notes = "将沪深股市所有股票信息同步一份到mongo中")
+    @ApiImplicitParam(paramType = "query", name = "pwd", value = "敏感接口密码", required = true, dataType = "String")
+    @RequestMapping(value = "initStockToMongo", method = RequestMethod.POST)
     @ResponseBody
-    public String initStockToMongo(String pwd){
+    public String initStockToMongo(@RequestParam(value = "pwd", required = true) String pwd) {
         LOG.info("手工将股票信息同步到mongo开始……");
-        if(PWD.getValue().equals(pwd)){
+        if (PWD.getValue().equals(pwd)) {
             boolean flg = stockService.initStockToMongo();
             LOG.info("……结束手工将股票信息同步到mongo");
-            if(flg){
+            if (flg) {
                 return "success";
-            }else{
+            } else {
                 return "failed";
             }
-        }else{
+        } else {
             return "failed";
         }
     }

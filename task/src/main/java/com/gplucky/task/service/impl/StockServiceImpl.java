@@ -70,6 +70,16 @@ public class StockServiceImpl implements StockService {
     @Value("${message.mail.content2}")
     private String MESSAGE_MAIL_CONTENT2;
 
+    @Value("${message.mail.title5}")
+    private String MESSAGE_MAIL_TITLE5;
+    @Value("${message.mail.content5}")
+    private String MESSAGE_MAIL_CONTENT5;
+    @Value("${message.mail.title6}")
+    private String MESSAGE_MAIL_TITLE6;
+    @Value("${message.mail.content6}")
+    private String MESSAGE_MAIL_CONTENT6;
+
+
     @Autowired
     private StockMapper stockMapper;
 
@@ -166,16 +176,24 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public boolean initSHList() {
-        page = new AtomicInteger(1);
-        judgeLoopAndRecord(STOCK_URL_LIST_SH);
+        initList(STOCK_URL_LIST_SH, MESSAGE_MAIL_TITLE5, MESSAGE_MAIL_CONTENT5);
         return true;
     }
 
     @Override
     public boolean initSZList() {
-        page = new AtomicInteger(1);
-        judgeLoopAndRecord(STOCK_URL_LIST_SZ);
+        initList(STOCK_URL_LIST_SZ, MESSAGE_MAIL_TITLE6, MESSAGE_MAIL_CONTENT6);
         return true;
+    }
+
+    private void initList(String stockUrl, String mailTitle, String mailContent) {
+        try {
+            page = new AtomicInteger(1);
+            judgeLoopAndRecord(stockUrl);
+            messageFeign.sendSimpleMail(MESSAGE_MAIL_TASK_TO, mailTitle, mailContent);
+        } catch (Exception e) {
+            messageFeign.sendSimpleMail(MESSAGE_MAIL_TASK_TO, mailTitle, e.getMessage());
+        }
     }
 
     /**

@@ -21,4 +21,16 @@ public interface TaskService {
     @RequestMapping(method = RequestMethod.POST, value = "/stock/select")
     ResponseEntity<String> select(@RequestParam(value = "stock") String stock,
                                   @RequestParam(value = "page") String page );
+
+    @RequestMapping(method = RequestMethod.POST, value = "/init/initStockUpAndDown")
+    String initStockUpAndDown(@RequestParam(value = "pwd") String pwd);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/init/initSHList")
+    String initSHList(@RequestParam(value = "pwd") String pwd);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/init/initSZList")
+    String initSZList(@RequestParam(value = "pwd") String pwd);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/init/initStockToMongo")
+    String initStockToMongo(@RequestParam(value = "pwd") String pwd);
 }

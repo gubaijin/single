@@ -38,8 +38,4 @@ public class HomeController {
         return "home";
     }
 
-    public static void main(String[] args) {
-        PageG page = new PageG();
-        System.out.println(JSON.toJSONString(page));
-    }
 }

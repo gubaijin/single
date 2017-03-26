@@ -41,6 +41,11 @@ public class StockRedisServiceImpl implements StockRedisService {
     private String MESSAGE_MAIL_TITLE3;
     @Value("${message.mail.content3}")
     private String MESSAGE_MAIL_CONTENT3;
+    @Value("${message.mail.title4}")
+    private String MESSAGE_MAIL_TITLE4;
+    @Value("${message.mail.content4}")
+    private String MESSAGE_MAIL_CONTENT4;
+
     @Autowired
     private StockHistoryService stockHistoryService;
     @Autowired
@@ -106,10 +111,15 @@ public class StockRedisServiceImpl implements StockRedisService {
 
     @Override
     public boolean initStockSeqUpAndDown() {
-        cleanSeqUpAndDown();
-        loopStockHistoryGetSeqInitUpAndDown();
-        setInitStockSeqUpAndDown();
-        cleanInitSeqUpAndDown();
+        try {
+            cleanSeqUpAndDown();
+            loopStockHistoryGetSeqInitUpAndDown();
+            setInitStockSeqUpAndDown();
+            cleanInitSeqUpAndDown();
+            messageFeign.sendSimpleMail(MESSAGE_MAIL_TASK_TO, MESSAGE_MAIL_TITLE4, MESSAGE_MAIL_CONTENT4);
+        } catch (Exception e) {
+            messageFeign.sendSimpleMail(MESSAGE_MAIL_TASK_TO, MESSAGE_MAIL_TITLE4, e.getMessage());
+        }
         return true;
     }
 

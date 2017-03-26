@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -18,6 +19,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @ImportResource({"classpath:/common.xml"})
 @EnableDiscoveryClient
 @EnableEurekaClient
+@EnableFeignClients
 @EnableMongoRepositories("com.gplucky.task.service.mongo")
 public class TaskApplication {
     public static void main(String[] args) {
