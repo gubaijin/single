@@ -78,6 +78,10 @@ public class StockServiceImpl implements StockService {
     private String MESSAGE_MAIL_TITLE6;
     @Value("${message.mail.content6}")
     private String MESSAGE_MAIL_CONTENT6;
+    @Value("${message.mail.title7}")
+    private String MESSAGE_MAIL_TITLE7;
+    @Value("${message.mail.content7}")
+    private String MESSAGE_MAIL_CONTENT7;
 
 
     @Autowired
@@ -203,10 +207,15 @@ public class StockServiceImpl implements StockService {
      */
     @Override
     public boolean fetchCompensation() {
-        page = new AtomicInteger(1);
-        fetchStockInfoCompensation(STOCK_URL_LIST_SH);
-        page = new AtomicInteger(1);
-        fetchStockInfoCompensation(STOCK_URL_LIST_SZ);
+        try {
+            page = new AtomicInteger(1);
+            fetchStockInfoCompensation(STOCK_URL_LIST_SH);
+            page = new AtomicInteger(1);
+            fetchStockInfoCompensation(STOCK_URL_LIST_SZ);
+            messageFeign.sendSimpleMail(MESSAGE_MAIL_TASK_TO, MESSAGE_MAIL_TITLE7, MESSAGE_MAIL_CONTENT7);
+        } catch (Exception e) {
+            messageFeign.sendSimpleMail(MESSAGE_MAIL_TASK_TO, MESSAGE_MAIL_TITLE7, e.getMessage());
+        }
         return true;
     }
 

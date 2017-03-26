@@ -71,6 +71,37 @@ $(function () {
             }
         });
     });
+
+    $('#base1BtnConfirm').on('click', function () {
+        $.ajax({
+            url: "/base1",
+            type: 'POST',
+            success: function (data) {
+                success();
+                $('#base1BtnCancel').click();
+            },
+            error: function (data) {
+                error();
+                $('#base1BtnCancel').click();
+            }
+        });
+    });
+
+    $('#base2BtnConfirm').on('click', function () {
+        $.ajax({
+            url: "/base2",
+            type: 'POST',
+            success: function (data) {
+                success();
+                $('#base2BtnCancel').click();
+            },
+            error: function (data) {
+                error();
+                $('#base2BtnCancel').click();
+            }
+        });
+    });
+
 });
 
 function success() {

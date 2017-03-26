@@ -33,4 +33,10 @@ public interface TaskService {
 
     @RequestMapping(method = RequestMethod.POST, value = "/init/initStockToMongo")
     String initStockToMongo(@RequestParam(value = "pwd") String pwd);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/stock/fetchStockInfo")
+    String fetchStockInfo();
+
+    @RequestMapping(method = RequestMethod.POST, value = "/stock/fetchCompensation")
+    String fetchCompensation();
 }

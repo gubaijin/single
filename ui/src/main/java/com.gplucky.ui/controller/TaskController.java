@@ -43,5 +43,17 @@ public class TaskController {
     public String init4(String pwd) {
         return taskService.initStockToMongo(pwd);
     }
+
+    @RequestMapping("/base1")
+    @ResponseBody
+    public String base1() {
+        return taskService.fetchStockInfo();
+    }
+
+    @RequestMapping("/base2")
+    @ResponseBody
+    public String base2() {
+        return taskService.fetchCompensation();
+    }
     
 }
