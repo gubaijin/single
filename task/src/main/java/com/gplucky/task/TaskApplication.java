@@ -1,7 +1,9 @@
 package com.gplucky.task;
 
 import com.mongodb.MongoClientOptions;
+import feign.Request;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -22,6 +24,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableFeignClients
 @EnableMongoRepositories("com.gplucky.task.service.mongo")
 public class TaskApplication {
+
+    @Value("${gbj.feign.timeout}")
+    private int timeout;
+
     public static void main(String[] args) {
         SpringApplication.run(TaskApplication.class, args);
     }
@@ -32,5 +38,10 @@ public class TaskApplication {
                 .connectTimeout(60000)
                 .maxWaitTime(60000)
                 .build();
+    }
+
+    @Bean
+    Request.Options feignOptions() {
+        return new Request.Options(timeout, timeout);
     }
 }
