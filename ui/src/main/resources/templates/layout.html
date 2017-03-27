@@ -204,7 +204,7 @@
                 <li>
                     <a href=""><i class="fa fa-th-large"></i> <span class="nav-label">自定义指标</span> <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        <li><a>连涨连跌</a></li>
+                        <li><a th:href="@{/upAndDown/list.html}">连涨连跌</a></li>
                         <!--<li><a href="dashboard_2.html">Dashboard v.2</a></li>
                         <li><a href="dashboard_3.html">Dashboard v.3</a></li>
                         <li><a href="dashboard_4_1.html">Dashboard v.4</a></li>-->
@@ -216,6 +216,23 @@
     </nav>
 </div>
 
+<div th:fragment="page">
+    <div style="text-align: center;">
+        <ul class="pagination" id="pagination">
+        </ul>
+        <!-- 页码 默认1-->
+        <input type="hidden" id="pageNo" th:value="${page.pageNo}"/>
+        <!-- 总页数 默认1-->
+        <input type="hidden" id="totalPage" th:value="${page.totalPage}"/>
+        <!-- 总记录数 -->
+        <input type="hidden" id="PageCount" runat="server" th:value="${page.count}"/>
+        <!-- 每页记录数 -->
+        <input type="hidden" id="PageSize" runat="server" th:value="${page.pageSize}"/>
+        <!--input type="hidden" id="countindex" runat="server" th:value="${countindex}"/>-->
+        <!--设置最多显示的页码数 可以手动设置 默认为5-->
+        <input type="hidden" id="visiblePages" runat="server" value="5"/>
+    </div>
+</div>
 <div th:fragment="footer">
     <div class="footer">
         <div class="pull-right">
@@ -228,7 +245,7 @@
 </div>
 <div th:fragment="includeJs">
     <!-- Mainly scripts -->
-    <script th:src="@{/inspinia/js/jquery-2.1.1.js}"></script>
+    <script th:src="@{/inspinia/js/jquery-3.1.1.min.js}"></script>
     <script th:src="@{/inspinia/js/bootstrap.min.js}"></script>
     <script th:src="@{/inspinia/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
     <script th:src="@{/inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>

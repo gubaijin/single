@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: head">
+    <title>Home</title>
+</head>
+<link th:href="@{/inspinia/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css}" rel="stylesheet">
+<body onload="init()">
+<div id="wrapper">
+    <div th:include="layout :: menu"></div>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div th:include="layout :: top"></div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>GPLucky 自定义指标</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a th:href="@{/home.html}">主页</a>
+                    </li>
+                    <li>
+                        <a>自定义指标</a>
+                    </li>
+                    <li class="active">
+                        <strong>连涨连跌</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
+        <div class="wrapper wrapper-content animated fadeInRight ecommerce">
+            <form id="seqUpForm" th:action="@{/upAndDown/list.html}" th:method="POST">
+                <input type="hidden" id="pageNum" name="pageNo" th:value="${pageNo?:1}"/>
+                <div class="ibox-content m-b-sm border-bottom">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class=="form-group">
+                                <label class="control-label" for="type">类别</label>
+                                <div id="type">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-block" id="type1Btn" type="button">涨
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-block" id="type2Btn" type="button">跌
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label" for="num">连续天数</label>
+                                <select class="form-control" id="num" name="num">
+                                    <option th:value="${no}" th:text="${no}"
+                                            th:selected="${no} == ${num} ? 'true':'false'"
+                                            th:each="no,iterStat : ${nums}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label" for="seqUpAndDownSelectBtn">筛选条件</label>
+                                <div class="checkbox checkbox-success">
+                                    <div class="col-md-2">
+                                        <input id="growth" type="checkbox" th:checked="checked">
+                                        <label for="growth">
+                                            创业板
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input id="subNew" type="checkbox" th:checked="checked">
+                                        <label for="subNew">
+                                            次新股
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input id="distinct" type="checkbox" th:checked="checked">
+                                        <label for="distinct">
+                                            去重
+                                        </label>
+                                    </div>
+                                </div>
+                                <!--<div id="upAndDownConditions">
+                                    <label><input name="growth" type="checkbox"
+                                                  th:checked="${filterParameters.growth == true ? true : false}"/>创业板</label>
+                                    <label><input name="subNew" type="checkbox"
+                                                  th:checked="${filterParameters.subNew == true ? true : false}"/>次新股</label>
+                                </div>-->
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label class="control-label" for="seqUpAndDownSelectBtn"></label>
+                                <button type="button" class="btn btn-large btn-primary btn-block"
+                                        id="seqUpAndDownSelectBtn">查询
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="text" id="amount" name="amount" value="" placeholder="Amount"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-large btn-primary btn-block" id="seqUpAndDownSelectBtn">查询</button>
+                        </div>
+
+                    </div>-->
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="16">
+                                <tr>
+                                    <th>序号</th>
+                                    <th th:text="股票代码 + ${page.count}"></th>
+                                </tr>
+                                <tbody>
+                                <tr th:each="seqUpString,seqUpStringStat:${seqUpSetString}">
+                                    <td th:text="${seqUpStringStat.index} + 1"></td>
+                                    <td>
+                                        <a th:href="'http://quote.eastmoney.com/' + ${seqUpString} +'.html?from=BaiduAladdin'"
+                                           th:text="${seqUpString}" th:target="_blank"></a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div th:include="layout :: page"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:include="layout :: footer"></div>
+    </div>
+</div>
+<div th:include="layout :: includeJs"></div>
+<script type="text/javascript" th:src="@{/js/seqUpAndDown.js}"></script>
+<script type="text/javascript" th:src="@{/page/page.js}"></script>
+</body>
+</html>
