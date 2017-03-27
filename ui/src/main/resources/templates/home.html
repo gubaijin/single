@@ -90,7 +90,9 @@
                                 <tbody>
                                 <tr th:each="stock,stockStat:${stocks}">
                                     <td th:text="${stockStat.index} + 1"></td>
-                                    <td th:text="${stock.symbol}"></td>
+                                    <td>
+                                        <a th:href="'http://quote.eastmoney.com/' + ${stock.symbol} +'.html?from=BaiduAladdin'"
+                                           th:text="${stock.symbol}" th:target="_blank"></a></td>
                                     <td th:text="${stock.name}"></td>
                                     <td th:text="${stock.score == null ? '0':stock.score}"></td>
                                     <td th:text="${stock.trade}"></td>

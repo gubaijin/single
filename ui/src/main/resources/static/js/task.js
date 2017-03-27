@@ -12,8 +12,9 @@ $(function () {
                 $('#password1').val("");
             },
             error: function (data) {
-                error();
+                success();
                 $('#init1BtnCancel').click();
+                $('#password1').val("");
             }
         });
     });
@@ -30,8 +31,9 @@ $(function () {
                 $('#password2').val("");
             },
             error: function (data) {
-                error();
+                success();
                 $('#init2BtnCancel').click();
+                $('#password2').val("");
             }
         });
     });
@@ -48,8 +50,9 @@ $(function () {
                 $('#password3').val("");
             },
             error: function (data) {
-                error();
+                success();
                 $('#init3BtnCancel').click();
+                $('#password3').val("");
             }
         });
     });
@@ -66,8 +69,9 @@ $(function () {
                 $('#password4').val("");
             },
             error: function (data) {
-                error();
+                success();
                 $('#init4BtnCancel').click();
+                $('#password4').val("");
             }
         });
     });
@@ -81,7 +85,7 @@ $(function () {
                 $('#base1BtnCancel').click();
             },
             error: function (data) {
-                error();
+                success();
                 $('#base1BtnCancel').click();
             }
         });
@@ -96,7 +100,7 @@ $(function () {
                 $('#base2BtnCancel').click();
             },
             error: function (data) {
-                error();
+                success();
                 $('#base2BtnCancel').click();
             }
         });
@@ -112,7 +116,7 @@ function success() {
             showMethod: 'slideDown',
             timeOut: 1000
         };
-        toastr.success('操作成功', '任务已经被成功执行');
+        toastr.success('操作成功', '任务请求已经被成功提交');
     }, 500);
 }
 
