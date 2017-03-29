@@ -1,9 +1,9 @@
 package com.gplucky.ui.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.gplucky.common.bean.FilterParameters;
 import com.gplucky.common.bean.HttpResult;
 import com.gplucky.common.bean.PageG;
+import com.gplucky.common.bean.UpAndDown;
 import com.gplucky.common.constants.Constants;
 import com.gplucky.ui.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +26,12 @@ public class UpAndDownController {
     private TaskService taskHystrixService;
 
     @RequestMapping("list")
-    public String list(Model model, FilterParameters filterParameters,
-                       PageG page,
-                       @RequestParam(value = "num", required = false, defaultValue="1") int num/*,
+    public String list(Model model, UpAndDown upAndDown,
+                       PageG page/*,
+                       @RequestParam(value = "num", required = false, defaultValue="1") int num,
                        @RequestParam(value = "pageNo", required = false, defaultValue="1") int pageNo*/
     ){
-        ResponseEntity<String> responseEntity = taskHystrixService.getSeqUpByDays(num, page.getPageNo(), JSON.toJSONString(filterParameters));
+        ResponseEntity<String> responseEntity = taskHystrixService.getSeqUpByDays(page.getPageNo(), JSON.toJSONString(upAndDown));
 
         HttpResult result = JSON.parseObject(responseEntity.getBody(), HttpResult.class);
         List<String> seqUpSet = (List<String>) result.getData();
@@ -46,8 +45,10 @@ public class UpAndDownController {
 //        model.addAttribute("PageSize", Constants.PAGE_SIZE_10);
 //        model.addAttribute("countindex", pageNo * Constants.PAGE_SIZE_10);
         model.addAttribute("nums", getNumsList());
-        model.addAttribute("num", num);
-        model.addAttribute("filterParameters", filterParameters);
+        System.out.println(JSON.toJSONString(upAndDown));
+        model.addAttribute("upAndDown", upAndDown);
+        /*model.addAttribute("num", num);
+        model.addAttribute("filterParameters", filterParameters);*/
         return "seqUpAndDown";
     }
 

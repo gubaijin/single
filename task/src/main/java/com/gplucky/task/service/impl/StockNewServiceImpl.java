@@ -6,6 +6,8 @@ import com.gplucky.task.service.StockNewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by ehsy_it on 2017/2/4.
  */
@@ -19,5 +21,10 @@ public class StockNewServiceImpl implements StockNewService {
     public boolean insert(StockNew record) {
         stockNewMapper.insertSelective(record);
         return true;
+    }
+
+    @Override
+    public List<StockNew> selectAll() {
+        return stockNewMapper.selectByExample(null);
     }
 }

@@ -12,15 +12,19 @@ function pageForm(pageNo) {
 }
 function init(){
     // $('#type1Btn').focus();
+    $("#pageNum").val(1);
+    $("#seqUpForm").submit();
     chooseUpBtn();
-    loadpage();
+    // loadpage();
 }
 
 function chooseUpBtn() {
     $('#type1Btn').addClass("btn-danger");
     $('#type2Btn').removeClass("btn-primary")
+    $("#type").val("1");
 }
 function chooseDownBtn() {
     $('#type1Btn').removeClass("btn-danger")
     $('#type2Btn').addClass("btn-primary");
+    $("#type").val("2");
 }

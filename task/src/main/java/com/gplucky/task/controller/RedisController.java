@@ -1,12 +1,13 @@
 package com.gplucky.task.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.gplucky.common.bean.FilterParameters;
 import com.gplucky.common.bean.PageG;
+import com.gplucky.common.bean.UpAndDown;
 import com.gplucky.common.constants.Constants;
 import com.gplucky.common.controller.BaseController;
 import com.gplucky.task.service.StockRedisService;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,13 +42,16 @@ public class RedisController extends BaseController {
     private String redis_key_seq_max;
 
     @ApiOperation(value = "得到连涨股票代码", notes = "根据传入的数量来获得指定连涨天数的股票代码")
-    @ApiImplicitParam(paramType = "query", name = "num", value = "连涨天数", required = false, dataType = "Integer")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "pageNo", value = "页码", required = false, dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "upAndDown", value = "连涨连跌JSON对象", required = false, dataType = "String")
+    })
     @RequestMapping(value = "getSeqUpByDays", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> getSeqUpByDays(Integer num,
-                                                 @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                                                 @RequestParam(value = "filterParameters") String filterParameters) {
-        Stream<Object> stream = stockRedisService.getSeqUpByDays(num, JSONObject.parseObject(filterParameters, FilterParameters.class));
+    public ResponseEntity<String> getSeqUpByDays(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                                 @RequestParam(value = "upAndDown") String upAndDown) {
+        UpAndDown upAndDownObj = JSONObject.parseObject(upAndDown, UpAndDown.class);
+        Stream<Object> stream = stockRedisService.getSeqUpByDays(upAndDownObj.getNum(), upAndDownObj);
         List<Object> list = stream.collect(Collectors.toList());
         PageG page = new PageG();
         page.setPageSize(Constants.PAGE_SIZE_10);

@@ -4,7 +4,7 @@
     <title>Home</title>
 </head>
 <link th:href="@{/inspinia/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css}" rel="stylesheet">
-<body onload="init()">
+<body>
 <div id="wrapper">
     <div th:include="layout :: menu"></div>
     <div id="page-wrapper" class="gray-bg dashbard-1">
@@ -36,14 +36,15 @@
                     <div class="row">
                         <div class="col-sm-2">
                             <div class=="form-group">
-                                <label class="control-label" for="type">类别</label>
-                                <div id="type">
+                                <label class="control-label" for="typeDiv">类别</label>
+                                <div id="typeDiv">
+                                    <input type="hidden" id="type" name="type" th:value="${upAndDown.type}" />
                                     <div class="col-md-6">
-                                        <button class="btn btn-block" id="type1Btn" type="button">涨
+                                        <button th:class="'1'== ${upAndDown.type} ? 'btn btn-block btn-danger':'btn btn-block'" id="type1Btn" type="button">涨
                                         </button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button class="btn btn-block" id="type2Btn" type="button">跌
+                                        <button th:class="'2'== ${upAndDown.type} ? 'btn btn-block btn-primary':'btn btn-block'" id="type2Btn" type="button">跌
                                         </button>
                                     </div>
                                 </div>
@@ -54,7 +55,7 @@
                                 <label class="control-label" for="num">连续天数</label>
                                 <select class="form-control" id="num" name="num">
                                     <option th:value="${no}" th:text="${no}"
-                                            th:selected="${no} == ${num} ? 'true':'false'"
+                                            th:selected="${no} == ${upAndDown.num} ? 'true':'false'"
                                             th:each="no,iterStat : ${nums}">
                                     </option>
                                 </select>
@@ -65,19 +66,19 @@
                                 <label class="control-label" for="seqUpAndDownSelectBtn">筛选条件</label>
                                 <div class="checkbox checkbox-success">
                                     <div class="col-md-2">
-                                        <input id="growth" type="checkbox" th:checked="checked">
+                                        <input id="growth" type="checkbox" name="params" value="1" th:checked="${#arrays.contains(upAndDown.params,'1')} ? true:false">
                                         <label for="growth">
                                             创业板
                                         </label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input id="subNew" type="checkbox" th:checked="checked">
+                                        <input id="subNew" type="checkbox" name="params" value="2" th:checked="${#arrays.contains(upAndDown.params,'2')} ? true:false">
                                         <label for="subNew">
                                             次新股
                                         </label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input id="distinct" type="checkbox" th:checked="checked">
+                                        <input id="distinct" type="checkbox" name="params" value="3" th:checked="${#arrays.contains(upAndDown.params,'3')}?true:false">
                                         <label for="distinct">
                                             去重
                                         </label>

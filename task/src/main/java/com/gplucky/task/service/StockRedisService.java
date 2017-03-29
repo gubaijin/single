@@ -1,6 +1,6 @@
 package com.gplucky.task.service;
 
-import com.gplucky.common.bean.FilterParameters;
+import com.gplucky.common.bean.UpAndDown;
 
 import java.util.stream.Stream;
 
@@ -30,8 +30,8 @@ public interface StockRedisService {
     /**
      * 得到连涨股票代码
      * @param num
-     * @param filterParameters
+     * @param upAndDown
      * @return
      */
-    Stream<Object> getSeqUpByDays(int num, FilterParameters filterParameters);
+    Stream<Object> getSeqUpByDays(int num, UpAndDown upAndDown);
 }
