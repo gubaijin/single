@@ -10,7 +10,7 @@ function loadpage() {
     var pageNo = $('#pageNo').val();
     var totalPage = $('#totalPage').val();
     var countindex = myPageCount % myPageSize > 0 ? (myPageCount / myPageSize) + 1 : (myPageCount / myPageSize);
-    $("#countindex").val(countindex);
+    $("#countindex").val(parseInt(countindex));
 
     $.jqPaginator('#pagination', {
         totalPages: parseInt($("#totalPage").val()),
@@ -53,9 +53,6 @@ function lastBtn(pageNo, totalPage){
     if(parseInt(pageNo) == parseInt(totalPage)){
         return '<li class="last"><a>末页</a></li>';
     }else{
-        return '<li class="last"><a onclick="pageForm('+ totalPage +')">末页</a></li>';
+        return '<li class="last"><a onclick="pageForm(parseInt('+ totalPage + '))">末页</a></li>';
     }
 }
-// $(function () {
-//     loadpage();
-// });

@@ -218,7 +218,7 @@
 
 <div th:fragment="page">
     <div style="text-align: center;">
-        <ul class="pagination" id="pagination">
+        <ul id="pagination" class="pagination">
         </ul>
         <!-- 页码 默认1-->
         <input type="hidden" id="pageNo" th:value="${page.pageNo}"/>
@@ -245,7 +245,7 @@
 </div>
 <div th:fragment="includeJs">
     <!-- Mainly scripts -->
-    <script th:src="@{/inspinia/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/inspinia/js/jquery-2.1.1.js}"></script>
     <script th:src="@{/inspinia/js/bootstrap.min.js}"></script>
     <script th:src="@{/inspinia/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
     <script th:src="@{/inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>

@@ -4,7 +4,7 @@ $(function () {
         $("#homeForm").submit();
     });
 });
-function selectHomeForm(pageNo) {
+function pageForm(pageNo) {
     $("#pageNum").val(pageNo);
     $("#homeForm").submit();
 }
