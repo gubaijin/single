@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.util.Map;
+import java.util.Properties;
 
 import static com.gplucky.common.exception.ResultCode.CODE_ERROR_EMAIL_ATTACHMENT;
 
@@ -25,9 +26,11 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.username}")
     private String emailFrom;
     @Autowired
-    private JavaMailSender mailSender;
+    private JavaMailSenderImpl mailSender;
 
     public void sendSimpleMail(String sendTo, String title, String content) {
+        mailSsl();
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(emailFrom);
         message.setTo(sendTo);
@@ -40,8 +43,16 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    public void sendAttachmentsMail(String sendTo, String title, String content, Map<String, File> attachments) {
+    private void mailSsl() {
+        Properties prop = new Properties();
+        prop.put("mail.smtp.auth", "true");              // 将这个参数设为true，让服务器进行认证,认证用户名和密码是否正确
+        prop.put("mail.smtp.ssl.enable", "true");
+        prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        mailSender.setJavaMailProperties(prop);
+    }
 
+    public void sendAttachmentsMail(String sendTo, String title, String content, Map<String, File> attachments) {
+        mailSsl();
         MimeMessage mimeMessage = mailSender.createMimeMessage();
 
         try {
