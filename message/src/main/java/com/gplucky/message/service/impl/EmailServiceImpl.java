@@ -39,7 +39,7 @@ public class EmailServiceImpl implements EmailService {
         try {
             mailSender.send(message);
         } catch (MailException e) {
-            e.printStackTrace();
+            mailSender.send(message);
         }
     }
 

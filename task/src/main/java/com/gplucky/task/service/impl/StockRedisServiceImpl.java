@@ -38,8 +38,6 @@ public class StockRedisServiceImpl implements StockRedisService {
     private RedisUtils redisUtils;
     @Value("${redis_key_seq_max}")
     private String redis_key_seq_max;
-    @Value("${seq_start_num}")
-    private String seq_start_num;
     @Value("${message.mail.task.to}")
     private String MESSAGE_MAIL_TASK_TO;
     @Value("${message.mail.title3}")
@@ -141,6 +139,7 @@ public class StockRedisServiceImpl implements StockRedisService {
      * down相同
      */
     private void setInitStockSeqUpAndDown() {
+        LOG.info("开始取交集生成连涨连跌…………");
         for (int i = 1; i <= Integer.valueOf(redis_key_seq_max); i++) {
             if (i == Integer.valueOf(redis_key_seq_max)) {
                 redisUtils.sIntersectAndStore(StockExt.SEQ_UP_PREFIX + i, StockExt.SEQ_INIT_UP_PREFIX + (i + 1),
@@ -154,6 +153,7 @@ public class StockRedisServiceImpl implements StockRedisService {
                         StockExt.SEQ_DOWN_PREFIX + (i + 1));
             }
         }
+        LOG.info("…………取交集生成连涨连跌完成");
     }
 
     /**
@@ -162,8 +162,16 @@ public class StockRedisServiceImpl implements StockRedisService {
      */
     private void loopStockHistoryGetSeqInitUpAndDown() {
         LOG.info("初始化历史涨跌数据中…………");
-        final int startNum = Integer.valueOf(seq_start_num);
-        for (int i = startNum; i < (Integer.valueOf(redis_key_seq_max) + 1); i++) {
+        int startNumTemp = 0;
+        List<StockHistory> temp = null;
+        while (CollectionUtils.isEmpty(temp)){
+            temp = stockHistoryService.selectStockHistoryByDate(DateUtils.lastWorkingDay(startNumTemp));
+            if(CollectionUtils.isEmpty(temp)){
+                startNumTemp++;
+            }
+        }
+        final int startNum = startNumTemp;
+        for (int i = startNum; i < (Integer.valueOf(redis_key_seq_max) + startNum + 1); i++) {
             int num = i;
             List<StockHistory> list = stockHistoryService.selectStockHistoryByDate(DateUtils.lastWorkingDay(i));
             LOG.info("num={}, size={}", num, list.size());
