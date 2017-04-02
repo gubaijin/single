@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * Created by ehsy_it on 2017/1/25.
@@ -30,9 +31,9 @@ public class Config {
     private StockRedisService stockRedisService;
 
     /**
-     * 周一至周五的下午16:00触发
+     * 周一至周五的下午15:30触发
      */
-//    @Scheduled(cron = "0 0 16 ? * MON-FRI")
+    @Scheduled(cron = "0 30 15 ? * MON-FRI")
     public void fetchStockInfo() {
         Long taskId = taskHistoryService.insertStartTask(TaskHistoryExt.TYPE_FETCHSTOCKINFO);
         LOG.info("定时任务(同步股票信息)，开始…………");
@@ -46,7 +47,7 @@ public class Config {
      * 同步股票信息到mongo
      * 周一至周五的下午17:05触发
      */
-//    @Scheduled(cron = "0 5 17 ? * MON-FRI")
+    @Scheduled(cron = "0 0 16 ? * MON-FRI")
     public void stockSynchToMongo() {
         Long taskId = taskHistoryService.insertStartTask(TaskHistoryExt.SYNCH_TO_MONGO);
         LOG.info("将股票信息同步到mongo，开始…………");
@@ -58,7 +59,7 @@ public class Config {
     /**
      * 周一至周五的下午17:00触发
      */
-//    @Scheduled(cron = "0 0 17 ? * MON-FRI")
+    @Scheduled(cron = "0 30 16 ? * MON-FRI")
     public void initTask() {
         Long taskId = taskHistoryService.insertStartTask(TaskHistoryExt.TYPE_INITTASK);
         LOG.info("定时任务(初始化任务)，开始…………");
