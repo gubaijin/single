@@ -26,7 +26,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class TaskApplication {
 
     @Value("${gbj.feign.timeout}")
-    private int timeout;
+    private String timeout;
 
     public static void main(String[] args) {
         SpringApplication.run(TaskApplication.class, args);
@@ -42,6 +42,6 @@ public class TaskApplication {
 
     @Bean
     Request.Options feignOptions() {
-        return new Request.Options(timeout, timeout);
+        return new Request.Options(Integer.valueOf(timeout), Integer.valueOf(timeout));
     }
 }
