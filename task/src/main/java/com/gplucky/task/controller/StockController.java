@@ -45,12 +45,7 @@ public class StockController extends BaseController {
     @RequestMapping(value = "select", method = RequestMethod.POST)
     public ResponseEntity<String> select(@RequestParam(value = "stock", required = false) String stock,
                                          @RequestParam(value = "page", required = false) String page) {
-        PageG pageG = null;
-        if (StringUtils.isEmpty(page)) {
-            pageG = new PageG();
-        } else {
-            pageG = JSONObject.parseObject(page, PageG.class);
-        }
+        PageG pageG = PageG.convert(page);
         Page pageHelper = PageHelper.startPage(pageG.getPageNo(), pageG.getPageSize(), true);
         List<Stock> list = stockService.select(JSONObject.parseObject(stock, Stock.class));
         return this.returnSuccessMsg(pageG.setCountAndTotalPage(pageG, pageHelper), JSON.toJSONString(list,

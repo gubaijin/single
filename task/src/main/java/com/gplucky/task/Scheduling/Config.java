@@ -1,7 +1,7 @@
 package com.gplucky.task.Scheduling;
 
-import com.gplucky.common.mybatis.model.ext.StockExt;
 import com.gplucky.common.mybatis.model.ext.TaskHistoryExt;
+import com.gplucky.task.service.StockParamsService;
 import com.gplucky.task.service.StockRedisService;
 import com.gplucky.task.service.StockService;
 import com.gplucky.task.service.TaskHistoryService;
@@ -30,6 +30,9 @@ public class Config {
     @Autowired
     private StockRedisService stockRedisService;
 
+    @Autowired
+    private StockParamsService stockParamsService;
+
     /**
      * 周一至周五的下午15:30触发
      */
@@ -45,7 +48,7 @@ public class Config {
 
     /**
      * 同步股票信息到mongo
-     * 周一至周五的下午17:05触发
+     * 周一至周五的下午16:00触发
      */
     @Scheduled(cron = "0 0 16 ? * MON-FRI")
     public void stockSynchToMongo() {
@@ -57,18 +60,20 @@ public class Config {
     }
 
     /**
-     * 周一至周五的下午17:00触发
+     * 周一至周五的下午16:30触发
      */
     @Scheduled(cron = "0 30 16 ? * MON-FRI")
     public void initTask() {
         Long taskId = taskHistoryService.insertStartTask(TaskHistoryExt.TYPE_INITTASK);
         LOG.info("定时任务(初始化任务)，开始…………");
-        LOG.info("筛选初始化当天涨跌redis数据中…………");
+        /*LOG.info("筛选初始化当天涨跌redis数据中…………");
         stockRedisService.initStockSeqUpAndDown(StockExt.SEQ_UP_0, StockExt.SEQ_DOWN_0);
-        LOG.info("…………筛选初始化当天涨跌redis数据完成。");
+        LOG.info("…………筛选初始化当天涨跌redis数据完成。");*/
+
         LOG.info("更新连涨连跌数据中…………");
-        stockRedisService.autoStockSeqUpAndDown();
+        stockParamsService.updateUpAndDownDays();
         LOG.info("…………更新连涨连跌数据完成。");
+
         LOG.info("…………结束，定时任务结束(初始化任务)");
         taskHistoryService.updateFinishedTask(taskId);
     }

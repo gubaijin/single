@@ -35,7 +35,7 @@ public class TaskController {
     @RequestMapping("/init3")
     @ResponseBody
     public String init3(String pwd) {
-        return taskService.initStockUpAndDown(pwd);
+        return taskService.resetStockUpAndDown(pwd);
     }
 
     @RequestMapping("/init4")

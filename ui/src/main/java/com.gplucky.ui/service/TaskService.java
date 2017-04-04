@@ -18,11 +18,18 @@ public interface TaskService {
                                           @RequestParam(value = "upAndDown") String upAndDown);
 
     @RequestMapping(method = RequestMethod.POST, value = "/stock/select")
-    ResponseEntity<String> select(@RequestParam(value = "stock") String stock,
+    ResponseEntity<String> selectStock(@RequestParam(value = "stock") String stock,
+                                  @RequestParam(value = "page") String page );
+
+    @RequestMapping(method = RequestMethod.POST, value = "/params/select")
+    ResponseEntity<String> selectParams(@RequestParam(value = "stockParams") String stockParams,
                                   @RequestParam(value = "page") String page );
 
     @RequestMapping(method = RequestMethod.POST, value = "/init/initStockUpAndDown")
     String initStockUpAndDown(@RequestParam(value = "pwd") String pwd);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/init/resetStockUpAndDown")
+    String resetStockUpAndDown(@RequestParam(value = "pwd") String pwd);
 
     @RequestMapping(method = RequestMethod.POST, value = "/init/initSHList")
     String initSHList(@RequestParam(value = "pwd") String pwd);
@@ -38,4 +45,5 @@ public interface TaskService {
 
     @RequestMapping(method = RequestMethod.POST, value = "/stock/fetchCompensation")
     String fetchCompensation();
+
 }

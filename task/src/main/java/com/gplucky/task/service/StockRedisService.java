@@ -34,4 +34,5 @@ public interface StockRedisService {
      * @return
      */
     Stream<Object> getSeqUpByDays(int num, UpAndDown upAndDown);
+
 }

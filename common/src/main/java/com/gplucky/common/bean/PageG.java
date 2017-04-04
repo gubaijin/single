@@ -1,6 +1,8 @@
 package com.gplucky.common.bean;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
+import org.springframework.util.StringUtils;
 
 /**
  * Created by ehsy_it on 2017/2/23.
@@ -13,6 +15,14 @@ public class PageG {
     private int count;
 
     private int pageNo = 1;
+
+    public static PageG convert(String page){
+        if (StringUtils.isEmpty(page)) {
+            return new PageG();
+        } else {
+            return JSONObject.parseObject(page, PageG.class);
+        }
+    }
 
     public PageG setCountAndTotalPage(PageG pageG, Page pageHelper){
         if(null == pageG){

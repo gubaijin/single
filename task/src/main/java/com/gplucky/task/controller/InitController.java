@@ -1,5 +1,6 @@
 package com.gplucky.task.controller;
 
+import com.gplucky.task.service.StockParamsService;
 import com.gplucky.task.service.StockRedisService;
 import com.gplucky.task.service.StockService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -29,6 +30,8 @@ public class InitController {
     private StockService stockService;
     @Autowired
     private StockRedisService stockRedisService;
+    @Autowired
+    private StockParamsService stockParamsService;
 
     @ApiOperation(value = "测试hello", notes = "测试hello的接口")
     @ApiImplicitParams(
@@ -50,6 +53,25 @@ public class InitController {
         if (PWD.getValue().equals(pwd)) {
             boolean flg = stockRedisService.initStockSeqUpAndDown();
             LOG.info("……结束初始化股票连涨连跌");
+            if (flg) {
+                return "success";
+            } else {
+                return "failed";
+            }
+        } else {
+            return "failed";
+        }
+    }
+
+    @ApiOperation(value = "重置股票连涨连跌", notes = "重置股票连涨连跌，只有当天最新的涨跌数")
+    @ApiImplicitParam(paramType = "query", name = "pwd", value = "敏感接口密码", required = true, dataType = "String")
+    @RequestMapping(value = "resetStockUpAndDown", method = RequestMethod.POST)
+    @ResponseBody
+    public String resetStockUpAndDown(@RequestParam(value = "pwd", required = true) String pwd) {
+        LOG.info("重置股票连涨连跌开始……");
+        if (PWD.getValue().equals(pwd)) {
+            boolean flg = stockParamsService.resetStockUpAndDown();
+            LOG.info("……结束重置股票连涨连跌");
             if (flg) {
                 return "success";
             } else {

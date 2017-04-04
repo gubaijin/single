@@ -58,7 +58,7 @@
     <!--<table tableName="stock_new">
       <generatedKey column="id" sqlStatement="MySql" identity="true"/>
     </table>-->
-    <table tableName="user">
+    <table tableName="stock_params">
       <generatedKey column="id" sqlStatement="MySql" identity="true"/>
     </table>
   </context>

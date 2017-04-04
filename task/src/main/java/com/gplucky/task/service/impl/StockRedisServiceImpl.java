@@ -1,17 +1,12 @@
 package com.gplucky.task.service.impl;
 
 import com.gplucky.common.bean.UpAndDown;
-import com.gplucky.common.mybatis.model.Stock;
-import com.gplucky.common.mybatis.model.StockHistory;
-import com.gplucky.common.mybatis.model.StockNew;
+import com.gplucky.common.mybatis.model.*;
 import com.gplucky.common.mybatis.model.ext.StockExt;
 import com.gplucky.common.utils.DateUtils;
 import com.gplucky.common.utils.RedisUtils;
 import com.gplucky.task.feign.MessageFeign;
-import com.gplucky.task.service.StockHistoryService;
-import com.gplucky.task.service.StockNewService;
-import com.gplucky.task.service.StockRedisService;
-import com.gplucky.task.service.StockService;
+import com.gplucky.task.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -55,6 +51,8 @@ public class StockRedisServiceImpl implements StockRedisService {
     private MessageFeign messageFeign;
     @Autowired
     private StockNewService stockNewService;
+    @Autowired
+    private StockParamsService stockParamsService;
 
     /**
      * 根据当日最新涨跌 计算出最新的连涨和连跌

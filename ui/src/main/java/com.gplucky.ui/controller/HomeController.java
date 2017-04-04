@@ -28,7 +28,7 @@ public class HomeController {
                        Stock stock, PageG page,
                        Model model) {
         if (null == page) page = new PageG();
-        ResponseEntity<String> responseEntity = taskService.select(JSON.toJSONString(stock), JSON.toJSONString(page));
+        ResponseEntity<String> responseEntity = taskService.selectStock(JSON.toJSONString(stock), JSON.toJSONString(page));
         HttpResult result = JSON.parseObject(responseEntity.getBody(), HttpResult.class);
         List<Stock> stocks = JSON.parseObject((String) result.getData(), List.class);
         model.addAttribute("page", result.getPageG());

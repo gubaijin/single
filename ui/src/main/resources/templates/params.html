@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: head">
+    <title>Params</title>
+</head>
+<body>
+<div id="wrapper">
+    <div th:include="layout :: menu"></div>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div th:include="layout :: top"></div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>GPLucky 自定义指标</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a th:href="@{/home.html}">主页</a>
+                    </li>
+                    <li>
+                        <a>自定义指标</a>
+                    </li>
+                    <li class="active">
+                        <strong>连涨连跌</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
+        <div class="wrapper wrapper-content animated fadeInRight ecommerce">
+            <form id="paramsForm" th:action="@{/params/list.html}" th:method="POST">
+                <input type="hidden" id="pageNum" name="pageNo" th:value="${pageNo?:1}"/>
+                <div class="ibox-content m-b-sm border-bottom">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div>
+                                <input type="text" id="symbol" name="symbol" placeholder="股票代码" th:value="${stockParams.symbol}"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="number" id="upDays" name="upDays" placeholder="请输入连涨天数" th:value="${stockParams.upDays}"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="number" id="downDays" name="downDays" placeholder="请输入连跌天数" th:value="${stockParams.downDays}"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <!--<div class="form-group">
+                                <input type="text" id="amount" name="amount" value="" placeholder="Amount"
+                                       class="form-control"/>
+                            </div>-->
+                        </div>
+                        <div class="col-sm-4">
+                        </div>
+                        <div class="col-sm-4">
+                            <button id="paramsSelectBtn" type="submit" class="btn btn-w-m btn-primary">查询</button>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div>
+                            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="16">
+                                <tr>
+                                    <th>序号</th>
+                                    <th>股票代码</th>
+                                    <th data-hide="phone">连涨天数</th>
+                                    <th data-hide="phone">连跌天数</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                                <tbody>
+                                <tr th:each="stockParam,stockParamsListStat:${stockParamsList}">
+                                    <td th:text="${stockParamsListStat.index} + 1"></td>
+                                    <td>
+                                        <a th:href="'http://quote.eastmoney.com/' + ${stockParam.symbol} +'.html?from=BaiduAladdin'"
+                                           th:text="${stockParam.symbol}" th:target="_blank"></a></td>
+                                    <td th:text="${stockParam.upDays}"></td>
+                                    <td th:text="${stockParam.downDays}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                           <div>
+                               <div th:include="layout :: page"></div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:include="layout :: footer"></div>
+    </div>
+</div>
+<div th:include="layout :: includeJs"></div>
+<script type="text/javascript" th:src="@{/js/params.js}"></script>
+<script type="text/javascript" th:src="@{/page/page.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('.footable').footable();
+        loadpage();
+    })
+</script>
+</body>
+</html>
